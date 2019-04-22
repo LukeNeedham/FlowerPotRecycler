@@ -21,6 +21,8 @@ android {
 }
 
 apply plugin: 'kotlin-android'
+apply plugin: 'com.github.dcendents.android-maven'
+group='com.github.LukeNeedham'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
