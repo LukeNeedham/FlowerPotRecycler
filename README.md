@@ -25,6 +25,9 @@ dependencies {
 # To Use:
 Use one of the 3 `RecyclerView.withItems(...)` extension methods.
 
+# Sample
+FlowerPotRecyclerSample - https://github.com/LukeNeedham/FlowerPotRecyclerSample
+
 # withItems - XML
 Create an XML layout containing a RecyclerView as normal. Once the layout has been inflated, use `myRecyclerView.withItems(...)`.
 
