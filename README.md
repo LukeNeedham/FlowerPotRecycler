@@ -103,6 +103,7 @@ override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved
 # withItems - Generic
 
 There is also a more generic option, if you want to supply your own custom BuilderBinder.
+
 `fun <ItemType> RecyclerView.withItems(items: List<ItemType>, builderBinder: BuilderBinder<ItemType>)`
 
 # Limitations:
