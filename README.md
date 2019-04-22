@@ -62,11 +62,18 @@ This allows you to bind the recycler item to the view, from within the Anko DSL 
 In a Fragment, this might look like:
 ```
 override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
+        val recyclerData = listOf(
+          Pot(R.string.good_flower_pot, R.drawable.good_flower_pot),
+          Pot(R.string.bad_flower_pot, R.drawable.bad_flower_pot),
+          Pot(R.string.ugly_flower_pot, R.drawable.ugly_flower_pot)
+        )
+
         return UI {
             linearLayout {
                 recyclerView {
                     layoutManager = LinearLayoutManager(context)
-                    withItems(FlowerPotDatabase.getAllEntries()) { parent ->
+                    withItems(recyclerData) { parent ->
                         UI {
                             linearLayout {
                                 imageView().apply {
