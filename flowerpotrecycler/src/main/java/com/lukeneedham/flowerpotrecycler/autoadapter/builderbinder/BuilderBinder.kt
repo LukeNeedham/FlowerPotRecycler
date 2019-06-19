@@ -28,5 +28,5 @@ abstract class BuilderBinder<ItemType> {
      * @param item The item to bind
      * @param itemView The View to bind the item to
      */
-    abstract fun bind(item: ItemType, itemView: View)
+    abstract fun bind(position: Int, item: ItemType, itemView: View)
 }

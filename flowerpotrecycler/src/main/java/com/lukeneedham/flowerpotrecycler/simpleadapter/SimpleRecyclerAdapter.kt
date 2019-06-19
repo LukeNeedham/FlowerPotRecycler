@@ -3,6 +3,7 @@ package com.lukeneedham.flowerpotrecycler.simpleadapter
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
 abstract class SimpleRecyclerAdapter<ItemType, ItemViewType>(private val items: List<ItemType>) :
@@ -19,6 +20,11 @@ abstract class SimpleRecyclerAdapter<ItemType, ItemViewType>(private val items: 
     override fun onBindViewHolder(holder: SimpleRecyclerViewHolder<ItemType, ItemViewType>, position: Int) {
         val item = items[position]
         val itemView = holder.typedItemView
-        itemView.setItem(item, itemView)
+        itemView.setItem(position, item, itemView)
+    }
+
+    fun submitList(newItems: List<ItemType>) {
+        val diffResult = DiffUtil.calculateDiff(SimpleDiffCallback(items, newItems))
+        diffResult.dispatchUpdatesTo(this)
     }
 }

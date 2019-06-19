@@ -22,7 +22,7 @@ abstract class DataBindingBuilderBinder<ItemType> : BuilderBinder<ItemType>() {
         return builder(dsl, parent)
     }
 
-    final override fun bind(item: ItemType, itemView: View) {
+    final override fun bind(position: Int, item: ItemType, itemView: View) {
         bindingManager.viewIdToBindCallbacks.forEach { (viewHash, callbacks) ->
             if (viewHash == itemView.hashCode()) {
                 callbacks.forEach {
