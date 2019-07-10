@@ -10,10 +10,23 @@ abstract class SimpleRecyclerAdapter<ItemType, ItemViewType>(private val items: 
     RecyclerView.Adapter<SimpleRecyclerViewHolder<ItemType, ItemViewType>>()
         where ItemViewType : View, ItemViewType : SimpleRecyclerItemView<ItemType> {
 
+    /**
+     * Must be set before onCreateViewHolder is called. Otherwise, the value is ignored
+     */
+    var itemViewLayoutParams: RecyclerView.LayoutParams? = null
+
     abstract fun createItemView(context: Context): ItemViewType
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        SimpleRecyclerViewHolder(createItemView(parent.context))
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): SimpleRecyclerViewHolder<ItemType, ItemViewType> {
+        val view = createItemView(parent.context)
+        if (itemViewLayoutParams != null) {
+            view.layoutParams = itemViewLayoutParams
+        }
+        return SimpleRecyclerViewHolder(view)
+    }
 
     override fun getItemCount() = items.size
 
