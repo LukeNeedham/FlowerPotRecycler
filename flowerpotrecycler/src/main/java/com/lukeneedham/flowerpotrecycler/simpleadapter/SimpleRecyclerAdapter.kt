@@ -23,7 +23,7 @@ abstract class SimpleRecyclerAdapter<ItemType, ItemViewType>(private val items: 
     ): SimpleRecyclerViewHolder<ItemType, ItemViewType> {
         val view = createItemView(parent.context)
         if (itemViewLayoutParams != null) {
-            view.layoutParams = itemViewLayoutParams
+            view.layoutParams = RecyclerView.LayoutParams(itemViewLayoutParams)
         }
         return SimpleRecyclerViewHolder(view)
     }
