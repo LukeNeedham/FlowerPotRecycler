@@ -47,7 +47,7 @@ override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
-            withItems(recyclerData, R.layout.pot_recycler_item_view) { item, itemView ->
+            withItems(recyclerData, R.layout.pot_recycler_item_view) { position, item, itemView ->
                 itemView.potImageView.setImageResource(item.imageResId)
                 itemView.potNameTextView.setText(item.nameResId)
             }
