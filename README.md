@@ -111,7 +111,7 @@ There is also a more generic option, if you want to supply your own custom Build
 
 # Advanced options
 
-To hold a reference to an AutoAdapter, use one of the `RecyclerAdapterBuilder.withItems` functions, and set the RecyclerView adapter manually. 
+To hold a reference to an AutoAdapter, use one of the `RecyclerAdapterBuilder.withItems` functions, and set the RecyclerView adapter manually.
 
 It is also sometimes useful to provide LayoutParams to the item view of the RecyclerView. This can be done by setting `itemViewLayoutParams`. For example:
 
