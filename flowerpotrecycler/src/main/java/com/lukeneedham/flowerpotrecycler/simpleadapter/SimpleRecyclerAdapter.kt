@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class SimpleRecyclerAdapter<ItemType, ItemViewType>(private val items: List<ItemType>) :
+abstract class SimpleRecyclerAdapter<ItemType, ItemViewType>(protected val items: List<ItemType>) :
     RecyclerView.Adapter<SimpleRecyclerViewHolder<ItemType, ItemViewType>>()
         where ItemViewType : View, ItemViewType : SimpleRecyclerItemView<ItemType> {
 
