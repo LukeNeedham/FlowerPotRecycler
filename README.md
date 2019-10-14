@@ -155,6 +155,7 @@ There is also a Java-accessible version:
 RecyclerAdapterBuilder.withItems(
     items, // List<ItemType>
     itemViewClass // Class<ItemViewType>
+)
 ```
 
 # withItems - Generic
