@@ -62,8 +62,10 @@ fun <ItemType> RecyclerView.withItems(
 
 /**
  * Setup without writing an adapter. To be used when view logic is contained within its own class.
+ *
+ * The type parameter 'ItemViewType' is the type of the view class, which will handle binding items.
+ *
  * @param items The data to be shown in the [RecyclerView]
- * @param ItemViewType - the type of the view class, which will handle binding items.
  */
 inline fun <ItemType, reified ItemViewType> RecyclerView.withItems(
     items: List<ItemType>

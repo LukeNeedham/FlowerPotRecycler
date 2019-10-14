@@ -5,7 +5,7 @@ import android.view.View
 import com.lukeneedham.flowerpotrecycler.simpleadapter.SimpleRecyclerAdapter
 import com.lukeneedham.flowerpotrecycler.simpleadapter.SimpleRecyclerItemView
 
-object ReflectionRecyclerAdapter {
+internal object ReflectionRecyclerAdapter {
 
     @JvmStatic
     fun <ItemType, ItemViewType> create(items: List<ItemType>, itemViewClass: Class<ItemViewType>)
