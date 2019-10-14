@@ -136,23 +136,19 @@ where `ItemViewType` is the type of your View class.
     
     class FlowerPotItemView @JvmOverloads constructor(
       context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-    ) : FrameLayout(context, attrs, defStyleAttr), SimpleRecyclerItemView<Pot> {
+    ) : FrameLayout(context, attrs, defStyleAttr), SimpleRecyclerItemView<FlowerPotModel> {
 
       init {
-          LayoutInflater.from(context).inflate(R.layout.item_flower_pot, this)
+          LayoutInflater.from(context).inflate(R.layout.recycler_item_flower_pot, this)
       }
 
-        override fun setItem(position: Int, item: Pot, itemView: View) {
+      override fun setItem(position: Int, item: FlowerPotModel, itemView: View) {
           potImageView.setImageResource(item.imageResId)
           potNameTextView.setText(item.nameResId)
-        }
+      }
     }
 
 ```
-
-
-
-
 
 # withItems - Generic
 
@@ -162,7 +158,7 @@ There is also a more generic option, if you want to supply your own custom Build
 
 # Advanced options
 
-To hold a reference to an AutoAdapter, use one of the `RecyclerAdapterBuilder.withItems` functions, and set the RecyclerView adapter manually.
+To hold a reference to an Adapter, use one of the `RecyclerAdapterBuilder.withItems` functions, and set the RecyclerView adapter manually.
 
 It is also sometimes useful to provide LayoutParams to the item view of the RecyclerView. This can be done by setting `itemViewLayoutParams`. For example:
 
