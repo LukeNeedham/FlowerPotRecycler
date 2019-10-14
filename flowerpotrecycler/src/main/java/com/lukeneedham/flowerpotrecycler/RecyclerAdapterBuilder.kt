@@ -58,5 +58,13 @@ object RecyclerAdapterBuilder {
 
     inline fun <ItemType, reified ItemViewType> withItems(items: List<ItemType>)
             where ItemViewType : View, ItemViewType : SimpleRecyclerItemView<ItemType> =
-        ReflectionRecyclerAdapter.create<ItemType, ItemViewType>(items)
+        withItems(items, ItemViewType::class.java)
+
+    @JvmStatic
+    fun <ItemType, ItemViewType> withItems(
+        items: List<ItemType>,
+        itemViewClass: Class<ItemViewType>
+    )
+            where ItemViewType : View, ItemViewType : SimpleRecyclerItemView<ItemType> =
+        ReflectionRecyclerAdapter.create(items, itemViewClass)
 }
