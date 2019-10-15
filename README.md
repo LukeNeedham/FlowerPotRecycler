@@ -182,7 +182,7 @@ There is also a more generic option, if you want to supply your own custom Build
 
 # Advanced options
 
-To hold a reference to an Adapter, use one of the `RecyclerAdapterBuilder.setupWith...` functions, and set the RecyclerView adapter manually.
+To hold a reference to an Adapter, use one of the `RecyclerAdapterBuilder.from...` functions, and set the RecyclerView adapter manually.
 
 It is also sometimes useful to provide LayoutParams to the item view of the RecyclerView. This can be done by setting `itemViewLayoutParams`. For example:
 
