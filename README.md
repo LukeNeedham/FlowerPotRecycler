@@ -18,7 +18,7 @@ allprojects {
 
 ```
 dependencies {
-  implementation 'com.github.lukeneedham:flowerpotrecycler:3.0.0'
+  implementation 'com.github.lukeneedham:flowerpotrecycler:3.1.2'
 }
 ```
 
@@ -148,6 +148,14 @@ where `ItemViewType` is the type of your View class.
       }
     }
 
+```
+
+There is also a Java-accessible version:
+```
+RecyclerAdapterBuilder.withItems(
+    items, // List<ItemType>
+    itemViewClass // Class<ItemViewType>
+)
 ```
 
 # withItems - Generic
