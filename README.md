@@ -18,7 +18,7 @@ allprojects {
 
 ```
 dependencies {
-  implementation 'com.github.lukeneedham:flowerpotrecycler:3.1.2'
+  implementation 'com.github.lukeneedham:flowerpotrecycler:4.0.0'
 }
 ```
 
@@ -26,15 +26,14 @@ Latest release:
 [![](https://jitpack.io/v/LukeNeedham/FlowerPotRecyclerDSL.svg)](https://jitpack.io/#LukeNeedham/FlowerPotRecyclerDSL)
 
 # To Use:
-Use one of the 4 `RecyclerView.withItems(...)` extension methods.
+Create a RecyclerView as normal, then use one of the `RecyclerView.setupWith...` extension functions.
 
 # Sample
 FlowerPotRecyclerSample - https://github.com/LukeNeedham/FlowerPotRecyclerSample
 
-# withItems - XML
-Create an XML layout containing a RecyclerView as normal. Once the layout has been inflated, use `myRecyclerView.withItems(...)`.
+# setupWithXml
 
-`fun <ItemType> RecyclerView.withItems(items: List<ItemType>, @LayoutRes layoutResId: Int, binder: (ItemType, View) -> Unit)`
+`fun <ItemType> RecyclerView.setupWithXml(items: List<ItemType>, @LayoutRes layoutResId: Int, binder: (ItemType, View) -> Unit)`
 
 For example, in a Fragment this might look like:
 
@@ -50,7 +49,7 @@ override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
-            withItems(recyclerData, R.layout.pot_recycler_item_view) { position, item, itemView ->
+            setupWithXml(recyclerData, R.layout.pot_recycler_item_view) { position, item, itemView ->
                 itemView.potImageView.setImageResource(item.imageResId)
                 itemView.potNameTextView.setText(item.nameResId)
             }
@@ -58,14 +57,17 @@ override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     }
 ```
 
-# withItems - Programmatic (Anko DSL)
+For a full example, see:
+https://github.com/LukeNeedham/FlowerPotRecyclerDSL-Sample/blob/master/app/src/main/java/com/lukeneedham/flowerpotrecyclersample/XmlLayoutFragment.kt
 
-FlowerPotRecycler provides a binding DSL with `onItem(...)`.
-This allows you to bind the recycler item to the view, from within the Anko DSL itself.
+# setupWithDeclarativeDsl
 
-`fun <ItemType> RecyclerView.withItems(items: List<ItemType>, builder: DataBindingDsl<ItemType>.(ViewGroup) -> View)`
+FlowerPotRecycler provides a binding DSL, with the function `onItem(...)`.
+This allows you to add a callback to bind the item to the view. Useful when using a declarative UI, like Anko or Compose.
 
-In a Fragment, this might look like:
+`fun <ItemType> RecyclerView.setupWithDeclarativeDsl(items: List<ItemType>, builder: DataBindingDsl<ItemType>.(ViewGroup) -> View)`
+
+If using Anko in a Fragment, this might look like:
 ```
 override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -79,7 +81,7 @@ override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved
             linearLayout {
                 recyclerView {
                     layoutManager = LinearLayoutManager(context)
-                    withItems(recyclerData) { parent ->
+                    setupWithDeclarativeDsl(recyclerData) { parent ->
                         UI {
                             linearLayout {
                                 imageView().apply {
@@ -106,17 +108,18 @@ override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved
     }
 ```
 
-# withItems - View Class
+For a full example, see:
+https://github.com/LukeNeedham/FlowerPotRecyclerDSL-Sample/blob/master/app/src/main/java/com/lukeneedham/flowerpotrecyclersample/AnkoLayoutFragment.kt
 
-You may wish to contain your binding logic within its own View class; keeping your code clean, and facilitating re-use.
+# setupWithView
+
+You may wish to contain your binding logic within its own View class. This helps keep your code clean, and facilitates re-use.
 
 To create an adapter from this View class, simply call:
 
-`fun <ItemType, ItemViewType> withItems(items: List<ItemType>) where ItemViewType : View, ItemViewType : SimpleRecyclerItemView<ItemType>`
+`fun <ItemType, ItemViewType> setupWithView(items: List<ItemType>) where ItemViewType : View, ItemViewType : SimpleRecyclerItemView<ItemType>`
 
 where `ItemViewType` is the type of your View class.
-
-
 
 ```
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -130,7 +133,7 @@ where `ItemViewType` is the type of your View class.
 
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
-            withItems<Pot, FlowerPotItemView>(recyclerData)
+            setupWithView<Pot, FlowerPotItemView>(recyclerData)
         }
     }
     
@@ -152,26 +155,39 @@ where `ItemViewType` is the type of your View class.
 
 There is also a Java-accessible version:
 ```
-RecyclerAdapterBuilder.withItems(
+RecyclerAdapterBuilder.setupWithView(
     items, // List<ItemType>
     itemViewClass // Class<ItemViewType>
 )
 ```
 
-# withItems - Generic
+These functions will create an instance of your View class for you, using the View(context: Context) constructor.
+
+If you want to instantiate the View yourself, use:
+```
+RecyclerView.setupWithView(
+    items: List<ItemType>,
+    createView: (Context) -> ItemViewType
+)
+```
+
+For a full example, see:
+https://github.com/LukeNeedham/FlowerPotRecyclerDSL-Sample/blob/master/app/src/main/java/com/lukeneedham/flowerpotrecyclersample/ViewClassFragment.kt
+
+# setupWithBuilderBinder
 
 There is also a more generic option, if you want to supply your own custom BuilderBinder.
 
-`fun <ItemType> RecyclerView.withItems(items: List<ItemType>, builderBinder: BuilderBinder<ItemType>)`
+`fun <ItemType> RecyclerView.setupWithBuilderBinder(items: List<ItemType>, builderBinder: BuilderBinder<ItemType>)`
 
 # Advanced options
 
-To hold a reference to an Adapter, use one of the `RecyclerAdapterBuilder.withItems` functions, and set the RecyclerView adapter manually.
+To hold a reference to an Adapter, use one of the `RecyclerAdapterBuilder.setupWith...` functions, and set the RecyclerView adapter manually.
 
 It is also sometimes useful to provide LayoutParams to the item view of the RecyclerView. This can be done by setting `itemViewLayoutParams`. For example:
 
 ```
-val adapter = RecyclerAdapterBuilder.withItems(...)
+val adapter = RecyclerAdapterBuilder.setupWith...
 adapter.itemViewLayoutParams =
   RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
     leftMargin = 10
