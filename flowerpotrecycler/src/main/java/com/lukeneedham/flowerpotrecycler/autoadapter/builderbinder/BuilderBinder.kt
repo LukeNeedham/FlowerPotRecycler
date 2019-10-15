@@ -10,7 +10,7 @@ import android.view.ViewGroup
  * and to update the View when an item is bound to it (via [bind])
  *
  * If you are building the layout programmatically, (for example, via Anko DSL Layout), you may prefer to use
- * [DataBindingBuilderBinder][com.lukeneedham.flowerpotrecycler.autoadapter.builderbinder.databinding.DataBindingBuilderBinder]
+ * [DeclarativeBuilderBinder][com.lukeneedham.flowerpotrecycler.autoadapter.builderbinder.declarative.DeclarativeBuilderBinder]
  *
  * If the layout is supplied by XML, you may prefer to use [XMLBuilderBinder]
  */

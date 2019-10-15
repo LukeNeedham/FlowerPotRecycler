@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 
-abstract class XMLBuilderBinder<ItemType>(@LayoutRes private val xmlLayoutResId: Int) :
+internal abstract class XMLBuilderBinder<ItemType>(@LayoutRes private val xmlLayoutResId: Int) :
     BuilderBinder<ItemType>() {
     final override fun build(parent: ViewGroup) =
         LayoutInflater.from(parent.context).inflate(xmlLayoutResId, parent, false)
