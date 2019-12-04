@@ -80,3 +80,9 @@ inline fun <ItemType, reified ItemViewType> RecyclerView.setupWithView(
 ) where ItemViewType : View, ItemViewType : SimpleRecyclerItemView<ItemType> {
     adapter = RecyclerAdapterBuilder.fromView<ItemType, ItemViewType>(items)
 }
+
+fun RecyclerView.scrollToCenter() {
+    val adapter = adapter ?: return
+    val centerPosition = adapter.itemCount / 2
+    layoutManager?.scrollToPosition(centerPosition)
+}
