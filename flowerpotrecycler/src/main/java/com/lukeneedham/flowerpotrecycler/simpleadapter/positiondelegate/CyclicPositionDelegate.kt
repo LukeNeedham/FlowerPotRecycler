@@ -4,7 +4,7 @@ class CyclicPositionDelegate<ItemType>(private val items: List<ItemType>) :
     AdapterPositionDelegate<ItemType> {
 
     override fun getItemAt(position: Int): ItemType {
-        val cyclicPosition = position % ITEM_COUNT
+        val cyclicPosition = position % items.size
         return items[cyclicPosition]
     }
 
