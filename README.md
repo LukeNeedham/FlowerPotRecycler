@@ -18,7 +18,7 @@ allprojects {
 
 ```
 dependencies {
-  implementation 'com.github.lukeneedham:flowerpotrecycler:4.0.0'
+  implementation 'com.github.lukeneedham:flowerpotrecycler:5.1.0'
 }
 ```
 
