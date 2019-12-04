@@ -201,9 +201,13 @@ adapter.itemViewLayoutParams =
 val adapter = RecyclerAdapterBuilder.setupWith...
 adapter.isCyclic = true
 ```
+
 If you want your RecyclerView to be cyclic in both directions (so that scrolling backwards also repeats the list), you need to manually set your RecyclerView position to the middle of the list:
+
 `recyclerView.layoutManager.scrollToPosition(recyclerView.adapter.itemCount / 2)`
+
 Or use the extension function provided in this library:
+
 `recyclerView.scrollToCenter()`
 
 3 -You may also wish to update your RecyclerView items. For this you can use `submitList(...)`. Updates are calculated using DiffUtil, allowing changes to be animated.
