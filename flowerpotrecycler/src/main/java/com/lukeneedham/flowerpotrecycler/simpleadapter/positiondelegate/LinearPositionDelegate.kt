@@ -6,4 +6,6 @@ class LinearPositionDelegate<ItemType>(private val items: List<ItemType>) :
     override fun getItemAt(position: Int) = items[position]
 
     override fun getItemCount() = items.size
+        
+    override fun getPositionOfItem(item: ItemType) = items.indexOf(item)
 }
