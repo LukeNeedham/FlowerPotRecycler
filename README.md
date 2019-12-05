@@ -212,6 +212,39 @@ Or use the extension function provided in this library:
 
 3 -You may also wish to update your RecyclerView items. For this you can use `submitList(...)`. Updates are calculated using DiffUtil, allowing changes to be animated.
 
+# Custom Adapter
+
+Sometimes, it may be inevitable that you have to write your own Adapter class. To make this less painful, you can subclass `SimpleRecyclerAdapter`:
+
+```
+class CustomAdapter(items: List<Thing>) :
+    SimpleRecyclerAdapter<Thing, ThingItemView>(items) {
+    
+    override fun createItemView(context: Context) = ThingItemView(context)
+    
+    // Your custom logic
+    ...
+}
+```
+
+And then make sure your `ThingItemView` implements `SimpleRecyclerItemView<Thing>`, in the same way as required for `setupWithView`:
+
+```
+class ThingItemView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : FrameLayout(context, attrs, defStyleAttr), SimpleRecyclerItemView<Thing> {
+
+    override fun setItem(position: Int, item: Thing) {
+        // Your binding logic
+        ...
+    }
+}
+```
+
+SimpleRecyclerAdapter will handle `onCreateViewHolder` and `onBindViewHolder` automatically, although you can always override or supplement their behaviour as normal.
+
 # Limitations:
 
 FlowerPotRecycler cannot currently handle multiple view types.
