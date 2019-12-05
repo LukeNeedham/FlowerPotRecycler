@@ -8,10 +8,11 @@ class CyclicPositionDelegate<ItemType>(private val items: List<ItemType>) :
         return items[positionInCycle]
     }
 
-    override fun getItemCount() = items.size * NUMBER_OF_CYCLES
+    override fun getItemCount() = items.size * ITEM_COUNT
         
     override fun getPositionOfItem(item: ItemType): Int {
-        val centerCycleIndex = NUMBER_OF_CYCLES / 2
+        val numberOfCycles = ITEM_COUNT / items.size
+        val centerCycleIndex = numberOfCycles / 2
         val startPositionOfCenterCycle = centerCycleIndex * items.size
         
         val positionOfItemInCycle = items.indexOf(item)
@@ -23,6 +24,6 @@ class CyclicPositionDelegate<ItemType>(private val items: List<ItemType>) :
 
     companion object {
         // Using Int.MAX_VALUE can cause OOMs. This value should be large enough that the user never reaches the end, but small enough to be memory efficient
-        private const val NUMBER_OF_CYCLES = 1000
+        private const val ITEM_COUNT = 10000
     }
 }
