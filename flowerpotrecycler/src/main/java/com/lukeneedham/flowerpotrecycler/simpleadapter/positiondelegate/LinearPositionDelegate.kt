@@ -6,6 +6,8 @@ class LinearPositionDelegate<ItemType>(private var items: List<ItemType> = empty
     override fun submitList(list: List<ItemType>) {
         this.items = items
     }
+        
+    override fun getItems(): List<ItemType> = items
 
     override fun getItemAt(position: Int) = items[position]
 
