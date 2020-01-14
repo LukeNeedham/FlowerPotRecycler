@@ -13,7 +13,7 @@ abstract class SimpleRecyclerAdapter<ItemType, ItemViewType>(items: List<ItemTyp
     RecyclerView.Adapter<SimpleRecyclerViewHolder<ItemType, ItemViewType>>()
         where ItemViewType : View, ItemViewType : SimpleRecyclerItemView<ItemType> {
             
-    private val diffCallback = object : DiffUtil.ItemCallback<ItemType>() {
+    protected val diffCallback = object : DiffUtil.ItemCallback<ItemType>() {
             override fun areItemsTheSame(oldItem: ItemType, newItem: ItemType) =
                 oldItem == newItem
 
