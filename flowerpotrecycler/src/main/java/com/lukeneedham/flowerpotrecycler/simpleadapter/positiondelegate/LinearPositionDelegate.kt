@@ -1,5 +1,7 @@
 package com.lukeneedham.flowerpotrecycler.simpleadapter.positiondelegate
 
+import androidx.recyclerview.widget.*
+
 class LinearPositionDelegate<ItemType>(
     adapter: RecyclerView.Adapter<*>,
     diffCallback: DiffUtil.ItemCallback<ItemType>
