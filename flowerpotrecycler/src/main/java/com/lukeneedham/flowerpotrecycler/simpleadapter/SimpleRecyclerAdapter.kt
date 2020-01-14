@@ -12,6 +12,14 @@ import com.lukeneedham.flowerpotrecycler.simpleadapter.positiondelegate.LinearPo
 abstract class SimpleRecyclerAdapter<ItemType, ItemViewType>(items: List<ItemType> = emptyList()) :
     RecyclerView.Adapter<SimpleRecyclerViewHolder<ItemType, ItemViewType>>()
         where ItemViewType : View, ItemViewType : SimpleRecyclerItemView<ItemType> {
+            
+    private val diffCallback = object : DiffUtil.ItemCallback<ItemType>() {
+            override fun areItemsTheSame(oldItem: ItemType, newItem: ItemType) =
+                oldItem == newItem
+
+            override fun areContentsTheSame(oldItem: ItemType, newItem: ItemType) =
+                oldItem == newItem
+        }
 
     var positionDelegate: AdapterPositionDelegate<ItemType> =
         LinearPositionDelegate(this, diffCallback)
@@ -59,15 +67,5 @@ abstract class SimpleRecyclerAdapter<ItemType, ItemViewType>(items: List<ItemTyp
 
     fun submitList(newItems: List<ItemType>) {
         positionDelegate.submitList(newItems)
-    }
-            
-    private companion object {
-        val diffCallback = object : DiffUtil.ItemCallback<ContentItemVideo>() {
-            override fun areItemsTheSame(oldItem: ContentItemVideo, newItem: ContentItemVideo) =
-                oldItem == newItem
-
-            override fun areContentsTheSame(oldItem: ContentItemVideo, newItem: ContentItemVideo) =
-                oldItem == newItem
-        }
     }
 }
