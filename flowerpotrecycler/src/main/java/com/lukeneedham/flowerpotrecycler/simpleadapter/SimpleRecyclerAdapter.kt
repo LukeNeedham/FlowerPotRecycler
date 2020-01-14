@@ -22,7 +22,9 @@ abstract class SimpleRecyclerAdapter<ItemType, ItemViewType>(items: List<ItemTyp
         }
 
     var positionDelegate: AdapterPositionDelegate<ItemType> =
-        LinearPositionDelegate(this, diffCallback)
+        LinearPositionDelegate(this, diffCallback).apply {
+            submitList(items)
+        }
 
     /**
      * Must be set before onCreateViewHolder is called. Otherwise, the value is ignored
