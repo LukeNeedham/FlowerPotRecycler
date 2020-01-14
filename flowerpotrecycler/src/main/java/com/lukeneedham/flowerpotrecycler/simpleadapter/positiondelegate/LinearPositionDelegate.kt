@@ -1,7 +1,11 @@
 package com.lukeneedham.flowerpotrecycler.simpleadapter.positiondelegate
 
-class LinearPositionDelegate<ItemType>(private val items: List<ItemType>) :
+class LinearPositionDelegate<ItemType>(private var items: List<ItemType> = emptyList()) :
     AdapterPositionDelegate<ItemType> {
+        
+    override fun submitList(list: List<ItemType>) {
+        this.items = items
+    }
 
     override fun getItemAt(position: Int) = items[position]
 

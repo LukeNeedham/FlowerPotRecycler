@@ -1,7 +1,11 @@
 package com.lukeneedham.flowerpotrecycler.simpleadapter.positiondelegate
 
-class CyclicPositionDelegate<ItemType>(private val items: List<ItemType>) :
+class CyclicPositionDelegate<ItemType>(private var items: List<ItemType> = emptyList()) :
     AdapterPositionDelegate<ItemType> {
+        
+    override fun submitList(list: List<ItemType>) {
+        this.items = items
+    }
 
     override fun getItemAt(position: Int): ItemType {
         val positionInCycle = position % items.size
