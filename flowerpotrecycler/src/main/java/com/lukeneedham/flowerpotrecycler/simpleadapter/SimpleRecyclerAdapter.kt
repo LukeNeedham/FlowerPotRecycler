@@ -9,7 +9,7 @@ import com.lukeneedham.flowerpotrecycler.simpleadapter.positiondelegate.AdapterP
 import com.lukeneedham.flowerpotrecycler.simpleadapter.positiondelegate.CyclicPositionDelegate
 import com.lukeneedham.flowerpotrecycler.simpleadapter.positiondelegate.LinearPositionDelegate
 
-abstract class SimpleRecyclerAdapter<ItemType, ItemViewType>(protected val items: List<ItemType> = emptyList()) :
+abstract class SimpleRecyclerAdapter<ItemType, ItemViewType>(items: List<ItemType> = emptyList()) :
     RecyclerView.Adapter<SimpleRecyclerViewHolder<ItemType, ItemViewType>>()
         where ItemViewType : View, ItemViewType : SimpleRecyclerItemView<ItemType> {
 
@@ -28,6 +28,7 @@ abstract class SimpleRecyclerAdapter<ItemType, ItemViewType>(protected val items
     var isCyclic: Boolean = false
         set(value) {
             field = value
+            val items = positionDelegate.getItems()
             positionDelegate =
                 if (value) CyclicPositionDelegate(items) else LinearPositionDelegate(items)
         }
@@ -57,7 +58,8 @@ abstract class SimpleRecyclerAdapter<ItemType, ItemViewType>(protected val items
     }
 
     fun submitList(newItems: List<ItemType>) {
-        val diffResult = DiffUtil.calculateDiff(SimpleDiffCallback(items, newItems))
+        val oldItems = positionDelegate.getItems()
+        val diffResult = DiffUtil.calculateDiff(SimpleDiffCallback(oldItems, newItems))
         diffResult.dispatchUpdatesTo(this)
         positionDelegate.submitList(newItems)
     }
