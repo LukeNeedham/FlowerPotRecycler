@@ -12,9 +12,17 @@ import com.lukeneedham.flowerpotrecycler.simpleadapter.positiondelegate.LinearPo
 abstract class SimpleRecyclerAdapter<ItemType, ItemViewType>(items: List<ItemType> = emptyList()) :
     RecyclerView.Adapter<SimpleRecyclerViewHolder<ItemType, ItemViewType>>()
         where ItemViewType : View, ItemViewType : SimpleRecyclerItemView<ItemType> {
+            
+    private val diffCallback = object : DiffUtil.ItemCallback<ItemType>() {
+            override fun areItemsTheSame(oldItem: ItemType, newItem: ItemType) =
+                oldItem == newItem
+
+            override fun areContentsTheSame(oldItem: ItemType, newItem: ItemType) =
+                oldItem == newItem
+        }
 
     var positionDelegate: AdapterPositionDelegate<ItemType> =
-        LinearPositionDelegate(items)
+        LinearPositionDelegate(this, diffCallback)
 
     /**
      * Must be set before onCreateViewHolder is called. Otherwise, the value is ignored
@@ -30,7 +38,7 @@ abstract class SimpleRecyclerAdapter<ItemType, ItemViewType>(items: List<ItemTyp
             field = value
             val items = positionDelegate.getItems()
             positionDelegate =
-                if (value) CyclicPositionDelegate(items) else LinearPositionDelegate(items)
+                if (value) CyclicPositionDelegate(this, diffCallback) else LinearPositionDelegate(this, diffCallback)
         }
 
     abstract fun createItemView(context: Context): ItemViewType
@@ -58,9 +66,6 @@ abstract class SimpleRecyclerAdapter<ItemType, ItemViewType>(items: List<ItemTyp
     }
 
     fun submitList(newItems: List<ItemType>) {
-        val oldItems = positionDelegate.getItems()
-        val diffResult = DiffUtil.calculateDiff(SimpleDiffCallback(oldItems, newItems))
         positionDelegate.submitList(newItems)
-        diffResult.dispatchUpdatesTo(this)
     }
 }

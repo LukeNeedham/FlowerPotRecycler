@@ -1,22 +1,34 @@
 package com.lukeneedham.flowerpotrecycler.simpleadapter.positiondelegate
 
-class CyclicPositionDelegate<ItemType>(private var items: List<ItemType> = emptyList()) :
+class CyclicPositionDelegate<ItemType>(
+    adapter: RecyclerView.Adapter<*>,
+    diffCallback: DiffUtil.ItemCallback<ItemType>
+) :
     AdapterPositionDelegate<ItemType> {
         
+    private val asyncListDiffer = AsyncListDiffer<ItemType>(
+        AdapterListUpdateCallback(adapter),
+        AsyncDifferConfig.Builder<ItemType>(diffCallback).build()
+    )
+        
     override fun submitList(list: List<ItemType>) {
-        this.items = items
+        asyncListDiffer.submitList(list)
     }
         
-    override fun getItems(): List<ItemType> = items
+    override fun getItems(): List<ItemType> = asyncListDiffer.currentList
 
     override fun getItemAt(position: Int): ItemType {
+        val items = asyncListDiffer.currentList
+        
         val positionInCycle = position % items.size
         return items[positionInCycle]
     }
 
-    override fun getItemCount() = items.size * ITEM_COUNT
+    override fun getItemCount() = asyncListDiffer.currentList.size * ITEM_COUNT
         
     override fun getPositionOfItem(item: ItemType): Int {
+        val items = asyncListDiffer.currentList
+        
         val numberOfCycles = ITEM_COUNT / items.size
         val centerCycleIndex = numberOfCycles / 2
         val startPositionOfCenterCycle = centerCycleIndex * items.size

@@ -1,17 +1,25 @@
 package com.lukeneedham.flowerpotrecycler.simpleadapter.positiondelegate
 
-class LinearPositionDelegate<ItemType>(private var items: List<ItemType> = emptyList()) :
+class LinearPositionDelegate<ItemType>(
+    adapter: RecyclerView.Adapter<*>,
+    diffCallback: DiffUtil.ItemCallback<ItemType>
+):
     AdapterPositionDelegate<ItemType> {
         
+    private val asyncListDiffer = AsyncListDiffer<ItemType>(
+        AdapterListUpdateCallback(adapter),
+        AsyncDifferConfig.Builder<ItemType>(diffCallback).build()
+    )
+        
     override fun submitList(list: List<ItemType>) {
-        this.items = items
+        asyncListDiffer.submitList(list)
     }
         
-    override fun getItems(): List<ItemType> = items
+    override fun getItems(): List<ItemType> = asyncListDiffer.currentList
 
-    override fun getItemAt(position: Int) = items[position]
+    override fun getItemAt(position: Int) = asyncListDiffer.currentList[position]
 
-    override fun getItemCount() = items.size
+    override fun getItemCount() = asyncListDiffer.currentList.size
         
-    override fun getPositionOfItem(item: ItemType) = items.indexOf(item)
+    override fun getPositionOfItem(item: ItemType) = asyncListDiffer.currentList.indexOf(item)
 }
