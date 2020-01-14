@@ -14,7 +14,7 @@ abstract class SimpleRecyclerAdapter<ItemType, ItemViewType>(items: List<ItemTyp
         where ItemViewType : View, ItemViewType : SimpleRecyclerItemView<ItemType> {
 
     var positionDelegate: AdapterPositionDelegate<ItemType> =
-        LinearPositionDelegate(items)
+        LinearPositionDelegate(this, diffCallback)
 
     /**
      * Must be set before onCreateViewHolder is called. Otherwise, the value is ignored
@@ -30,7 +30,7 @@ abstract class SimpleRecyclerAdapter<ItemType, ItemViewType>(items: List<ItemTyp
             field = value
             val items = positionDelegate.getItems()
             positionDelegate =
-                if (value) CyclicPositionDelegate(items) else LinearPositionDelegate(items)
+                if (value) CyclicPositionDelegate(this, diffCallback) else LinearPositionDelegate(this, diffCallback)
         }
 
     abstract fun createItemView(context: Context): ItemViewType
@@ -58,9 +58,16 @@ abstract class SimpleRecyclerAdapter<ItemType, ItemViewType>(items: List<ItemTyp
     }
 
     fun submitList(newItems: List<ItemType>) {
-        val oldItems = positionDelegate.getItems()
-        val diffResult = DiffUtil.calculateDiff(SimpleDiffCallback(oldItems, newItems))
         positionDelegate.submitList(newItems)
-        diffResult.dispatchUpdatesTo(this)
+    }
+            
+    private companion object {
+        val diffCallback = object : DiffUtil.ItemCallback<ContentItemVideo>() {
+            override fun areItemsTheSame(oldItem: ContentItemVideo, newItem: ContentItemVideo) =
+                oldItem == newItem
+
+            override fun areContentsTheSame(oldItem: ContentItemVideo, newItem: ContentItemVideo) =
+                oldItem == newItem
+        }
     }
 }
