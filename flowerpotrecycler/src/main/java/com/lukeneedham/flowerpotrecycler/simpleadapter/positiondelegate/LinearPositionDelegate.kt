@@ -11,18 +11,15 @@ class LinearPositionDelegate<ItemType>(
         AsyncDifferConfig.Builder<ItemType>(diffCallback).build()
     )
         
-    private val items: List<ItemType>
-        get() = asyncListDiffer.currentList
-        
     override fun submitList(list: List<ItemType>) {
         asyncListDiffer.submitList(list)
     }
         
-    override fun getItems(): List<ItemType> = items
+    override fun getItems(): List<ItemType> = asyncListDiffer.currentList
 
-    override fun getItemAt(position: Int) = items[position]
+    override fun getItemAt(position: Int) = asyncListDiffer.currentList[position]
 
-    override fun getItemCount() = items.size
+    override fun getItemCount() = asyncListDiffer.currentList.size
         
-    override fun getPositionOfItem(item: ItemType) = items.indexOf(item)
+    override fun getPositionOfItem(item: ItemType) = asyncListDiffer.currentList.indexOf(item)
 }
