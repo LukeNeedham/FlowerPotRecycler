@@ -67,7 +67,7 @@ abstract class SimpleRecyclerAdapter<ItemType, ItemViewType>(items: List<ItemTyp
         itemView.setItem(position, item)
     }
 
-    fun submitList(newItems: List<ItemType>) {
-        positionDelegate.submitList(newItems)
+    fun submitList(newItems: List<ItemType>, onDiffDone: () -> Unit = {}) {
+        positionDelegate.submitList(newItems, onDiffDone)
     }
 }
