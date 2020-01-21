@@ -13,7 +13,7 @@ abstract class SimpleRecyclerAdapter<ItemType, ItemViewType>(items: List<ItemTyp
     RecyclerView.Adapter<SimpleRecyclerViewHolder<ItemType, ItemViewType>>()
         where ItemViewType : View, ItemViewType : SimpleRecyclerItemView<ItemType> {
             
-    protected val diffCallback = object : DiffUtil.ItemCallback<ItemType>() {
+    protected val defaultDiffCallback = object : DiffUtil.ItemCallback<ItemType>() {
             override fun areItemsTheSame(oldItem: ItemType, newItem: ItemType) =
                 oldItem == newItem
 
@@ -22,7 +22,7 @@ abstract class SimpleRecyclerAdapter<ItemType, ItemViewType>(items: List<ItemTyp
         }
 
     var positionDelegate: AdapterPositionDelegate<ItemType> =
-        LinearPositionDelegate(this, diffCallback).apply {
+        LinearPositionDelegate(this, defaultDiffCallback).apply {
             submitList(items)
         }
 
@@ -40,7 +40,7 @@ abstract class SimpleRecyclerAdapter<ItemType, ItemViewType>(items: List<ItemTyp
             field = value
             val items = positionDelegate.getItems()
             positionDelegate =
-                if (value) CyclicPositionDelegate(this, diffCallback) else LinearPositionDelegate(this, diffCallback)
+                if (value) CyclicPositionDelegate(this, defaultDiffCallback) else LinearPositionDelegate(this, defaultDiffCallback)
         }
 
     abstract fun createItemView(context: Context): ItemViewType
