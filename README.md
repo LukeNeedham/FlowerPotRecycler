@@ -1,5 +1,5 @@
 # FlowerPotRecycler
-Are you sick of writing an Adapters for every RecyclerView? Me too. Never write an adapter again &ast;.
+Are you sick of writing an Adapter for every RecyclerView? Me too. Never write an adapter again &ast;.
 
 &ast; Or at least make it less painful.
 
