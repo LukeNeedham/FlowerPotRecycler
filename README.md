@@ -20,7 +20,7 @@ allprojects {
 
 ```groovy
 dependencies {
-  implementation 'com.github.lukeneedham:flowerpotrecycler:5.1.3'
+  implementation 'com.github.lukeneedham:flowerpotrecycler:5.5.3'
 }
 ```
 
