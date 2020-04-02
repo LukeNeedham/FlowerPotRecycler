@@ -55,10 +55,24 @@ fun <ItemType> RecyclerView.setupWithXml(
     adapter = RecyclerAdapterBuilder.fromXml(items, layoutResId, binder)
 }
 
+
+/**
+ * Setup without writing an adapter.
+ * To be used when view logic is contained within its own class, and you wish to instantiate the View object yourself
+ * @param createView The function to instantiate your [ItemViewType] class
+ */
+fun <ItemType, ItemViewType> RecyclerView.setupWithView(
+    createView: (Context) -> ItemViewType
+)
+        where ItemViewType : View, ItemViewType : SimpleRecyclerItemView<ItemType> {
+    adapter = RecyclerAdapterBuilder.fromView(createView)
+}
+
 /**
  * Setup without writing an adapter.
  * To be used when view logic is contained within its own class, and you wish to instantiate the View object yourself
  * @param items The initial data to be shown in the [RecyclerView]
+ * @param createView The function to instantiate your [ItemViewType] class
  */
 fun <ItemType, ItemViewType> RecyclerView.setupWithView(
     items: List<ItemType>,
@@ -74,12 +88,22 @@ fun <ItemType, ItemViewType> RecyclerView.setupWithView(
  * The type parameter 'ItemViewType' is the type of the view class, which will handle binding items.
  *
  * @param items The initial data to be shown in the [RecyclerView]
- * @param createView The function to instantiate your [ItemViewType] class
  */
 inline fun <ItemType, reified ItemViewType> RecyclerView.setupWithView(
     items: List<ItemType>
 ) where ItemViewType : View, ItemViewType : SimpleRecyclerItemView<ItemType> {
     adapter = RecyclerAdapterBuilder.fromView<ItemType, ItemViewType>(items)
+}
+
+
+/**
+ * Setup without writing an adapter. To be used when view logic is contained within its own class.
+ *
+ * The type parameter 'ItemViewType' is the type of the view class, which will handle binding items.
+ */
+inline fun <ItemType, reified ItemViewType> RecyclerView.setupWithView()
+        where ItemViewType : View, ItemViewType : SimpleRecyclerItemView<ItemType> {
+    adapter = RecyclerAdapterBuilder.fromView<ItemType, ItemViewType>()
 }
 
 fun RecyclerView.scrollToCenter() {
