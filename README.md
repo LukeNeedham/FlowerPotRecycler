@@ -30,9 +30,9 @@ Latest release:
 # To Use:
 Create a RecyclerView as normal, then either use:
 
-    - One of the `RecyclerView.setupWith...` extension functions (if you don't need a reference to the adapter)
+- One of the `RecyclerView.setupWith...` extension functions (if you don't need a reference to the adapter)
     
-    - One of the static factories from `RecyclerAdapterBuilder`, and set it as the RecyclerView adapter (if you need a reference to the adapter)
+- One of the static factories from `RecyclerAdapterBuilder`, and set it as the RecyclerView adapter (if you need a reference to the adapter)
 
 # Sample
 FlowerPotRecyclerSample - https://github.com/LukeNeedham/FlowerPotRecyclerSample
