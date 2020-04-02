@@ -32,13 +32,17 @@ abstract class SimpleRecyclerAdapter<ItemType, ItemViewType>(items: List<ItemTyp
     var itemViewLayoutParams: RecyclerView.LayoutParams? = null
 
     /**
+     * An optional listener to be called whenever an item is clicked
+     */
+    var onItemClickListener: (ItemType) -> Unit = {}
+
+    /**
      * Set to true if the items of the recyclerview should 'wrap-around' -
      * so the item after the last item in your list is the first item again.
      */
     var isCyclic: Boolean = false
         set(value) {
             field = value
-            val items = positionDelegate.getItems()
             positionDelegate =
                 if (value) CyclicPositionDelegate(this, defaultDiffCallback) else LinearPositionDelegate(this, defaultDiffCallback)
         }
@@ -65,6 +69,9 @@ abstract class SimpleRecyclerAdapter<ItemType, ItemViewType>(items: List<ItemTyp
         val item = positionDelegate.getItemAt(position)
         val itemView = holder.typedItemView
         itemView.setItem(position, item)
+        itemView.setOnClickListener {
+            onItemClickListener(item)
+        }
     }
 
     open fun submitList(newItems: List<ItemType>, onDiffDone: () -> Unit = {}) {

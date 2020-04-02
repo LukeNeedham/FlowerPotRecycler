@@ -200,6 +200,22 @@ Within `SimpleRecyclerAdapter` you can also access and change configurations lik
 # Other cool features:
 
 <details>
+  <summary>On Item Click Listener</summary>
+  
+You can set a simple listener to be called whenever an item in the RecyclerView is clicked:
+
+```kotlin
+val adapter = RecyclerAdapterBuilder.fromView { MyRecyclerItemView(it) }
+adapter.onItemClickListener = { item ->
+    // Your listener logic
+}
+```
+
+For more complex click handling, subclass `SimpleRecyclerAdapter`.
+  
+</details>
+
+<details>
   <summary>Cyclic / Infinite Scrolling</summary>
   
 You can easily make a RecyclerView 'cyclic' (also called wrap-around / endless / infinite). This means that after the last item in the items list, the entire list repeats again.
@@ -241,6 +257,8 @@ adapter.submitList(newData) {
     recyclerView.scrollToPosition(newData.lastIndex)
 }
 ```
+
+By default, the diff is done using a default `DiffCallback`, which just checks for object equality. To provide a custom `DiffCallback`, subclass `SimpleRecyclerAdapter`, and set `positionDelegate` to an instance of a `PositionDelegate` which uses your `DiffCallback`.  
   
 </details>
 
