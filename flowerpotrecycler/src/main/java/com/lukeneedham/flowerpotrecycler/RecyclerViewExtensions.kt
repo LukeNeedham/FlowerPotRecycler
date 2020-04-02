@@ -14,7 +14,7 @@ import com.lukeneedham.flowerpotrecycler.simpleadapter.SimpleRecyclerItemView
  * Setup without writing an adapter.
  * To be used when supplying the [BuilderBinder] yourself.
  * Most of the time you may prefer to use a more specific 'setupWith' function.
- * @param items The data to be shown in the [RecyclerView]
+ * @param items The initial data to be shown in the [RecyclerView]
  * @param builderBinder The [BuilderBinder] used to build the View for each item of the [RecyclerView], then bind the item to it
  */
 fun <ItemType> RecyclerView.setupWithBuilderBinder(
@@ -30,7 +30,7 @@ fun <ItemType> RecyclerView.setupWithBuilderBinder(
  *
  * Use [onItem][com.lukeneedham.flowerpotrecycler.autoadapter.builderbinder.declarative.DeclarativeBindingDsl.onItem]
  * within your builder to update the UI when an item is bound.
- * @param items The data to be shown in the [RecyclerView]
+ * @param items The initial data to be shown in the [RecyclerView]
  * @param builder The callback for building item Views
  */
 fun <ItemType> RecyclerView.setupWithDeclarativeDsl(
@@ -43,7 +43,7 @@ fun <ItemType> RecyclerView.setupWithDeclarativeDsl(
 /**
  * Setup without writing an adapter.
  * To be used when creating the item View from inflating an XML layout.
- * @param items The data to be shown in the [RecyclerView]
+ * @param items The initial data to be shown in the [RecyclerView]
  * @param layoutResId The XML layout resource ID to inflate to build the View
  * @param binder The callback for binding each item to its View
  */
@@ -58,7 +58,7 @@ fun <ItemType> RecyclerView.setupWithXml(
 /**
  * Setup without writing an adapter.
  * To be used when view logic is contained within its own class, and you wish to instantiate the View object yourself
- * @param items The data to be shown in the [RecyclerView]
+ * @param items The initial data to be shown in the [RecyclerView]
  */
 fun <ItemType, ItemViewType> RecyclerView.setupWithView(
     items: List<ItemType>,
@@ -73,7 +73,8 @@ fun <ItemType, ItemViewType> RecyclerView.setupWithView(
  *
  * The type parameter 'ItemViewType' is the type of the view class, which will handle binding items.
  *
- * @param items The data to be shown in the [RecyclerView]
+ * @param items The initial data to be shown in the [RecyclerView]
+ * @param createView The function to instantiate your [ItemViewType] class
  */
 inline fun <ItemType, reified ItemViewType> RecyclerView.setupWithView(
     items: List<ItemType>

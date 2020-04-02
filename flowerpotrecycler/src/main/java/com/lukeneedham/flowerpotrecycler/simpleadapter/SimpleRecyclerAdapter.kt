@@ -56,7 +56,7 @@ abstract class SimpleRecyclerAdapter<ItemType, ItemViewType>(protected val items
         itemView.setItem(position, item)
     }
 
-    fun submitList(newItems: List<ItemType>) {
+    open fun submitList(newItems: List<ItemType>) {
         val diffResult = DiffUtil.calculateDiff(SimpleDiffCallback(items, newItems))
         diffResult.dispatchUpdatesTo(this)
     }
