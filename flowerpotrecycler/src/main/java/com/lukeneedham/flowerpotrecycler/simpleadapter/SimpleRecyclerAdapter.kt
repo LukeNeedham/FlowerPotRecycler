@@ -9,12 +9,22 @@ import com.lukeneedham.flowerpotrecycler.simpleadapter.positiondelegate.AdapterP
 import com.lukeneedham.flowerpotrecycler.simpleadapter.positiondelegate.CyclicPositionDelegate
 import com.lukeneedham.flowerpotrecycler.simpleadapter.positiondelegate.LinearPositionDelegate
 
-abstract class SimpleRecyclerAdapter<ItemType, ItemViewType>(protected val items: List<ItemType>) :
+abstract class SimpleRecyclerAdapter<ItemType, ItemViewType>(items: List<ItemType> = emptyList()) :
     RecyclerView.Adapter<SimpleRecyclerViewHolder<ItemType, ItemViewType>>()
         where ItemViewType : View, ItemViewType : SimpleRecyclerItemView<ItemType> {
 
+    protected val defaultDiffCallback = object : DiffUtil.ItemCallback<ItemType>() {
+            override fun areItemsTheSame(oldItem: ItemType, newItem: ItemType) =
+                oldItem == newItem
+
+            override fun areContentsTheSame(oldItem: ItemType, newItem: ItemType) =
+                oldItem == newItem
+        }
+
     var positionDelegate: AdapterPositionDelegate<ItemType> =
-        LinearPositionDelegate(items)
+        LinearPositionDelegate(this, defaultDiffCallback).apply {
+            submitList(items)
+        }
 
     /**
      * Must be set before onCreateViewHolder is called. Otherwise, the value is ignored
@@ -28,8 +38,9 @@ abstract class SimpleRecyclerAdapter<ItemType, ItemViewType>(protected val items
     var isCyclic: Boolean = false
         set(value) {
             field = value
+            val items = positionDelegate.getItems()
             positionDelegate =
-                if (value) CyclicPositionDelegate(items) else LinearPositionDelegate(items)
+                if (value) CyclicPositionDelegate(this, defaultDiffCallback) else LinearPositionDelegate(this, defaultDiffCallback)
         }
 
     abstract fun createItemView(context: Context): ItemViewType
@@ -56,8 +67,7 @@ abstract class SimpleRecyclerAdapter<ItemType, ItemViewType>(protected val items
         itemView.setItem(position, item)
     }
 
-    open fun submitList(newItems: List<ItemType>) {
-        val diffResult = DiffUtil.calculateDiff(SimpleDiffCallback(items, newItems))
-        diffResult.dispatchUpdatesTo(this)
+    open fun submitList(newItems: List<ItemType>, onDiffDone: () -> Unit = {}) {
+        positionDelegate.submitList(newItems, onDiffDone)
     }
 }
