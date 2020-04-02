@@ -73,7 +73,7 @@ val adapter = RecyclerAdapterBuilder.fromView { MyRecyclerItemView(it) }
 recyclerView.adapter = adapter
 ```
 
-That's it! However, you may also need to manually set LayoutParams when you create your item View - see: [Custom Item LayoutParams](#Custom-View-for-RecyclerView-items)
+That's it! However, you may also need to manually set LayoutParams when you create your item View - see: [Custom Item LayoutParams](#Custom-Item-LayoutParams)
 
 For a full example, see:
 https://github.com/LukeNeedham/FlowerPotRecyclerDSL-Sample/blob/master/app/src/main/java/com/lukeneedham/flowerpotrecyclersample/ViewClassFragment.kt
@@ -245,7 +245,18 @@ adapter.submitList(newData) {
 <details>
   <summary>Custom Item LayoutParams</summary>
   
-It is also sometimes useful to provide LayoutParams to the item view of the RecyclerView. This can be done by setting `itemViewLayoutParams`. For example:
+
+  
+</details>
+
+# Custom Item LayoutParams
+
+It is also sometimes useful to provide LayoutParams to the item view of the RecyclerView.
+
+This is especially true when using a custom View:
+Otherwise, the width and height of the view may not be set correctly, as they cannot be inferred from an XML layout. This issue is discussed here: https://stackoverflow.com/a/48123513
+
+LayoutParams for item views can be set on the adapter itself via `itemViewLayoutParams`. For example:
 
 ```kotlin
 val adapter = RecyclerAdapterBuilder.setupWith...
@@ -268,21 +279,13 @@ val adapter = RecyclerAdapterBuilder.fromView {
 }
 ```
 
-# Custom View for RecyclerView items
-
-If you are using a custom View class for your RecyclerView items, you may need to manually set LayoutParams using one of the methods above.
-  
-Otherwise, the width and height of the view may not be set correctly, as they cannot be inferred from an XML layout. This issue is discussed here: https://stackoverflow.com/a/48123513
-  
-</details>
-
 # Help! My RecyclerView isn't showing anything!
 
 1 - Make sure you've set a `LayoutManager` ;-)
 
 2 - Make sure you've supplied data to your adapter (via `submitList` if no initial data is supplied)
 
-3 - If using a compound view, make sure you set LayoutParams: [Custom Item LayoutParams](#Custom-View-for-RecyclerView-items)
+3 - If using a compound view, make sure you set LayoutParams: [Custom Item LayoutParams](#Custom-Item-LayoutParams)
 
 # Limitations:
 
