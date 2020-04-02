@@ -73,7 +73,7 @@ val adapter = RecyclerAdapterBuilder.fromView { MyRecyclerItemView(it) }
 recyclerView.adapter = adapter
 ```
 
-That's it!
+That's it! However, you may also need to manually set LayoutParams when you create your item View - see: [Custom Item LayoutParams](#Custom-View-for-RecyclerView-items)
 
 For a full example, see:
 https://github.com/LukeNeedham/FlowerPotRecyclerDSL-Sample/blob/master/app/src/main/java/com/lukeneedham/flowerpotrecyclersample/ViewClassFragment.kt
@@ -200,8 +200,6 @@ Within `SimpleRecyclerAdapter` you can also access and change configurations lik
 <details>
   <summary>Cyclic / Infinite Scrolling</summary>
   
-  #Cyclic / Infinite Scrolling
-  
 You can easily make a RecyclerView 'cyclic' (also called wrap-around / endless / infinite). This means that after the last item in the items list, the entire list repeats again.
 
 ```kotlin
@@ -223,8 +221,6 @@ Or use the extension function provided in this library:
 
 <details>
   <summary>Updating RecyclerView Data</summary>
-  
-  #Updating RecyclerView Data
   
 You may also wish to update your RecyclerView items.
 
@@ -249,8 +245,6 @@ adapter.submitList(newData) {
 <details>
   <summary>Custom Item LayoutParams</summary>
   
-  #Custom Item LayoutParams
-  
 It is also sometimes useful to provide LayoutParams to the item view of the RecyclerView. This can be done by setting `itemViewLayoutParams`. For example:
 
 ```kotlin
@@ -273,6 +267,12 @@ val adapter = RecyclerAdapterBuilder.fromView {
     }
 }
 ```
+
+# Custom View for RecyclerView items
+
+If you are using a custom View class for your RecyclerView items, you may need to manually set LayoutParams using one of the methods above.
+  
+Otherwise, the width and height of the view may not be set correctly, as they cannot be inferred from an XML layout. This issue is discussed here: https://stackoverflow.com/a/48123513
   
 </details>
 
@@ -282,8 +282,7 @@ val adapter = RecyclerAdapterBuilder.fromView {
 
 2 - Make sure you've supplied data to your adapter (via `submitList` if no initial data is supplied)
 
-3 - If using a compound view: the width and height of the view may not be set correctly. You will need to set the LayoutParams explicitly - see [Custom Item LayoutParams](#custom-item-layoutParams).
-This issue is discussed here: https://stackoverflow.com/a/48123513
+3 - If using a compound view, make sure you set LayoutParams: [Custom Item LayoutParams](#Custom-View-for-RecyclerView-items)
 
 # Limitations:
 
