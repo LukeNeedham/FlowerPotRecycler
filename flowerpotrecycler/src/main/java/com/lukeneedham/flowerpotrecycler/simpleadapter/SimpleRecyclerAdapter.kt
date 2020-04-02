@@ -1,5 +1,6 @@
 package com.lukeneedham.flowerpotrecycler.simpleadapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
@@ -14,12 +15,13 @@ abstract class SimpleRecyclerAdapter<ItemType, ItemViewType>(items: List<ItemTyp
         where ItemViewType : View, ItemViewType : SimpleRecyclerItemView<ItemType> {
 
     protected val defaultDiffCallback = object : DiffUtil.ItemCallback<ItemType>() {
-            override fun areItemsTheSame(oldItem: ItemType, newItem: ItemType) =
-                oldItem == newItem
+        override fun areItemsTheSame(oldItem: ItemType, newItem: ItemType) =
+            oldItem == newItem
 
-            override fun areContentsTheSame(oldItem: ItemType, newItem: ItemType) =
-                oldItem == newItem
-        }
+        @SuppressLint("DiffUtilEquals")
+        override fun areContentsTheSame(oldItem: ItemType, newItem: ItemType) =
+            oldItem == newItem
+    }
 
     var positionDelegate: AdapterPositionDelegate<ItemType> =
         LinearPositionDelegate(this, defaultDiffCallback).apply {
@@ -34,7 +36,7 @@ abstract class SimpleRecyclerAdapter<ItemType, ItemViewType>(items: List<ItemTyp
     /**
      * An optional listener to be called whenever an item is clicked
      */
-    var onItemClickListener: (ItemType) -> Unit = {}
+    var onItemClickListener: (item: ItemType, position: Int) -> Unit = { _, _ -> }
 
     /**
      * Set to true if the items of the recyclerview should 'wrap-around' -
@@ -44,7 +46,11 @@ abstract class SimpleRecyclerAdapter<ItemType, ItemViewType>(items: List<ItemTyp
         set(value) {
             field = value
             positionDelegate =
-                if (value) CyclicPositionDelegate(this, defaultDiffCallback) else LinearPositionDelegate(this, defaultDiffCallback)
+                if (value) {
+                    CyclicPositionDelegate(this, defaultDiffCallback)
+                } else {
+                    LinearPositionDelegate(this, defaultDiffCallback)
+                }
         }
 
     abstract fun createItemView(context: Context): ItemViewType
@@ -70,7 +76,7 @@ abstract class SimpleRecyclerAdapter<ItemType, ItemViewType>(items: List<ItemTyp
         val itemView = holder.typedItemView
         itemView.setItem(position, item)
         itemView.setOnClickListener {
-            onItemClickListener(item)
+            onItemClickListener(item, position)
         }
     }
 
