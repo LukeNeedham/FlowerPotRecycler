@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lukeneedham.flowerpotrecycler.simpleadapter.positiondelegate;
+package com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.position.implementation;
 
 import android.annotation.SuppressLint;
 import android.os.Handler;

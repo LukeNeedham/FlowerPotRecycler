@@ -1,19 +1,24 @@
-package com.lukeneedham.flowerpotrecycler.simpleadapter.positiondelegate
+package com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.position.implementation
 
 import androidx.recyclerview.widget.AdapterListUpdateCallback
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.position.AdapterPositionDelegate
 
+/**
+ * A position delegate to make the RecyclerView cyclic - that is, the list of items wraps-around.
+ * So, the item after the last item is the first item, and the item before the first item is the last item.
+ * This makes the list 'infinite'.
+ */
 class CyclicPositionDelegate<ItemType>(
     adapter: RecyclerView.Adapter<*>,
     diffCallback: DiffUtil.ItemCallback<ItemType>
-) :
-    AdapterPositionDelegate<ItemType> {
+) : AdapterPositionDelegate<ItemType> {
 
     private val asyncListDiffer = AsyncListDiffer<ItemType>(
         AdapterListUpdateCallback(adapter),
-        AsyncDifferConfig.Builder<ItemType>(diffCallback).build()
+        AsyncDifferConfig.Builder(diffCallback).build()
     )
 
     override fun submitList(list: List<ItemType>, onDiffDoneCallback: () -> Unit) {
