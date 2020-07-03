@@ -1,23 +1,18 @@
 package com.lukeneedham.flowerpotrecyclersample
 
-import android.content.Context
 import android.os.Bundle
-import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.RecyclerAdapterBuilder
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.RecyclerItemView
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.config.LinearAdapterConfig
-import com.lukeneedham.flowerpotrecycler.extensions.addItemLayoutParams
-import com.lukeneedham.flowerpotrecycler.extensions.addOnItemClickListener
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.config.AdapterConfig
+import com.lukeneedham.flowerpotrecycler.util.addItemLayoutParams
+import com.lukeneedham.flowerpotrecycler.util.addOnItemClickListener
 import kotlinx.android.synthetic.main.fragment_xml_layout.*
-import kotlinx.android.synthetic.main.recycler_item_flower_pot.view.*
 
 class ViewClassFragment : Fragment() {
 
@@ -30,7 +25,7 @@ class ViewClassFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val config = LinearAdapterConfig<FlowerPotModel>().apply {
+        val config = AdapterConfig<FlowerPotModel>().apply {
             items = FlowerPotDatabase.getAllEntries()
             addItemLayoutParams(
                 RecyclerView.LayoutParams(
@@ -60,20 +55,6 @@ class ViewClassFragment : Fragment() {
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = recyclerAdapter
-        }
-    }
-
-    class FlowerPotItemView @JvmOverloads constructor(
-        context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-    ) : FrameLayout(context, attrs, defStyleAttr), RecyclerItemView<FlowerPotModel> {
-
-        init {
-            LayoutInflater.from(context).inflate(R.layout.recycler_item_flower_pot, this)
-        }
-
-        override fun setItem(position: Int, item: FlowerPotModel) {
-            potImageView.setImageResource(item.imageResId)
-            potNameTextView.setText(item.nameResId)
         }
     }
 }

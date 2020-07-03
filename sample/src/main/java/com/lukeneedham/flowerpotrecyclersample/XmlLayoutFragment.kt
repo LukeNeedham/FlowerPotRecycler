@@ -10,9 +10,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.RecyclerAdapterBuilder
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.config.LinearAdapterConfig
-import com.lukeneedham.flowerpotrecycler.extensions.addItemLayoutParams
-import com.lukeneedham.flowerpotrecycler.extensions.addOnItemClickListener
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.config.AdapterConfig
+import com.lukeneedham.flowerpotrecycler.util.addItemLayoutParams
+import com.lukeneedham.flowerpotrecycler.util.addOnItemClickListener
 import kotlinx.android.synthetic.main.fragment_xml_layout.*
 import kotlinx.android.synthetic.main.recycler_item_flower_pot.view.*
 
@@ -27,7 +27,7 @@ class XmlLayoutFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val config = LinearAdapterConfig<FlowerPotModel>().apply {
+        val config = AdapterConfig<FlowerPotModel>().apply {
             items = FlowerPotDatabase.getAllEntries()
             addItemLayoutParams(RecyclerView.LayoutParams(WRAP_CONTENT, WRAP_CONTENT))
             addOnItemClickListener { item, position ->

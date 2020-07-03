@@ -10,8 +10,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lukeneedham.flowerpotrecycler.RecyclerAdapterBuilder
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.config.LinearAdapterConfig
-import com.lukeneedham.flowerpotrecycler.extensions.addOnItemClickListener
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.config.AdapterConfig
+import com.lukeneedham.flowerpotrecycler.util.addOnItemClickListener
 import org.jetbrains.anko.*
 import org.jetbrains.anko.recyclerview.v7.recyclerView
 import org.jetbrains.anko.support.v4.UI
@@ -26,7 +26,7 @@ class AnkoLayoutFragment : Fragment() {
             linearLayout {
                 recyclerView {
                     layoutManager = LinearLayoutManager(context)
-                    val config = LinearAdapterConfig<FlowerPotModel>().apply {
+                    val config = AdapterConfig<FlowerPotModel>().apply {
                         items = FlowerPotDatabase.getAllEntries()
                         addOnItemClickListener { item, position ->
                             val context = requireContext()
