@@ -6,15 +6,14 @@ import com.lukeneedham.flowerpotrecycler.delegatedadapter.RecyclerItemView
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.TypedRecyclerViewHolder
 
 /** A delegate for extended functionality on the adapter */
-interface AdapterFeatureDelegate<ItemType, ItemViewType>
-        where ItemViewType : View, ItemViewType : RecyclerItemView<ItemType> {
+interface AdapterFeatureDelegate<ItemType> {
 
     /**
      * A hook for after the ViewHolder has been created in [onCreateViewHolder].
      * This hook can be used to modify the created View after creation.
      */
     fun onViewHolderCreated(
-        viewHolder: TypedRecyclerViewHolder<ItemType, ItemViewType>,
+        viewHolder: TypedRecyclerViewHolder<ItemType, *>,
         parent: ViewGroup,
         viewType: Int
     )
@@ -26,7 +25,7 @@ interface AdapterFeatureDelegate<ItemType, ItemViewType>
     Instead, use an [OnItemClickDelegate]
      */
     fun onBindViewHolder(
-        holder: TypedRecyclerViewHolder<ItemType, ItemViewType>,
+        holder: TypedRecyclerViewHolder<ItemType, *>,
         position: Int
     )
 

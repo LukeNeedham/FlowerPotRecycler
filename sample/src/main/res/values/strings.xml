@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">FlowerPotRecyclerSample</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="choose_layout_type">The Flower Pot Recycler library works nicely with both XML and Anko DSL layouts.</string>
+    <string name="show_xml_layout">Show me the XML version!</string>
+    <string name="show_anko_layout">Show me the Anko DSL version!</string>
+    <string name="show_view_layout">Show me the View class version!</string>
+
+    <string name="pot_big">A big pot</string>
+    <string name="pot_book">A well-read pot</string>
+    <string name="pot_cacti">Some prickly pots</string>
+    <string name="pot_cute">A cute pot</string>
+    <string name="pot_hang">A dangling pot</string>
+    <string name="pot_ivy">A nice pot</string>
+    <string name="pot_noir">A mysterious pot</string>
+    <string name="pot_not_really">A pot…?</string>
+    <string name="pot_olive">An olive pot</string>
+    <string name="pot_reach">A stretching pot</string>
+    <string name="pot_shelf">An elevated pot</string>
+    <string name="pot_succ">A thirsty pot</string>
+    <string name="pot_vista">A well-placed pot</string>
+
+</resources>

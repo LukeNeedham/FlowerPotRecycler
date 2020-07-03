@@ -1,23 +1,19 @@
 package com.lukeneedham.flowerpotrecycler.delegatedadapter.config
 
-import android.view.View
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.DelegatedRecyclerAdapter
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.RecyclerItemView
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.AdapterFeatureDelegate
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.position.AdapterPositionDelegate
 
 /**
  * Config for the [DelegatedRecyclerAdapter].
  * Allows for the customisation of initial [items],
- * [delegateCreators] for the [AdapterFeatureDelegate] to use,
- * and the [positionDelegateCreator] for creating the [AdapterPositionDelegate]
+ * [delegateCreators] to create each [AdapterFeatureDelegate] to be added to the Adapter,
+ * and the [positionDelegateCreator] for creating the [AdapterPositionDelegate] used by the Adapter
  */
-interface RecyclerAdapterConfig<ItemType, ItemViewType>
-        where ItemViewType : View, ItemViewType : RecyclerItemView<ItemType> {
-
+interface RecyclerAdapterConfig<ItemType> {
     var items: List<ItemType>
     var delegateCreators:
-            MutableList<(adapter: DelegatedRecyclerAdapter<ItemType, ItemViewType>) -> AdapterFeatureDelegate<ItemType, ItemViewType>>
+            MutableList<(adapter: DelegatedRecyclerAdapter<ItemType, *>) -> AdapterFeatureDelegate<ItemType>>
     var positionDelegateCreator:
-                (adapter: DelegatedRecyclerAdapter<ItemType, ItemViewType>) -> AdapterPositionDelegate<ItemType>
+                (adapter: DelegatedRecyclerAdapter<ItemType, *>) -> AdapterPositionDelegate<ItemType>
 }

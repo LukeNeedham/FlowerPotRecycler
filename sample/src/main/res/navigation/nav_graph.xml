@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/nav_graph"
+            app:startDestination="@id/chooseLayoutTypeFragment">
+
+    <fragment
+            android:id="@+id/chooseLayoutTypeFragment"
+            android:name="com.lukeneedham.flowerpotrecyclersample.ChooseLayoutTypeFragment"
+            android:label="Flower Pot Recycler Demo">
+        <action
+                android:id="@+id/action_chooseLayoutTypeFragment_to_xmlLayoutFragment"
+                app:destination="@id/xmlLayoutFragment"/>
+        <action
+                android:id="@+id/action_chooseLayoutTypeFragment_to_ankoWithDatabindingLayoutFragment"
+                app:destination="@id/ankoWithDatabindingLayoutFragment"/>
+        <action
+                android:id="@+id/action_chooseLayoutTypeFragment_to_viewClassFragment"
+                app:destination="@id/viewClassFragment" />
+    </fragment>
+    <fragment
+            android:id="@+id/xmlLayoutFragment"
+            android:name="com.lukeneedham.flowerpotrecyclersample.XmlLayoutFragment"
+            android:label="XML Recycler"/>
+    <fragment
+            android:id="@+id/ankoWithDatabindingLayoutFragment"
+            android:name="com.lukeneedham.flowerpotrecyclersample.AnkoLayoutFragment"
+            android:label="Anko DSL Recycler"/>
+    <fragment
+            android:id="@+id/viewClassFragment"
+            android:name="com.lukeneedham.flowerpotrecyclersample.ViewClassFragment"
+            android:label="ViewClassFragment" />
+</navigation>

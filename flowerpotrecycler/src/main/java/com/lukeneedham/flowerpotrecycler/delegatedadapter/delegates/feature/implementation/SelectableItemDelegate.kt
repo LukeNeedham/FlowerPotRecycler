@@ -10,12 +10,13 @@ import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.Base
 /**
  * A delegate that allows for 1 item to be selected at a time. Initially, no item is selected.
  * To return to the no item selected state, use [resetSelection]
+ *
+ * To show the selected state, the ItemViewType of your [DelegatedRecyclerAdapter] needs to override [View.setSelected]
  */
-class SelectableItemDelegate<ItemType, ItemViewType>(
-    private val adapter: DelegatedRecyclerAdapter<ItemType, ItemViewType>,
+class SelectableItemDelegate<ItemType>(
+    private val adapter: DelegatedRecyclerAdapter<ItemType, *>,
     private val onSelectedPositionChangeListener: (oldPosition: Int, newPosition: Int) -> Unit = { _, _ -> }
-) : BaseAdapterFeatureDelegate<ItemType, ItemViewType>()
-        where ItemViewType : View, ItemViewType : RecyclerItemView<ItemType> {
+) : BaseAdapterFeatureDelegate<ItemType>() {
 
     private var selectedItemPosition: Int = RecyclerView.NO_POSITION
         set(value) {
@@ -31,11 +32,11 @@ class SelectableItemDelegate<ItemType, ItemViewType>(
         }
 
     override fun onBindViewHolder(
-        holder: TypedRecyclerViewHolder<ItemType, ItemViewType>,
+        holder: TypedRecyclerViewHolder<ItemType, *>,
         position: Int
     ) {
         val item = adapter.positionDelegate.getItemAt(position)
-        val itemView = holder.typedItemView
+        val itemView = holder.itemView
         // Check for matching items, rather than position.
         // This allows for handling of duplicate items at different positions
         val selectedItem = if (selectedItemPosition == RecyclerView.NO_POSITION) {

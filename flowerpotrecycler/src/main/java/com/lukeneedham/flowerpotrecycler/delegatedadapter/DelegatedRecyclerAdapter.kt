@@ -4,12 +4,12 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.lukeneedham.flowerpotrecycler.extensions.getDelegates
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.config.RecyclerAdapterConfig
+import com.lukeneedham.flowerpotrecycler.extensions.getDelegates
 
 /** A base RecyclerView Adapter to encourage a delegated approach */
 abstract class DelegatedRecyclerAdapter<ItemType, ItemViewType>(
-    config: RecyclerAdapterConfig<ItemType, ItemViewType>
+    config: RecyclerAdapterConfig<ItemType>
 ) : RecyclerView.Adapter<TypedRecyclerViewHolder<ItemType, ItemViewType>>()
         where ItemViewType : View, ItemViewType : RecyclerItemView<ItemType> {
 

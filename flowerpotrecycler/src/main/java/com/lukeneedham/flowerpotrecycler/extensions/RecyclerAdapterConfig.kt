@@ -1,44 +1,47 @@
 package com.lukeneedham.flowerpotrecycler.extensions
 
-import android.view.View
+import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.DefaultDiffCallback
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.DelegatedRecyclerAdapter
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.RecyclerItemView
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.config.RecyclerAdapterConfig
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.AdapterFeatureDelegate
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.BaseAdapterFeatureDelegate
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.implementation.ItemLayoutParamsDelegate
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.position.implementation.CyclicPositionDelegate
 
 /** Makes the adapter cyclic / wraparound. See [CyclicPositionDelegate] */
-fun <ItemType, ItemViewType> RecyclerAdapterConfig<ItemType, ItemViewType>.setCyclic()
-        where ItemViewType : View, ItemViewType : RecyclerItemView<ItemType> {
+fun <ItemType> RecyclerAdapterConfig<ItemType>.setCyclic() {
     positionDelegateCreator = { CyclicPositionDelegate(it, DefaultDiffCallback()) }
 }
 
-fun <ItemType, ItemViewType> RecyclerAdapterConfig<ItemType, ItemViewType>.addDelegate(
-    delegate: AdapterFeatureDelegate<ItemType, ItemViewType>
-) where ItemViewType : View, ItemViewType : RecyclerItemView<ItemType> {
+fun <ItemType> RecyclerAdapterConfig<ItemType>.addDelegate(
+    delegate: AdapterFeatureDelegate<ItemType>
+) {
     delegateCreators.add { delegate }
 }
 
-fun <ItemType, ItemViewType> RecyclerAdapterConfig<ItemType, ItemViewType>.addDelegate(
-    delegateCreator: (adapter: DelegatedRecyclerAdapter<ItemType, ItemViewType>) -> AdapterFeatureDelegate<ItemType, ItemViewType>
-) where ItemViewType : View, ItemViewType : RecyclerItemView<ItemType> {
+fun <ItemType> RecyclerAdapterConfig<ItemType>.addDelegate(
+    delegateCreator: (adapter: DelegatedRecyclerAdapter<ItemType, *>) -> AdapterFeatureDelegate<ItemType>
+) {
     delegateCreators.add(delegateCreator)
 }
 
-fun <ItemType, ItemViewType> RecyclerAdapterConfig<ItemType, ItemViewType>.addOnItemClickListener(
+fun <ItemType> RecyclerAdapterConfig<ItemType>.addOnItemClickListener(
     listener: (item: ItemType, position: Int) -> Unit
-) where ItemViewType : View, ItemViewType : RecyclerItemView<ItemType> {
-    addDelegate(object : BaseAdapterFeatureDelegate<ItemType, ItemViewType>() {
+) {
+    addDelegate(object : BaseAdapterFeatureDelegate<ItemType>() {
         override fun onItemClick(item: ItemType, position: Int) {
             listener(item, position)
         }
     })
 }
 
-fun <ItemType, ItemViewType> RecyclerAdapterConfig<ItemType, ItemViewType>.getDelegates(
-    adapter: DelegatedRecyclerAdapter<ItemType, ItemViewType>
-): List<AdapterFeatureDelegate<ItemType, ItemViewType>>
-        where ItemViewType : View, ItemViewType : RecyclerItemView<ItemType> =
-    delegateCreators.map { it.invoke(adapter) }
+fun RecyclerAdapterConfig<*>.addItemLayoutParams(
+    layoutParams: RecyclerView.LayoutParams
+) {
+    addDelegate(ItemLayoutParamsDelegate(layoutParams))
+}
+
+fun <ItemType> RecyclerAdapterConfig<ItemType>.getDelegates(
+    adapter: DelegatedRecyclerAdapter<ItemType, *>
+): List<AdapterFeatureDelegate<ItemType>> = delegateCreators.map { it.invoke(adapter) }

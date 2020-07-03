@@ -1,1 +1,1 @@
-include ':app', ':flowerpotrecycler'
+include ':sample', ':flowerpotrecycler'
