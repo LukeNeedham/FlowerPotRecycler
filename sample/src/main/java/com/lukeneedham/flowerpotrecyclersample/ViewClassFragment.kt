@@ -16,7 +16,6 @@ import com.lukeneedham.flowerpotrecycler.delegatedadapter.RecyclerItemView
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.config.LinearAdapterConfig
 import com.lukeneedham.flowerpotrecycler.extensions.addItemLayoutParams
 import com.lukeneedham.flowerpotrecycler.extensions.addOnItemClickListener
-import com.lukeneedham.flowerpotrecycler.extensions.setCyclic
 import kotlinx.android.synthetic.main.fragment_xml_layout.*
 import kotlinx.android.synthetic.main.recycler_item_flower_pot.view.*
 
@@ -44,7 +43,6 @@ class ViewClassFragment : Fragment() {
                 Toast.makeText(context, context.getString(item.nameResId), Toast.LENGTH_SHORT)
                     .show()
             }
-            setCyclic()
         }
         // Config optional
         val recyclerAdapter =
