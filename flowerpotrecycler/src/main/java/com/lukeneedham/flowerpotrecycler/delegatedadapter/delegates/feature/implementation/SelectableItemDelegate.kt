@@ -8,7 +8,7 @@ import com.lukeneedham.flowerpotrecycler.delegatedadapter.TypedRecyclerViewHolde
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.BaseAdapterFeatureDelegate
 
 /**
- * A delegate that allows for 1 item to be selected at a time. Initially, no item is selected.
+ * A delegate that allows for up to 1 item to be selected at a time. Initially, no item is selected.
  * To return to the no item selected state, use [resetSelection]
  *
  * To show the selected state, the ItemViewType of your [DelegatedRecyclerAdapter] needs to override [View.setSelected]
