@@ -10,7 +10,6 @@ Are you sick of writing an Adapter for every RecyclerView? Me too. Never write a
 ```groovy
 allprojects {
   repositories {
-    ...
     maven { url 'https://jitpack.io' }
   }
 }
@@ -47,7 +46,7 @@ class MyRecyclerItemView @JvmOverloads constructor(
 ) : FrameLayout(context, attrs, defStyleAttr), RecyclerItemView<MyItemType> {
 
     init {
-        // Setup your View however you like, just like in any normal custom or compound View
+        TODO("Setup your View however you like, just like in any normal custom or compound View")
     }
 
     override fun setItem(position: Int, item: MyItemType) {
@@ -249,7 +248,7 @@ You can also pass a callback to `submitList`, which will be called when the asyn
 ```kotlin
 val adapter = RecyclerAdapterBuilder.fromView { MyRecyclerItemView(it) }
 
-// When data is recieved from DB / API / whenever it's ready:
+// When data is received from DB / API / whenever it's ready:
 adapter.submitList(newData) {
     // Scroll to the end of the RecyclerView - this can only be done when the diff is done and items are laid out
     recyclerView.scrollToPosition(newData.lastIndex)

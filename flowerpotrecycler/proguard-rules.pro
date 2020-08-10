@@ -19,3 +19,8 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-keep public class * implements com.lukeneedham.flowerpotrecycler.delegatedadapter.RecyclerItemView
+-keepclassmembers class * implements com.lukeneedham.flowerpotrecycler.delegatedadapter.RecyclerItemView {
+ public <init>(android.content.Context);
+}
