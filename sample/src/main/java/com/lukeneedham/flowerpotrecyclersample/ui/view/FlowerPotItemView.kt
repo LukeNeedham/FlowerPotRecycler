@@ -10,7 +10,9 @@ import com.lukeneedham.flowerpotrecyclersample.domain.FlowerPotModel
 import kotlinx.android.synthetic.main.recycler_item_flower_pot.view.*
 
 class FlowerPotItemView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr), RecyclerItemView<FlowerPotModel> {
 
     init {

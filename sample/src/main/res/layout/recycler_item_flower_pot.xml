@@ -1,35 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
 
     <ImageView
+            android:id="@+id/potImageView"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            app:srcCompat="@drawable/pot_big"
-            android:id="@+id/potImageView"
-            android:scaleType="centerCrop"
-            android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            />
+            android:contentDescription="@string/content_description_flower_pot_image"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/pot_big" />
 
     <TextView
             android:id="@+id/potNameTextView"
             android:layout_width="match_parent"
-            android:textSize="20sp"
-            android:gravity="center"
             android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            />
+            android:gravity="center_vertical"
+            android:labelFor="@+id/potImageView"
+            android:textSize="20sp"
+            tools:ignore="LabelFor"
+            tools:text="@string/pot_big" />
 
 </LinearLayout>

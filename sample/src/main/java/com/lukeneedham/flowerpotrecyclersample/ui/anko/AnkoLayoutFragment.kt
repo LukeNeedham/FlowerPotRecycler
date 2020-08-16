@@ -57,7 +57,7 @@ class AnkoLayoutFragment : Fragment() {
 
                                 textView().apply {
                                     textSize = 20f
-                                    gravity = Gravity.CENTER
+                                    gravity = Gravity.CENTER_VERTICAL
                                     lparams {
                                         margin = dip(8)
                                         width = matchParent
