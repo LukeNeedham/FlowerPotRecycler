@@ -1,4 +1,4 @@
-package com.lukeneedham.flowerpotrecyclersample
+package com.lukeneedham.flowerpotrecyclersample.ui.view
 
 import android.content.Context
 import android.view.ViewGroup
@@ -13,6 +13,7 @@ import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.impl
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.implementation.SelectableItemDelegate
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.position.AdapterPositionDelegate
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.position.implementation.LinearPositionDelegate
+import com.lukeneedham.flowerpotrecyclersample.domain.FlowerPotModel
 
 /**
  * A demo of extending [DefaultDelegatedRecyclerAdapter] to add your own functionality.

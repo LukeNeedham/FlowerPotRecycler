@@ -6,7 +6,7 @@
 
     <fragment
             android:id="@+id/chooseLayoutTypeFragment"
-            android:name="com.lukeneedham.flowerpotrecyclersample.ChooseLayoutTypeFragment"
+            android:name="com.lukeneedham.flowerpotrecyclersample.ui.ChooseLayoutTypeFragment"
             android:label="Flower Pot Recycler Demo">
         <action
                 android:id="@+id/action_chooseLayoutTypeFragment_to_xmlLayoutFragment"
@@ -20,14 +20,14 @@
     </fragment>
     <fragment
             android:id="@+id/xmlLayoutFragment"
-            android:name="com.lukeneedham.flowerpotrecyclersample.XmlLayoutFragment"
+            android:name="com.lukeneedham.flowerpotrecyclersample.ui.xml.XmlLayoutFragment"
             android:label="XML Recycler"/>
     <fragment
             android:id="@+id/ankoWithDatabindingLayoutFragment"
-            android:name="com.lukeneedham.flowerpotrecyclersample.AnkoLayoutFragment"
+            android:name="com.lukeneedham.flowerpotrecyclersample.ui.anko.AnkoLayoutFragment"
             android:label="Anko DSL Recycler"/>
     <fragment
             android:id="@+id/viewClassFragment"
-            android:name="com.lukeneedham.flowerpotrecyclersample.ViewClassFragment"
+            android:name="com.lukeneedham.flowerpotrecyclersample.ui.view.ViewClassFragment"
             android:label="ViewClassFragment" />
 </navigation>

@@ -1,4 +1,4 @@
-package com.lukeneedham.flowerpotrecyclersample
+package com.lukeneedham.flowerpotrecyclersample.ui.anko
 
 import android.os.Bundle
 import android.view.Gravity
@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.lukeneedham.flowerpotrecycler.RecyclerAdapterBuilder
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.config.AdapterConfig
 import com.lukeneedham.flowerpotrecycler.util.addOnItemClickListener
+import com.lukeneedham.flowerpotrecyclersample.domain.FlowerPotDatabase
+import com.lukeneedham.flowerpotrecyclersample.domain.FlowerPotModel
 import org.jetbrains.anko.*
 import org.jetbrains.anko.recyclerview.v7.recyclerView
 import org.jetbrains.anko.support.v4.UI

@@ -1,10 +1,12 @@
-package com.lukeneedham.flowerpotrecyclersample
+package com.lukeneedham.flowerpotrecyclersample.ui.view
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.RecyclerItemView
+import com.lukeneedham.flowerpotrecyclersample.R
+import com.lukeneedham.flowerpotrecyclersample.domain.FlowerPotModel
 import kotlinx.android.synthetic.main.recycler_item_flower_pot.view.*
 
 class FlowerPotItemView @JvmOverloads constructor(

@@ -1,9 +1,10 @@
-package com.lukeneedham.flowerpotrecyclersample
+package com.lukeneedham.flowerpotrecyclersample.ui.xml
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,9 +13,13 @@ import com.lukeneedham.flowerpotrecycler.RecyclerAdapterBuilder
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.config.AdapterConfig
 import com.lukeneedham.flowerpotrecycler.util.addItemLayoutParams
 import com.lukeneedham.flowerpotrecycler.util.addOnItemClickListener
+import com.lukeneedham.flowerpotrecyclersample.R
+import com.lukeneedham.flowerpotrecyclersample.domain.FlowerPotDatabase
+import com.lukeneedham.flowerpotrecyclersample.domain.FlowerPotModel
 import kotlinx.android.synthetic.main.fragment_xml_layout.*
+import kotlinx.android.synthetic.main.recycler_item_flower_pot.view.*
 
-class ViewClassFragment : Fragment() {
+class XmlLayoutFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,31 +32,20 @@ class ViewClassFragment : Fragment() {
 
         val config = AdapterConfig<FlowerPotModel>().apply {
             items = FlowerPotDatabase.getAllEntries()
-            addItemLayoutParams(
-                RecyclerView.LayoutParams(
-                    RecyclerView.LayoutParams.WRAP_CONTENT,
-                    RecyclerView.LayoutParams.WRAP_CONTENT
-                )
-            )
+            addItemLayoutParams(RecyclerView.LayoutParams(WRAP_CONTENT, WRAP_CONTENT))
             addOnItemClickListener { item, position ->
                 val context = requireContext()
                 Toast.makeText(context, context.getString(item.nameResId), Toast.LENGTH_SHORT)
                     .show()
             }
         }
-        // Config optional
-        val recyclerAdapter =
-            RecyclerAdapterBuilder.fromView<FlowerPotModel, FlowerPotItemView>(config)
-
-        // Alternatively, we could instantiate the view ourselves. Config optional
-        val recyclerAdapterFromViewCreator =
-            RecyclerAdapterBuilder.fromViewCreator { FlowerPotItemView(it) }
-
-        // Alternatively, we could also specify the view class manually
-        // This is useful when calling from Java. Config optional
-        val recyclerAdapterFromViewClass =
-            RecyclerAdapterBuilder.fromViewClass(FlowerPotItemView::class.java)
-
+        val recyclerAdapter = RecyclerAdapterBuilder.fromXml(
+            R.layout.recycler_item_flower_pot,
+            config
+        ) { position, item, itemView ->
+            itemView.potImageView.setImageResource(item.imageResId)
+            itemView.potNameTextView.setText(item.nameResId)
+        }
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = recyclerAdapter
