@@ -1,5 +1,6 @@
 package com.lukeneedham.flowerpotrecycler.util
 
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.DefaultDiffCallback
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.DelegatedRecyclerAdapter
@@ -8,10 +9,28 @@ import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.Adap
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.implementation.ItemLayoutParamsDelegate
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.implementation.OnItemClickDelegate
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.position.implementation.CyclicPositionDelegate
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.position.implementation.LinearPositionDelegate
 
-/** Makes the adapter cyclic / wraparound. See [CyclicPositionDelegate] */
-fun <ItemType> RecyclerAdapterConfig<ItemType>.setCyclic() {
-    positionDelegateCreator = { CyclicPositionDelegate(it, DefaultDiffCallback()) }
+/**
+ * Makes the adapter cyclic / wraparound. See [CyclicPositionDelegate]
+ * @param diffCallback an optional [DiffUtil.ItemCallback], used to calculate the diff when items change.
+ * Defaults to [DefaultDiffCallback]
+ */
+fun <ItemType> RecyclerAdapterConfig<ItemType>.setCyclic(
+    diffCallback: DiffUtil.ItemCallback<ItemType> = DefaultDiffCallback()
+) {
+    positionDelegateCreator = { CyclicPositionDelegate(it, diffCallback) }
+}
+
+/**
+ * Makes the adapter linear. See [LinearPositionDelegate]
+ * @param diffCallback an optional [DiffUtil.ItemCallback], used to calculate the diff when items change.
+ * Defaults to [DefaultDiffCallback]
+ */
+fun <ItemType> RecyclerAdapterConfig<ItemType>.setLinear(
+    diffCallback: DiffUtil.ItemCallback<ItemType> = DefaultDiffCallback()
+) {
+    positionDelegateCreator = { LinearPositionDelegate(it, diffCallback) }
 }
 
 fun <ItemType> RecyclerAdapterConfig<ItemType>.addDelegate(
