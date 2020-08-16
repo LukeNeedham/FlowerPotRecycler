@@ -1,9 +1,6 @@
 package com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.position.implementation
 
-import androidx.recyclerview.widget.AdapterListUpdateCallback
-import androidx.recyclerview.widget.AsyncDifferConfig
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.*
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.position.AdapterPositionDelegate
 
 /** The most basic position delegate - it shows the items in a list in order from first to last */
