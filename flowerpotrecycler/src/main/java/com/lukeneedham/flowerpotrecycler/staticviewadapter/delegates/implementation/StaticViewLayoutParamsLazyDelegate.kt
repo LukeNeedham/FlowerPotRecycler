@@ -1,9 +1,9 @@
-package com.lukeneedham.flowerpotrecycler.staticview.delegates.implementation
+package com.lukeneedham.flowerpotrecycler.staticviewadapter.delegates.implementation
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.lukeneedham.flowerpotrecycler.staticview.StaticViewRecyclerViewHolder
-import com.lukeneedham.flowerpotrecycler.staticview.delegates.BaseStaticViewAdapterFeatureDelegate
+import com.lukeneedham.flowerpotrecycler.staticviewadapter.StaticViewRecyclerViewHolder
+import com.lukeneedham.flowerpotrecycler.staticviewadapter.delegates.BaseStaticViewAdapterFeatureDelegate
 
 /**
  * The same as [StaticViewLayoutParamsDelegate], except the constructor parameter is a creator function

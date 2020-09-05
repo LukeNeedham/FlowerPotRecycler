@@ -1,14 +1,18 @@
-package com.lukeneedham.flowerpotrecycler.staticview
+package com.lukeneedham.flowerpotrecycler.staticviewadapter
 
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.lukeneedham.flowerpotrecycler.staticview.config.StaticViewRecyclerAdapterConfig
-import com.lukeneedham.flowerpotrecycler.staticview.delegates.StaticViewAdapterFeatureDelegate
+import com.lukeneedham.flowerpotrecycler.staticviewadapter.config.StaticViewRecyclerAdapterConfig
+import com.lukeneedham.flowerpotrecycler.staticviewadapter.delegates.StaticViewAdapterFeatureDelegate
 import com.lukeneedham.flowerpotrecycler.util.getFeatureDelegates
 
-/** A simple adapter to show a single static view, which does no binding */
+/**
+ * A simple adapter wrapper around a static view.
+ * Since the view is static, no binding is required, and no items need to be provided.
+ * The adapter will always show the view a single time.
+ */
 class StaticViewRecyclerAdapter(
     config: StaticViewRecyclerAdapterConfig?,
     private val itemViewCreator: (Context) -> View

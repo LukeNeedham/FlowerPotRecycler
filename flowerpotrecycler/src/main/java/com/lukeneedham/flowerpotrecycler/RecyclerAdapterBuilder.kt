@@ -13,8 +13,8 @@ import com.lukeneedham.flowerpotrecycler.delegatedadapter.ConfigurableRecyclerAd
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.DelegatedRecyclerAdapter
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.RecyclerItemView
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.config.RecyclerAdapterConfig
-import com.lukeneedham.flowerpotrecycler.staticview.StaticViewRecyclerAdapter
-import com.lukeneedham.flowerpotrecycler.staticview.config.StaticViewRecyclerAdapterConfig
+import com.lukeneedham.flowerpotrecycler.staticviewadapter.StaticViewRecyclerAdapter
+import com.lukeneedham.flowerpotrecycler.staticviewadapter.config.StaticViewRecyclerAdapterConfig
 
 object RecyclerAdapterBuilder {
 
@@ -91,8 +91,8 @@ object RecyclerAdapterBuilder {
      * Setup without writing an adapter.
      * To be used when View logic is contained within its own class.
      * @param itemViewClass The [ItemViewType] class which will handle binding items.
-     * @param config Configuration for the adapter
      * This class is automatically instantiated using its View(context: Context) constructor.
+     * @param config Configuration for the adapter
      */
     @JvmStatic
     fun <ItemType, ItemViewType> fromViewClass(
@@ -106,23 +106,52 @@ object RecyclerAdapterBuilder {
 
     /* From Static View */
 
-    fun <ItemViewType : View> fromStaticViewCreator(
+    /**
+     * A simple adapter wrapper around a static view.
+     * Since the view is static, no binding is required, and no items need to be provided.
+     * The adapter will always show the view a single time.
+     *
+     * To be used when View logic is contained within its own class, and you want to instantiate the View object yourself.
+     * @param config Configuration for the adapter
+     * @param createView The function to instantiate your [ViewType] class
+     */
+    fun <ViewType : View> fromStaticViewCreator(
         config: StaticViewRecyclerAdapterConfig? = null,
-        createView: (Context) -> ItemViewType
+        createView: (Context) -> ViewType
     ): StaticViewRecyclerAdapter =
         StaticViewRecyclerAdapter(config, createView)
 
-    inline fun <reified ItemViewType : View> fromStaticView(
+    /**
+     * A simple adapter wrapper around a static view.
+     * Since the view is static, no binding is required, and no items need to be provided.
+     * The adapter will always show the view a single time.
+     *
+     * To be used when View logic is contained within its own class.
+     * The type parameter [ViewType] is the type of the View class.
+     * This class is automatically instantiated using its View(Context) constructor.
+     * @param config Configuration for the adapter
+     */
+    inline fun <reified ViewType : View> fromStaticView(
         config: StaticViewRecyclerAdapterConfig? = null
     ): StaticViewRecyclerAdapter =
-        fromStaticViewClass(ItemViewType::class.java, config)
+        fromStaticViewClass(ViewType::class.java, config)
 
+    /**
+     * A simple adapter wrapper around a static view.
+     * Since the view is static, no binding is required, and no items need to be provided.
+     * The adapter will always show the view a single time.
+     *
+     * To be used when View logic is contained within its own class.
+     * @param viewClass The [ViewType] class which will handle binding items.
+     * This class is automatically instantiated using its View(context: Context) constructor.
+     * @param config Configuration for the adapter
+     */
     @JvmStatic
     fun <ViewType : View> fromStaticViewClass(
-        itemViewClass: Class<ViewType>,
+        viewClass: Class<ViewType>,
         config: StaticViewRecyclerAdapterConfig? = null
     ): StaticViewRecyclerAdapter =
         StaticViewRecyclerAdapter(config) {
-            itemViewClass.getConstructor(Context::class.java).newInstance(it)
+            viewClass.getConstructor(Context::class.java).newInstance(it)
         }
 }

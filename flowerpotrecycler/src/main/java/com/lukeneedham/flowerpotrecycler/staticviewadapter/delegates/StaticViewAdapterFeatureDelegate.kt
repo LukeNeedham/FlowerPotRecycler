@@ -1,7 +1,7 @@
-package com.lukeneedham.flowerpotrecycler.staticview.delegates
+package com.lukeneedham.flowerpotrecycler.staticviewadapter.delegates
 
 import android.view.ViewGroup
-import com.lukeneedham.flowerpotrecycler.staticview.StaticViewRecyclerViewHolder
+import com.lukeneedham.flowerpotrecycler.staticviewadapter.StaticViewRecyclerViewHolder
 
 /** A delegate for extended functionality on the adapter */
 interface StaticViewAdapterFeatureDelegate {

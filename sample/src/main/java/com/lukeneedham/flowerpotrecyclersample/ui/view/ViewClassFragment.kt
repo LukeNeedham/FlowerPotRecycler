@@ -10,7 +10,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.RecyclerAdapterBuilder
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.config.AdapterConfig
+import com.lukeneedham.flowerpotrecycler.staticviewadapter.config.StaticViewAdapterConfig
 import com.lukeneedham.flowerpotrecycler.util.addItemLayoutParams
+import com.lukeneedham.flowerpotrecycler.util.addOnClickListener
 import com.lukeneedham.flowerpotrecycler.util.addOnItemClickListener
 import com.lukeneedham.flowerpotrecyclersample.R
 import com.lukeneedham.flowerpotrecyclersample.domain.FlowerPotDatabase
@@ -55,6 +57,24 @@ class ViewClassFragment : Fragment() {
         // This is useful when calling from Java. Config optional
         val recyclerAdapterFromViewClass =
             RecyclerAdapterBuilder.fromViewClass(FlowerPotItemView::class.java)
+
+        // Also, we could build a recyclerview for a static view, which doesn't require binding
+        // There are similar functions for Static View Adapters as presented above
+
+        // Requires a different config for static views
+        val staticConfig = StaticViewAdapterConfig().apply {
+            addItemLayoutParams(
+                RecyclerView.LayoutParams(
+                    RecyclerView.LayoutParams.MATCH_PARENT,
+                    RecyclerView.LayoutParams.WRAP_CONTENT
+                )
+            )
+            addOnClickListener {
+                Toast.makeText(requireContext(), "Static view clicked", Toast.LENGTH_SHORT).show()
+            }
+        }
+        val staticViewAdapter =
+            RecyclerAdapterBuilder.fromStaticView<ExampleStaticView>(staticConfig)
 
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)

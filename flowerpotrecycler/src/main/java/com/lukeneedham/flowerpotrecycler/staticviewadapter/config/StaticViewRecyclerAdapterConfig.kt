@@ -1,7 +1,7 @@
-package com.lukeneedham.flowerpotrecycler.staticview.config
+package com.lukeneedham.flowerpotrecycler.staticviewadapter.config
 
-import com.lukeneedham.flowerpotrecycler.staticview.StaticViewRecyclerAdapter
-import com.lukeneedham.flowerpotrecycler.staticview.delegates.StaticViewAdapterFeatureDelegate
+import com.lukeneedham.flowerpotrecycler.staticviewadapter.StaticViewRecyclerAdapter
+import com.lukeneedham.flowerpotrecycler.staticviewadapter.delegates.StaticViewAdapterFeatureDelegate
 
 interface StaticViewRecyclerAdapterConfig {
     /** A list of functions to create [StaticViewAdapterFeatureDelegate]s */
