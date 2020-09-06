@@ -1,20 +1,21 @@
 package com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature
 
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.TypedRecyclerViewHolder
 
 /** Implements the methods of [AdapterFeatureDelegate] with NO-OP */
 abstract class BaseAdapterFeatureDelegate<ItemType> : AdapterFeatureDelegate<ItemType> {
 
     override fun onViewHolderCreated(
-        viewHolder: TypedRecyclerViewHolder<ItemType, *>,
+        viewHolder: RecyclerView.ViewHolder,
         parent: ViewGroup,
         viewType: Int
     ) {
     }
 
     override fun onBindViewHolder(
-        holder: TypedRecyclerViewHolder<ItemType, *>,
+        holder: RecyclerView.ViewHolder,
         position: Int
     ) {
     }

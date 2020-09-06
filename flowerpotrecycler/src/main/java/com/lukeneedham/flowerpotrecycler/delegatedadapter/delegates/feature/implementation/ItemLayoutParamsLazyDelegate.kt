@@ -2,7 +2,6 @@ package com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.imp
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.TypedRecyclerViewHolder
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.BaseAdapterFeatureDelegate
 
 /**
@@ -17,7 +16,7 @@ class ItemLayoutParamsLazyDelegate<ItemType>(
     private val layoutParams by lazy { layoutParamsCreator() }
 
     override fun onViewHolderCreated(
-        viewHolder: TypedRecyclerViewHolder<ItemType, *>,
+        viewHolder: RecyclerView.ViewHolder,
         parent: ViewGroup,
         viewType: Int
     ) {

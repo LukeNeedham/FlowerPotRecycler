@@ -11,7 +11,7 @@ import com.lukeneedham.flowerpotrecycler.autoadapter.builderbinder.BuilderBinder
  * Call [onItem][com.lukeneedham.flowerpotrecycler.autoadapter.builderbinder.declarative.DeclarativeBindingDsl.onItem]
  * within your implementation of [build] to add a callback to bind the item to the View.
  */
-internal abstract class DeclarativeBuilderBinder<ItemType> : BuilderBinder<ItemType>() {
+abstract class DeclarativeBuilderBinder<ItemType> : BuilderBinder<ItemType>() {
     private val bindingManager = DeclarativeBindingManager<ItemType>()
 
     abstract val builder: DeclarativeBindingDsl<ItemType>.(ViewGroup) -> View

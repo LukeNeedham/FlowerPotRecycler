@@ -3,7 +3,7 @@ package com.lukeneedham.flowerpotrecycler.util
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.DefaultDiffCallback
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.DelegatedRecyclerAdapter
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.SingleTypeRecyclerAdapter
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.config.RecyclerAdapterConfig
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.AdapterFeatureDelegate
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.implementation.ItemLayoutParamsDelegate
@@ -17,7 +17,7 @@ import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.position.imp
  * @param diffCallback an optional [DiffUtil.ItemCallback], used to calculate the diff when items change.
  * Defaults to [DefaultDiffCallback]
  */
-fun <ItemType> RecyclerAdapterConfig<ItemType>.setCyclic(
+fun <ItemType : Any> RecyclerAdapterConfig<ItemType>.setCyclic(
     diffCallback: DiffUtil.ItemCallback<ItemType> = DefaultDiffCallback()
 ) {
     positionDelegateCreator = { CyclicPositionDelegate(it, diffCallback) }
@@ -28,25 +28,25 @@ fun <ItemType> RecyclerAdapterConfig<ItemType>.setCyclic(
  * @param diffCallback an optional [DiffUtil.ItemCallback], used to calculate the diff when items change.
  * Defaults to [DefaultDiffCallback]
  */
-fun <ItemType> RecyclerAdapterConfig<ItemType>.setLinear(
+fun <ItemType : Any> RecyclerAdapterConfig<ItemType>.setLinear(
     diffCallback: DiffUtil.ItemCallback<ItemType> = DefaultDiffCallback()
 ) {
     positionDelegateCreator = { LinearPositionDelegate(it, diffCallback) }
 }
 
-fun <ItemType> RecyclerAdapterConfig<ItemType>.addDelegate(
+fun <ItemType : Any> RecyclerAdapterConfig<ItemType>.addDelegate(
     delegate: AdapterFeatureDelegate<ItemType>
 ) {
     featureDelegateCreators.add { delegate }
 }
 
-fun <ItemType> RecyclerAdapterConfig<ItemType>.addDelegate(
-    delegateCreator: (adapter: DelegatedRecyclerAdapter<ItemType, *>) -> AdapterFeatureDelegate<ItemType>
+fun <ItemType : Any> RecyclerAdapterConfig<ItemType>.addDelegate(
+    delegateCreator: (adapter: SingleTypeRecyclerAdapter<ItemType, *>) -> AdapterFeatureDelegate<ItemType>
 ) {
     featureDelegateCreators.add(delegateCreator)
 }
 
-fun <ItemType> RecyclerAdapterConfig<ItemType>.addOnItemClickListener(
+fun <ItemType : Any> RecyclerAdapterConfig<ItemType>.addOnItemClickListener(
     listener: (item: ItemType, position: Int) -> Unit
 ) {
     addDelegate(OnItemClickDelegate(listener))
@@ -68,6 +68,6 @@ fun RecyclerAdapterConfig<*>.addItemLayoutParamsLazy(
     addDelegate(ItemLayoutParamsLazyDelegate(layoutParamsCreator))
 }
 
-fun <ItemType> RecyclerAdapterConfig<ItemType>.getFeatureDelegates(
-    adapter: DelegatedRecyclerAdapter<ItemType, *>
+fun <ItemType : Any> RecyclerAdapterConfig<ItemType>.getFeatureDelegates(
+    adapter: SingleTypeRecyclerAdapter<ItemType, *>
 ): List<AdapterFeatureDelegate<ItemType>> = featureDelegateCreators.map { it.invoke(adapter) }

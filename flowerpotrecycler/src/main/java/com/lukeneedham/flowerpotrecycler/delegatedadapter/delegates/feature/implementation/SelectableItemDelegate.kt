@@ -2,19 +2,17 @@ package com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.imp
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.DelegatedRecyclerAdapter
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.RecyclerItemView
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.TypedRecyclerViewHolder
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.SingleTypeRecyclerAdapter
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.BaseAdapterFeatureDelegate
 
 /**
  * A delegate that allows for up to 1 item to be selected at a time. Initially, no item is selected.
  * To return to the no item selected state, use [resetSelection]
  *
- * To show the selected state, the ItemViewType of your [DelegatedRecyclerAdapter] needs to override [View.setSelected]
+ * To show the selected state, the ItemViewType of your [SingleTypeRecyclerAdapter] needs to override [View.setSelected]
  */
-class SelectableItemDelegate<ItemType>(
-    private val adapter: DelegatedRecyclerAdapter<ItemType, *>,
+class SelectableItemDelegate<ItemType : Any>(
+    private val adapter: SingleTypeRecyclerAdapter<ItemType, *>,
     private val onSelectedPositionChangeListener: (oldPosition: Int, newPosition: Int) -> Unit = { _, _ -> }
 ) : BaseAdapterFeatureDelegate<ItemType>() {
 
@@ -32,7 +30,7 @@ class SelectableItemDelegate<ItemType>(
         }
 
     override fun onBindViewHolder(
-        holder: TypedRecyclerViewHolder<ItemType, *>,
+        holder: RecyclerView.ViewHolder,
         position: Int
     ) {
         val item = adapter.positionDelegate.getItemAt(position)

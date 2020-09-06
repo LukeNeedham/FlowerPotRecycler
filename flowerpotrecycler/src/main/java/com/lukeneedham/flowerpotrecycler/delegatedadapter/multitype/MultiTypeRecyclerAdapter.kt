@@ -1,6 +1,5 @@
-package com.lukeneedham.flowerpotrecycler.delegatedadapter
+package com.lukeneedham.flowerpotrecycler.delegatedadapter.multitype
 
-import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -8,21 +7,24 @@ import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.Adap
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.position.AdapterPositionDelegate
 
 /** A base RecyclerView Adapter to encourage a delegated approach */
-abstract class DelegatedRecyclerAdapter<ItemType, ItemViewType> :
-    RecyclerView.Adapter<TypedRecyclerViewHolder<ItemType, ItemViewType>>()
-        where ItemViewType : View, ItemViewType : RecyclerItemView<ItemType> {
+abstract class MultiTypeRecyclerAdapter<
+        BaseItemType : Any,
+        BaseViewType : View,
+        ViewHolderType : TypedViewHolder<BaseViewType>
+        > : RecyclerView.Adapter<ViewHolderType>() {
 
-    abstract val featureDelegates: List<AdapterFeatureDelegate<ItemType>>
-    abstract val positionDelegate: AdapterPositionDelegate<ItemType>
+    abstract val featureDelegates: List<AdapterFeatureDelegate<BaseItemType>>
+    abstract val positionDelegate: AdapterPositionDelegate<BaseItemType>
+    abstract val viewTypeDelegate: ViewTypesDelegate<BaseItemType, BaseViewType>
 
-    protected abstract fun createItemView(context: Context): ItemViewType
+    abstract fun createViewHolder(view: BaseViewType): ViewHolderType
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): TypedRecyclerViewHolder<ItemType, ItemViewType> {
-        val view = createItemView(parent.context)
-        val viewHolder = TypedRecyclerViewHolder(view)
+    ): ViewHolderType {
+        val view = viewTypeDelegate.createView(parent.context, viewType)
+        val viewHolder = createViewHolder(view)
         featureDelegates.forEach {
             it.onViewHolderCreated(viewHolder, parent, viewType)
         }
@@ -32,12 +34,12 @@ abstract class DelegatedRecyclerAdapter<ItemType, ItemViewType> :
     override fun getItemCount() = positionDelegate.getItemCount()
 
     override fun onBindViewHolder(
-        holder: TypedRecyclerViewHolder<ItemType, ItemViewType>,
+        holder: ViewHolderType,
         position: Int
     ) {
         val item = positionDelegate.getItemAt(position)
-        val itemView = holder.typedItemView
-        itemView.setItem(position, item)
+        val itemView = holder.itemView
+        viewTypeDelegate.bind(holder, position, item)
         itemView.setOnClickListener {
             featureDelegates.forEach {
                 it.onItemClick(item, position)
@@ -48,7 +50,7 @@ abstract class DelegatedRecyclerAdapter<ItemType, ItemViewType> :
         }
     }
 
-    open fun submitList(newItems: List<ItemType>, onDiffDone: () -> Unit = {}) {
+    open fun submitList(newItems: List<BaseItemType>, onDiffDone: () -> Unit = {}) {
         positionDelegate.submitList(newItems, onDiffDone)
     }
 }

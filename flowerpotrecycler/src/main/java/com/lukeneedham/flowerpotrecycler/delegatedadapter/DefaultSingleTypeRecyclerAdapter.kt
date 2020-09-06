@@ -5,9 +5,9 @@ import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.Adap
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.position.AdapterPositionDelegate
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.position.implementation.LinearPositionDelegate
 
-/** A [DelegatedRecyclerAdapter] with default setup values */
-abstract class DefaultDelegatedRecyclerAdapter<ItemType, ItemViewType>
-    : DelegatedRecyclerAdapter<ItemType, ItemViewType>()
+/** A [SingleTypeRecyclerAdapter] with default setup values */
+abstract class DefaultSingleTypeRecyclerAdapter<ItemType : Any, ItemViewType> :
+    SingleTypeRecyclerAdapter<ItemType, ItemViewType>()
         where ItemViewType : View, ItemViewType : RecyclerItemView<ItemType> {
 
     override val featureDelegates: List<AdapterFeatureDelegate<ItemType>> = emptyList()

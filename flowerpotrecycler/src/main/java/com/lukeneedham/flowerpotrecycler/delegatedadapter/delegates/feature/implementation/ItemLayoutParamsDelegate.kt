@@ -2,7 +2,6 @@ package com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.imp
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.TypedRecyclerViewHolder
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.BaseAdapterFeatureDelegate
 
 /** Use this delegate to add layout params to your item views */
@@ -11,7 +10,7 @@ class ItemLayoutParamsDelegate<ItemType>(
 ) : BaseAdapterFeatureDelegate<ItemType>() {
 
     override fun onViewHolderCreated(
-        viewHolder: TypedRecyclerViewHolder<ItemType, *>,
+        viewHolder: RecyclerView.ViewHolder,
         parent: ViewGroup,
         viewType: Int
     ) {
