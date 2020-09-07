@@ -18,6 +18,6 @@ class ChoiceItemView @JvmOverloads constructor(
     }
 
     override fun setItem(position: Int, item: ChoiceItem) {
-        textView.text = item.name
+        textView.text = item.text
     }
 }

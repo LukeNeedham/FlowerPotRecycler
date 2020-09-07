@@ -35,9 +35,7 @@ abstract class DelegatedRecyclerAdapter<BaseItemType : Any> : RecyclerView.Adapt
         val item = positionDelegate.getItemAt(position)
         val itemView = holder.itemView
         builderBinderRegistry.bind(holder, position, item)
-        // TODO: For some reason this listener is not called for the choice items
         itemView.setOnClickListener {
-            val a = 1
             featureDelegates.forEach {
                 it.onItemClick(item, position)
             }
@@ -60,7 +58,8 @@ abstract class DelegatedRecyclerAdapter<BaseItemType : Any> : RecyclerView.Adapt
     private fun assertItemsHandled(items: List<BaseItemType>) {
         val unhandledTypes = builderBinderRegistry.findUnhandledItems(items)
         if (unhandledTypes.isNotEmpty()) {
-            throw FlowerPotRecyclerException("No BuilderBinder is registered for item types: $unhandledTypes")
+            val unhandledTypeNames = unhandledTypes.map { it.qualifiedName }
+            throw FlowerPotRecyclerException("No BuilderBinder is registered for item types: $unhandledTypeNames")
         }
     }
 }

@@ -92,6 +92,8 @@ class AnyAdapterFragment : Fragment() {
         val adapterAlternative = RecyclerAdapterBuilder.fromBuilderBinders(
             flowerPotBuilderBinder,
             intBuilderBinder,
+            staticABuilderBinder,
+            staticBBuilderBinder,
             config = adapterConfig
         )
 

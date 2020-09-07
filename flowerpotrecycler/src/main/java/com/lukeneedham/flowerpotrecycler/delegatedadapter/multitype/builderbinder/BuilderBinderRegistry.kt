@@ -95,8 +95,10 @@ class BuilderBinderRegistry<BaseItemType : Any>(
             .map { it.key }
 
         if (duplicateBuilderBinderTypes.isNotEmpty()) {
+            val duplicateBuilderBinderTypeNames =
+                duplicateBuilderBinderTypes.map { it.qualifiedName }
             throw FlowerPotRecyclerException(
-                "There are multiple BuilderBinders registered for item types: $duplicateBuilderBinderTypes"
+                "There are multiple BuilderBinders registered for item types: $duplicateBuilderBinderTypeNames"
             )
         }
 
