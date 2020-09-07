@@ -4,9 +4,9 @@ import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.DefaultDiffCallback
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.DefaultSingleTypeRecyclerAdapter
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.SingleTypeRecyclerAdapter
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.TypedRecyclerViewHolder
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.singletype.DefaultSingleTypeRecyclerAdapter
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.singletype.SingleTypeRecyclerAdapter
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.singletype.SingleTypedViewHolder
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.AdapterFeatureDelegate
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.implementation.ItemLayoutParamsDelegate
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.implementation.OnItemClickDelegate
@@ -27,8 +27,6 @@ class CustomRecyclerAdapter(
 ) : DefaultSingleTypeRecyclerAdapter<FlowerPotModel, FlowerPotItemView>() {
     private val selectableItemDelegate = SelectableItemDelegate(this)
 
-    override val itemClass = FlowerPotModel::class
-
     // Optional override
     override val featureDelegates: List<AdapterFeatureDelegate<FlowerPotModel>> = listOf(
         ItemLayoutParamsDelegate(
@@ -47,7 +45,7 @@ class CustomRecyclerAdapter(
 
     override fun createItemView(context: Context) = FlowerPotItemView(context)
 
-    override fun onFailedToRecycleView(holder: TypedRecyclerViewHolder<FlowerPotModel, FlowerPotItemView>): Boolean {
+    override fun onFailedToRecycleView(holder: SingleTypedViewHolder<FlowerPotModel, FlowerPotItemView>): Boolean {
         return super.onFailedToRecycleView(holder)
         // Since we've subclassed RecyclerView we can override all its methods
         // Maybe we want to do something here, for example

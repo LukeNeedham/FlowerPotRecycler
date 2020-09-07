@@ -1,9 +1,10 @@
-package com.lukeneedham.flowerpotrecycler.delegatedadapter
+package com.lukeneedham.flowerpotrecycler.delegatedadapter.singletype
 
 import android.view.View
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.RecyclerItemView
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.position.DefaultPositionDelegate
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.AdapterFeatureDelegate
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.position.AdapterPositionDelegate
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.position.implementation.LinearPositionDelegate
 
 /** A [SingleTypeRecyclerAdapter] with default setup values */
 abstract class DefaultSingleTypeRecyclerAdapter<ItemType : Any, ItemViewType> :
@@ -13,6 +14,6 @@ abstract class DefaultSingleTypeRecyclerAdapter<ItemType : Any, ItemViewType> :
     override val featureDelegates: List<AdapterFeatureDelegate<ItemType>> = emptyList()
 
     override val positionDelegate: AdapterPositionDelegate<ItemType> by lazy {
-        LinearPositionDelegate<ItemType>(this, DefaultDiffCallback())
+        DefaultPositionDelegate.create(this)
     }
 }

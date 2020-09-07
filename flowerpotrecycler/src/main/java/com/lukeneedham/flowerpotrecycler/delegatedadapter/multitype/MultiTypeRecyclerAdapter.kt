@@ -15,15 +15,15 @@ abstract class MultiTypeRecyclerAdapter<
 
     abstract val featureDelegates: List<AdapterFeatureDelegate<BaseItemType>>
     abstract val positionDelegate: AdapterPositionDelegate<BaseItemType>
-    abstract val viewTypeDelegate: ViewTypesDelegate<BaseItemType, BaseViewType>
+    abstract val viewTypesRegistry: ViewTypesRegistry<BaseItemType, BaseViewType>
 
-    abstract fun createViewHolder(view: BaseViewType): ViewHolderType
+    abstract fun createViewHolder(view: View): ViewHolderType
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): ViewHolderType {
-        val view = viewTypeDelegate.createView(parent.context, viewType)
+        val view = viewTypesRegistry.createView(parent.context, viewType)
         val viewHolder = createViewHolder(view)
         featureDelegates.forEach {
             it.onViewHolderCreated(viewHolder, parent, viewType)
@@ -39,7 +39,7 @@ abstract class MultiTypeRecyclerAdapter<
     ) {
         val item = positionDelegate.getItemAt(position)
         val itemView = holder.itemView
-        viewTypeDelegate.bind(holder, position, item)
+        viewTypesRegistry.bind(holder, position, item)
         itemView.setOnClickListener {
             featureDelegates.forEach {
                 it.onItemClick(item, position)
@@ -48,6 +48,11 @@ abstract class MultiTypeRecyclerAdapter<
         featureDelegates.forEach {
             it.onBindViewHolder(holder, position)
         }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        val item = positionDelegate.getItemAt(position)
+        return viewTypesRegistry.getTypeId(item)
     }
 
     open fun submitList(newItems: List<BaseItemType>, onDiffDone: () -> Unit = {}) {

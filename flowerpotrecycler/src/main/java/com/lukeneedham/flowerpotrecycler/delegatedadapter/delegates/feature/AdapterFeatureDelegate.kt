@@ -2,7 +2,6 @@ package com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.TypedRecyclerViewHolder
 
 /** A delegate for extended functionality on the adapter */
 interface AdapterFeatureDelegate<ItemType> {

@@ -2,8 +2,9 @@ package com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.imp
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.SingleTypeRecyclerAdapter
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.BaseAdapterFeatureDelegate
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.multitype.MultiTypeRecyclerAdapter
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.singletype.SingleTypeRecyclerAdapter
 
 /**
  * A delegate that allows for up to 1 item to be selected at a time. Initially, no item is selected.
@@ -12,7 +13,7 @@ import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.Base
  * To show the selected state, the ItemViewType of your [SingleTypeRecyclerAdapter] needs to override [View.setSelected]
  */
 class SelectableItemDelegate<ItemType : Any>(
-    private val adapter: SingleTypeRecyclerAdapter<ItemType, *>,
+    private val adapter: MultiTypeRecyclerAdapter<ItemType, *, *>,
     private val onSelectedPositionChangeListener: (oldPosition: Int, newPosition: Int) -> Unit = { _, _ -> }
 ) : BaseAdapterFeatureDelegate<ItemType>() {
 

@@ -2,7 +2,6 @@ package com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.TypedRecyclerViewHolder
 
 /** Implements the methods of [AdapterFeatureDelegate] with NO-OP */
 abstract class BaseAdapterFeatureDelegate<ItemType> : AdapterFeatureDelegate<ItemType> {

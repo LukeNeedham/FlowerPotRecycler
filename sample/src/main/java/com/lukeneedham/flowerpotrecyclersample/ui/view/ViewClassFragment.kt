@@ -10,6 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.RecyclerAdapterBuilder
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.config.AdapterConfig
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.multitype.IItemToViewType
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.multitype.RecyclerItemToViewTypeImpl
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.multitype.ViewTypesRegistry
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.multitype.ViewTypesRegistryImpl
 import com.lukeneedham.flowerpotrecycler.staticviewadapter.config.StaticViewAdapterConfig
 import com.lukeneedham.flowerpotrecycler.util.addItemLayoutParams
 import com.lukeneedham.flowerpotrecycler.util.addOnClickListener
@@ -52,6 +56,14 @@ class ViewClassFragment : Fragment() {
         val recyclerAdapterFromViewCreator = RecyclerAdapterBuilder.fromViewCreator {
             FlowerPotItemView(it)
         }
+
+        val mapping1: IItemToViewType<*, *> =
+            RecyclerItemToViewTypeImpl.fromType<FlowerPotModel, FlowerPotItemView>()
+        val mapping2: IItemToViewType<*, *> =
+            RecyclerItemToViewTypeImpl.fromType<String, StringItemView>()
+        val a = RecyclerAdapterBuilder.fromTypeRegistry(
+            ViewTypesRegistryImpl(listOf(mapping1, mapping2))
+        )
 
         // Alternatively, we could also specify the view class manually
         // This is useful when calling from Java. Config optional

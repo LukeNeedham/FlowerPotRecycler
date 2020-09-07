@@ -3,7 +3,6 @@ package com.lukeneedham.flowerpotrecycler.util
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.DefaultDiffCallback
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.SingleTypeRecyclerAdapter
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.config.RecyclerAdapterConfig
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.AdapterFeatureDelegate
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.implementation.ItemLayoutParamsDelegate
@@ -41,7 +40,7 @@ fun <ItemType : Any> RecyclerAdapterConfig<ItemType>.addDelegate(
 }
 
 fun <ItemType : Any> RecyclerAdapterConfig<ItemType>.addDelegate(
-    delegateCreator: (adapter: SingleTypeRecyclerAdapter<ItemType, *>) -> AdapterFeatureDelegate<ItemType>
+    delegateCreator: (adapter: RecyclerView.Adapter<*>) -> AdapterFeatureDelegate<ItemType>
 ) {
     featureDelegateCreators.add(delegateCreator)
 }
@@ -69,5 +68,5 @@ fun RecyclerAdapterConfig<*>.addItemLayoutParamsLazy(
 }
 
 fun <ItemType : Any> RecyclerAdapterConfig<ItemType>.getFeatureDelegates(
-    adapter: SingleTypeRecyclerAdapter<ItemType, *>
+    adapter: RecyclerView.Adapter<*>
 ): List<AdapterFeatureDelegate<ItemType>> = featureDelegateCreators.map { it.invoke(adapter) }
