@@ -11,11 +11,15 @@ import com.lukeneedham.flowerpotrecycler.autoadapter.builderbinder.declarative.D
 import com.lukeneedham.flowerpotrecycler.autoadapter.builderbinder.declarative.DeclarativeBuilderBinder
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.RecyclerItemView
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.config.RecyclerAdapterConfig
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.multitype.*
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.multitype.ConfigurableRecyclerAdapter
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.multitype.DelegatedRecyclerAdapter
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.multitype.builderbinder.BuilderBinderRegistry
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.multitype.builderbinder.ItemBuilderBinder
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.singletype.ConfigurableSingleTypeRecyclerAdapter
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.singletype.SingleTypeRecyclerAdapter
 import com.lukeneedham.flowerpotrecycler.staticviewadapter.StaticViewRecyclerAdapter
 import com.lukeneedham.flowerpotrecycler.staticviewadapter.config.StaticViewRecyclerAdapterConfig
+import kotlin.reflect.KClass
 
 @Suppress("unused")
 object RecyclerAdapterBuilder {
@@ -61,29 +65,53 @@ object RecyclerAdapterBuilder {
 
     /* From Multi Type */
 
-    fun fromTypeRegistry(
-        viewTypesRegistry: ViewTypesRegistry<Any, View>,
-        config: RecyclerAdapterConfig<Any>? = null
-    ): MultiTypeRecyclerAdapter<Any, View, TypedViewHolder<View>> =
-        ConfigurableMultiTypeRecyclerAdapter(viewTypesRegistry, config)
+    /**
+     * Create a [DelegatedRecyclerAdapter] which can handle multiple item types.
+     *
+     * @param builderBinderRegistry handles creating views and binding items on behalf of the adapter
+     * @param config Configuration for the adapter
+     */
+    fun <BaseItemType : Any> fromBuilderBinderRegistry(
+        builderBinderRegistry: BuilderBinderRegistry<BaseItemType>,
+        config: RecyclerAdapterConfig<BaseItemType>? = null
+    ): DelegatedRecyclerAdapter<BaseItemType> =
+        ConfigurableRecyclerAdapter(builderBinderRegistry, config)
+
+    /**
+     * Create a [DelegatedRecyclerAdapter] which can handle multiple item types.
+     *
+     * @param builderBinders a list of [ItemBuilderBinder]s,
+     * which each handle creating the view and binding items for a single item type
+     * @param config Configuration for the adapter
+     */
+    fun <BaseItemType : Any> fromBuilderBinders(
+        vararg builderBinders: ItemBuilderBinder<out BaseItemType, *>,
+        config: RecyclerAdapterConfig<BaseItemType>? = null
+    ): DelegatedRecyclerAdapter<BaseItemType> =
+        ConfigurableRecyclerAdapter(
+            BuilderBinderRegistry(listOf(*builderBinders)),
+            config
+        )
 
     /* From Single Type */
 
     /**
-     * Setup without writing an adapter.
+     * Create a [SingleTypeRecyclerAdapter], which handles a single type of item ([ItemType]) with a single view ([ItemViewType]).
+     *
      * To be used when View logic is contained within its own class, and you want to instantiate the View object yourself.
      * @param createView The function to instantiate your [ItemViewType] class
      * @param config Configuration for the adapter
      */
-    inline fun <reified ItemType : Any, ItemViewType> fromViewCreator(
+    inline fun <reified ItemType : Any, reified ItemViewType> fromViewCreator(
         config: RecyclerAdapterConfig<ItemType>? = null,
         noinline createView: (Context) -> ItemViewType
     ): SingleTypeRecyclerAdapter<ItemType, ItemViewType>
             where ItemViewType : View, ItemViewType : RecyclerItemView<ItemType> =
-        ConfigurableSingleTypeRecyclerAdapter(config, createView)
+        ConfigurableSingleTypeRecyclerAdapter.fromType(config, createView)
 
     /**
-     * Setup without writing an adapter.
+     * Create a [SingleTypeRecyclerAdapter], which handles a single type of item ([ItemType]) with a single view ([ItemViewType]).
+     *
      * To be used when View logic is contained within its own class.
      *
      * The type parameter 'ItemViewType' is the type of the View class, which will handle binding items.
@@ -95,23 +123,26 @@ object RecyclerAdapterBuilder {
         config: RecyclerAdapterConfig<ItemType>? = null
     ): SingleTypeRecyclerAdapter<ItemType, ItemViewType>
             where ItemViewType : View, ItemViewType : RecyclerItemView<ItemType> =
-        fromViewClass(ItemViewType::class.java, config)
+        fromViewClass(ItemType::class, ItemViewType::class, config)
 
     /**
-     * Setup without writing an adapter.
+     * Create a [SingleTypeRecyclerAdapter], which handles a single type of item ([ItemType]) with a single view ([ItemViewType]).
+     *
      * To be used when View logic is contained within its own class.
+     *
      * @param itemViewClass The [ItemViewType] class which will handle binding items.
      * This class is automatically instantiated using its View(context: Context) constructor.
      * @param config Configuration for the adapter
      */
     @JvmStatic
-    inline fun <reified ItemType : Any, ItemViewType> fromViewClass(
-        itemViewClass: Class<ItemViewType>,
+    fun <ItemType : Any, ItemViewType> fromViewClass(
+        itemTypeClass: KClass<ItemType>,
+        itemViewClass: KClass<ItemViewType>,
         config: RecyclerAdapterConfig<ItemType>? = null
     ): SingleTypeRecyclerAdapter<ItemType, ItemViewType>
             where ItemViewType : View, ItemViewType : RecyclerItemView<ItemType> =
-        ConfigurableSingleTypeRecyclerAdapter(config) {
-            itemViewClass.getConstructor(Context::class.java).newInstance(it)
+        ConfigurableSingleTypeRecyclerAdapter(itemTypeClass, itemViewClass, config) {
+            itemViewClass.java.getConstructor(Context::class.java).newInstance(it)
         }
 
     /* From Static View */

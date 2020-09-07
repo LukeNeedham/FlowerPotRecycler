@@ -1,30 +1,25 @@
 package com.lukeneedham.flowerpotrecycler.delegatedadapter.multitype
 
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.lukeneedham.flowerpotrecycler.FlowerPotRecyclerException
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.AdapterFeatureDelegate
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.position.AdapterPositionDelegate
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.multitype.builderbinder.BuilderBinderRegistry
 
 /** A base RecyclerView Adapter to encourage a delegated approach */
-abstract class MultiTypeRecyclerAdapter<
-        BaseItemType : Any,
-        BaseViewType : View,
-        ViewHolderType : TypedViewHolder<BaseViewType>
-        > : RecyclerView.Adapter<ViewHolderType>() {
+abstract class DelegatedRecyclerAdapter<BaseItemType : Any> : RecyclerView.Adapter<ViewHolder>() {
 
     abstract val featureDelegates: List<AdapterFeatureDelegate<BaseItemType>>
     abstract val positionDelegate: AdapterPositionDelegate<BaseItemType>
-    abstract val viewTypesRegistry: ViewTypesRegistry<BaseItemType, BaseViewType>
-
-    abstract fun createViewHolder(view: View): ViewHolderType
+    abstract val builderBinderRegistry: BuilderBinderRegistry<BaseItemType>
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): ViewHolderType {
-        val view = viewTypesRegistry.createView(parent.context, viewType)
-        val viewHolder = createViewHolder(view)
+    ): ViewHolder {
+        val view = builderBinderRegistry.createView(parent.context, viewType)
+        val viewHolder = ViewHolder(view)
         featureDelegates.forEach {
             it.onViewHolderCreated(viewHolder, parent, viewType)
         }
@@ -34,13 +29,15 @@ abstract class MultiTypeRecyclerAdapter<
     override fun getItemCount() = positionDelegate.getItemCount()
 
     override fun onBindViewHolder(
-        holder: ViewHolderType,
+        holder: ViewHolder,
         position: Int
     ) {
         val item = positionDelegate.getItemAt(position)
         val itemView = holder.itemView
-        viewTypesRegistry.bind(holder, position, item)
+        builderBinderRegistry.bind(holder, position, item)
+        // TODO: For some reason this listener is not called for the choice items
         itemView.setOnClickListener {
+            val a = 1
             featureDelegates.forEach {
                 it.onItemClick(item, position)
             }
@@ -52,10 +49,18 @@ abstract class MultiTypeRecyclerAdapter<
 
     override fun getItemViewType(position: Int): Int {
         val item = positionDelegate.getItemAt(position)
-        return viewTypesRegistry.getTypeId(item)
+        return builderBinderRegistry.getTypeId(item)
     }
 
     open fun submitList(newItems: List<BaseItemType>, onDiffDone: () -> Unit = {}) {
+        assertItemsHandled(newItems)
         positionDelegate.submitList(newItems, onDiffDone)
+    }
+
+    private fun assertItemsHandled(items: List<BaseItemType>) {
+        val unhandledTypes = builderBinderRegistry.findUnhandledItems(items)
+        if (unhandledTypes.isNotEmpty()) {
+            throw FlowerPotRecyclerException("No BuilderBinder is registered for item types: $unhandledTypes")
+        }
     }
 }

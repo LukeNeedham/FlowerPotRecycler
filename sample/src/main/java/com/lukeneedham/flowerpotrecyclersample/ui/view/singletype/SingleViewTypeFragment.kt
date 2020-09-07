@@ -1,4 +1,4 @@
-package com.lukeneedham.flowerpotrecyclersample.ui.view
+package com.lukeneedham.flowerpotrecyclersample.ui.view.singletype
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,20 +10,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.RecyclerAdapterBuilder
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.config.AdapterConfig
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.multitype.IItemToViewType
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.multitype.RecyclerItemToViewTypeImpl
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.multitype.ViewTypesRegistry
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.multitype.ViewTypesRegistryImpl
-import com.lukeneedham.flowerpotrecycler.staticviewadapter.config.StaticViewAdapterConfig
 import com.lukeneedham.flowerpotrecycler.util.addItemLayoutParams
-import com.lukeneedham.flowerpotrecycler.util.addOnClickListener
 import com.lukeneedham.flowerpotrecycler.util.addOnItemClickListener
 import com.lukeneedham.flowerpotrecyclersample.R
 import com.lukeneedham.flowerpotrecyclersample.domain.FlowerPotDatabase
 import com.lukeneedham.flowerpotrecyclersample.domain.FlowerPotModel
+import com.lukeneedham.flowerpotrecyclersample.ui.view.FlowerPotItemView
 import kotlinx.android.synthetic.main.fragment_xml_layout.*
 
-class ViewClassFragment : Fragment() {
+class SingleViewTypeFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,36 +52,10 @@ class ViewClassFragment : Fragment() {
             FlowerPotItemView(it)
         }
 
-        val mapping1: IItemToViewType<*, *> =
-            RecyclerItemToViewTypeImpl.fromType<FlowerPotModel, FlowerPotItemView>()
-        val mapping2: IItemToViewType<*, *> =
-            RecyclerItemToViewTypeImpl.fromType<String, StringItemView>()
-        val a = RecyclerAdapterBuilder.fromTypeRegistry(
-            ViewTypesRegistryImpl(listOf(mapping1, mapping2))
-        )
-
         // Alternatively, we could also specify the view class manually
         // This is useful when calling from Java. Config optional
         val recyclerAdapterFromViewClass =
-            RecyclerAdapterBuilder.fromViewClass(FlowerPotItemView::class.java)
-
-        // Also, we could build a recyclerview for a static view, which doesn't require binding
-        // There are similar functions for Static View Adapters as presented above
-
-        // Requires a different config for static views
-        val staticConfig = StaticViewAdapterConfig().apply {
-            addItemLayoutParams(
-                RecyclerView.LayoutParams(
-                    RecyclerView.LayoutParams.MATCH_PARENT,
-                    RecyclerView.LayoutParams.WRAP_CONTENT
-                )
-            )
-            addOnClickListener {
-                Toast.makeText(requireContext(), "Static view clicked", Toast.LENGTH_SHORT).show()
-            }
-        }
-        val staticViewAdapter =
-            RecyclerAdapterBuilder.fromStaticView<ExampleStaticView>(staticConfig)
+            RecyclerAdapterBuilder.fromViewClass(FlowerPotModel::class, FlowerPotItemView::class)
 
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)

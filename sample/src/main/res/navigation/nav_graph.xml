@@ -6,7 +6,7 @@
 
     <fragment
             android:id="@+id/chooseLayoutTypeFragment"
-            android:name="com.lukeneedham.flowerpotrecyclersample.ui.ChooseLayoutTypeFragment"
+            android:name="com.lukeneedham.flowerpotrecyclersample.ui.home.ChooseLayoutTypeFragment"
             android:label="Flower Pot Recycler Demo">
         <action
                 android:id="@+id/action_chooseLayoutTypeFragment_to_xmlLayoutFragment"
@@ -17,6 +17,15 @@
         <action
                 android:id="@+id/action_chooseLayoutTypeFragment_to_viewClassFragment"
                 app:destination="@id/viewClassFragment" />
+        <action
+                android:id="@+id/action_chooseLayoutTypeFragment_to_anyAdapterFragment"
+                app:destination="@id/anyAdapterFragment" />
+        <action
+                android:id="@+id/action_chooseLayoutTypeFragment_to_numberAdapterFragment"
+                app:destination="@id/numberAdapterFragment" />
+        <action
+                android:id="@+id/action_chooseLayoutTypeFragment_to_staticAdapterFragment"
+                app:destination="@id/staticAdapterFragment" />
     </fragment>
     <fragment
             android:id="@+id/xmlLayoutFragment"
@@ -28,6 +37,18 @@
             android:label="Anko DSL Recycler"/>
     <fragment
             android:id="@+id/viewClassFragment"
-            android:name="com.lukeneedham.flowerpotrecyclersample.ui.view.ViewClassFragment"
+            android:name="com.lukeneedham.flowerpotrecyclersample.ui.view.singletype.SingleViewTypeFragment"
             android:label="ViewClassFragment" />
+    <fragment
+            android:id="@+id/staticAdapterFragment"
+            android:name="com.lukeneedham.flowerpotrecyclersample.ui.view.staticview.StaticAdapterFragment"
+            android:label="StaticAdapterFragment" />
+    <fragment
+            android:id="@+id/anyAdapterFragment"
+            android:name="com.lukeneedham.flowerpotrecyclersample.ui.view.multitype.AnyAdapterFragment"
+            android:label="AnyAdapterFragment" />
+    <fragment
+            android:id="@+id/numberAdapterFragment"
+            android:name="com.lukeneedham.flowerpotrecyclersample.ui.view.multitype.NumberAdapterFragment"
+            android:label="NumberAdapterFragment" />
 </navigation>

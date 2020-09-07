@@ -7,12 +7,15 @@ import com.lukeneedham.flowerpotrecycler.delegatedadapter.config.RecyclerAdapter
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.AdapterFeatureDelegate
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.position.AdapterPositionDelegate
 import com.lukeneedham.flowerpotrecycler.util.getFeatureDelegates
+import kotlin.reflect.KClass
 
 /**
  * Sets up the adapter with values from [config], if not null.
  * If [config] is null, the values are the defaults as defined in [DefaultSingleTypeRecyclerAdapter]
  */
 class ConfigurableSingleTypeRecyclerAdapter<ItemType : Any, ItemViewType>(
+    override val itemTypeClass: KClass<ItemType>,
+    override val itemViewTypeClass: KClass<ItemViewType>,
     config: RecyclerAdapterConfig<ItemType>?,
     private val itemViewCreator: (Context) -> ItemViewType
 ) : DefaultSingleTypeRecyclerAdapter<ItemType, ItemViewType>()
@@ -25,9 +28,24 @@ class ConfigurableSingleTypeRecyclerAdapter<ItemType : Any, ItemViewType>(
 
     init {
         if (config != null) {
-            positionDelegate.submitList(config.items)
+            submitList(config.items)
         }
     }
 
     override fun createItemView(context: Context): ItemViewType = itemViewCreator(context)
+
+    companion object {
+        inline fun <reified ItemType : Any, reified ItemViewType> fromType(
+            config: RecyclerAdapterConfig<ItemType>?,
+            noinline itemViewCreator: (Context) -> ItemViewType
+        ): ConfigurableSingleTypeRecyclerAdapter<ItemType, ItemViewType>
+                where ItemViewType : View, ItemViewType : RecyclerItemView<ItemType> {
+            return ConfigurableSingleTypeRecyclerAdapter(
+                ItemType::class,
+                ItemViewType::class,
+                config,
+                itemViewCreator
+            )
+        }
+    }
 }

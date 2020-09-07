@@ -3,7 +3,7 @@ package com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.imp
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.BaseAdapterFeatureDelegate
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.multitype.MultiTypeRecyclerAdapter
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.multitype.DelegatedRecyclerAdapter
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.singletype.SingleTypeRecyclerAdapter
 
 /**
@@ -13,7 +13,7 @@ import com.lukeneedham.flowerpotrecycler.delegatedadapter.singletype.SingleTypeR
  * To show the selected state, the ItemViewType of your [SingleTypeRecyclerAdapter] needs to override [View.setSelected]
  */
 class SelectableItemDelegate<ItemType : Any>(
-    private val adapter: MultiTypeRecyclerAdapter<ItemType, *, *>,
+    private val adapter: DelegatedRecyclerAdapter<ItemType>,
     private val onSelectedPositionChangeListener: (oldPosition: Int, newPosition: Int) -> Unit = { _, _ -> }
 ) : BaseAdapterFeatureDelegate<ItemType>() {
 

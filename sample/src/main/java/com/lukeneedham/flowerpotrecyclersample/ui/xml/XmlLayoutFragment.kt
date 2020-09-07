@@ -17,7 +17,7 @@ import com.lukeneedham.flowerpotrecyclersample.R
 import com.lukeneedham.flowerpotrecyclersample.domain.FlowerPotDatabase
 import com.lukeneedham.flowerpotrecyclersample.domain.FlowerPotModel
 import kotlinx.android.synthetic.main.fragment_xml_layout.*
-import kotlinx.android.synthetic.main.recycler_item_flower_pot.view.*
+import kotlinx.android.synthetic.main.view_flower_pot_item.view.*
 
 class XmlLayoutFragment : Fragment() {
 
@@ -40,7 +40,7 @@ class XmlLayoutFragment : Fragment() {
             }
         }
         val recyclerAdapter = RecyclerAdapterBuilder.fromXml(
-            R.layout.recycler_item_flower_pot,
+            R.layout.view_flower_pot_item,
             config
         ) { position, item, itemView ->
             itemView.potImageView.setImageResource(item.imageResId)

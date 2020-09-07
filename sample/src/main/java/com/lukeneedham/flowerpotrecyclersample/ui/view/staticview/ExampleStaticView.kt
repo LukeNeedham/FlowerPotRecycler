@@ -1,4 +1,4 @@
-package com.lukeneedham.flowerpotrecyclersample.ui.view
+package com.lukeneedham.flowerpotrecyclersample.ui.view.staticview
 
 import android.content.Context
 import android.util.AttributeSet
