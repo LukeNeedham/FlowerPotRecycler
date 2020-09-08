@@ -1,24 +1,26 @@
-package com.lukeneedham.flowerpotrecycler.delegatedadapter.autoview.declarative
+package com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.declarative
 
 import android.view.View
 import android.view.ViewGroup
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.ItemBuilderBinder
-import kotlin.reflect.KClass
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.BuilderBinder
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.ClassMatcher
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.ItemTypeMatcher
 
 /**
- * An implementation of [ItemBuilderBinder] which combines the building of the View, and the binding of the item,
+ * An implementation of [BuilderBinder] which combines the building of the View, and the binding of the item,
  * into a single override. Useful if you are building the layout programmatically (for example, with Anko DSL Layout).
  *
  * Call [onItem][com.lukeneedham.flowerpotrecycler.autoadapter.builderbinder.declarative.DeclarativeBindingDsl.onItem]
  * within your implementation of [build] to add a callback to bind the item to the View.
  */
 class DeclarativeBuilderBinder<ItemType : Any>(
-    override val itemTypeClass: KClass<ItemType>,
+    override val itemMatcher: ItemTypeMatcher<ItemType>,
     private val builder: DeclarativeBindingDsl<ItemType>.(ViewGroup) -> View
-) : ItemBuilderBinder<ItemType, View>() {
+) : BuilderBinder<ItemType, View>() {
+
     private val bindingManager = DeclarativeBindingManager<ItemType>()
 
-    override fun createView(parent: ViewGroup): View {
+    override fun build(parent: ViewGroup): View {
         bindingManager.currentViewId = parent.hashCode()
         val dsl = DeclarativeBindingDsl(bindingManager)
         return builder(dsl, parent)
@@ -38,6 +40,6 @@ class DeclarativeBuilderBinder<ItemType : Any>(
         inline fun <reified ItemType : Any> fromType(
             noinline builder: DeclarativeBindingDsl<ItemType>.(ViewGroup) -> View
         ): DeclarativeBuilderBinder<ItemType> =
-            DeclarativeBuilderBinder(ItemType::class, builder)
+            DeclarativeBuilderBinder(ClassMatcher(ItemType::class), builder)
     }
 }

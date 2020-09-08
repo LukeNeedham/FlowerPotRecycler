@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.RecyclerAdapterBuilder
+import com.lukeneedham.flowerpotrecycler.SingleTypeRecyclerAdapterBuilder
 import com.lukeneedham.flowerpotrecycler.staticviewadapter.config.StaticViewAdapterConfig
 import com.lukeneedham.flowerpotrecycler.util.addItemLayoutParams
 import com.lukeneedham.flowerpotrecycler.util.addOnClickListener
@@ -41,11 +42,11 @@ class StaticAdapterFragment : Fragment() {
             }
         }
         val staticViewAdapter =
-            RecyclerAdapterBuilder.fromStaticView<ExampleStaticView>(staticConfig)
+            SingleTypeRecyclerAdapterBuilder.fromStaticView<ExampleStaticView>(staticConfig)
 
         // Alternative function to specify view creation function explicitly
-        val staticViewAdapterAlternative = RecyclerAdapterBuilder.fromStaticViewCreator {
-            ExampleStaticView(it)
+        val staticViewAdapterAlternative = SingleTypeRecyclerAdapterBuilder.fromStaticViewCreator {
+            ExampleStaticView(it.context)
         }
 
         recyclerView.apply {

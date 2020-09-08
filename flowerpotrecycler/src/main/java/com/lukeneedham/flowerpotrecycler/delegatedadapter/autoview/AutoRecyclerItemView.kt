@@ -5,7 +5,7 @@ import android.content.Context
 import android.view.View
 import android.widget.FrameLayout
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.RecyclerItemView
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.ItemBuilderBinder
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.BuilderBinder
 
 /**
  * A [RecyclerItemView] which wraps around a provided [builderBinder]
@@ -13,11 +13,11 @@ import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.ItemBuil
 @SuppressLint("ViewConstructor")
 class AutoRecyclerItemView<ItemType : Any> constructor(
     context: Context,
-    private val builderBinder: ItemBuilderBinder<ItemType, View>
+    private val builderBinder: BuilderBinder<ItemType, View>
 ) : FrameLayout(context), RecyclerItemView<ItemType> {
 
     init {
-        addView(builderBinder.createView(this))
+        addView(builderBinder.build(this))
     }
 
     override fun setItem(position: Int, item: ItemType) {

@@ -9,10 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.RecyclerAdapterBuilder
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.config.AdapterConfig
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.BuilderBinderRegistry
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.RecyclerItemViewBuilderBinder
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.StaticItemBuilderBinder
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.view.RecyclerItemViewBuilderBinder
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.view.StaticViewBuilderBinder
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.config.AdapterConfig
 import com.lukeneedham.flowerpotrecycler.util.addItemLayoutParams
 import com.lukeneedham.flowerpotrecycler.util.addOnItemClickListener
 import com.lukeneedham.flowerpotrecyclersample.R
@@ -58,20 +58,20 @@ class AnyAdapterFragment : Fragment() {
         // This BuilderBinder says: when an item of type FlowerPotModel is encountered,
         // delegate its building and binding to FlowerPotItemView
         val flowerPotBuilderBinder =
-            RecyclerItemViewBuilderBinder.fromType<FlowerPotModel, FlowerPotItemView>()
+            RecyclerItemViewBuilderBinder.fromItemType<FlowerPotModel, FlowerPotItemView>()
 
         val intBuilderBinder =
-            RecyclerItemViewBuilderBinder.fromType<Int, IntItemView>()
+            RecyclerItemViewBuilderBinder.fromItemType<Int, IntItemView>()
 
         // StaticA is a singleton.
         // For every StaticA in the list of items submitted to the adapter,
         // a StaticAItemView will be shown in the corresponding position
         // In a real use-case, this might be a Header view
         val staticABuilderBinder =
-            StaticItemBuilderBinder.fromType<StaticA, StaticAItemView>()
+            StaticViewBuilderBinder.fromType<StaticA, StaticAItemView>()
 
         val staticBBuilderBinder =
-            StaticItemBuilderBinder.fromType<StaticB, StaticBItemView>()
+            StaticViewBuilderBinder.fromType<StaticB, StaticBItemView>()
 
         // Multi-type adapter from type registry
         // Config optional

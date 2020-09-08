@@ -3,13 +3,13 @@ package com.lukeneedham.flowerpotrecycler.delegatedadapter.config
 import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.AdapterFeatureDelegate
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.position.AdapterPositionDelegate
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.singletype.ConfigurableSingleTypeRecyclerAdapter
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.singletype.recycleritemview.ConfigurableSingleTypeRecyclerItemViewAdapter
 
 
 /**
  * A basic [RecyclerAdapterConfig].
  * By default, it uses no feature delegates and no items,
- * with the position delegate set to the default defined by [ConfigurableSingleTypeRecyclerAdapter]
+ * with the position delegate set to the default defined by [ConfigurableSingleTypeRecyclerItemViewAdapter]
  */
 class AdapterConfig<ItemType : Any> : RecyclerAdapterConfig<ItemType> {
     override var items: List<ItemType> = emptyList()

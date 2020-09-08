@@ -1,13 +1,12 @@
 package com.lukeneedham.flowerpotrecycler.delegatedadapter.config
 
 import androidx.recyclerview.widget.RecyclerView
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.singletype.SingleTypeRecyclerAdapter
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.singletype.ConfigurableSingleTypeRecyclerAdapter
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.singletype.recycleritemview.ConfigurableSingleTypeRecyclerItemViewAdapter
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.AdapterFeatureDelegate
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.position.AdapterPositionDelegate
 
 /**
- * Config for the [ConfigurableSingleTypeRecyclerAdapter].
+ * Config for the [ConfigurableSingleTypeRecyclerItemViewAdapter].
  * Allows for the customisation of initial [items],
  * [featureDelegateCreators] to create each [AdapterFeatureDelegate] to be added to the Adapter,
  * and the [positionDelegateCreator] for creating the [AdapterPositionDelegate] used by the Adapter
@@ -22,7 +21,7 @@ interface RecyclerAdapterConfig<ItemType : Any> {
 
     /**
      * A function to create the [AdapterPositionDelegate],
-     * or null to use the default as defined in [ConfigurableSingleTypeRecyclerAdapter]
+     * or null to use the default as defined in [ConfigurableSingleTypeRecyclerItemViewAdapter]
      */
     var positionDelegateCreator:
                 (adapter: RecyclerView.Adapter<*>) -> AdapterPositionDelegate<ItemType>?

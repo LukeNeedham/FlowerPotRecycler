@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.lukeneedham.flowerpotrecycler.Builder
 import com.lukeneedham.flowerpotrecycler.staticviewadapter.config.StaticViewRecyclerAdapterConfig
 import com.lukeneedham.flowerpotrecycler.staticviewadapter.delegates.StaticViewAdapterFeatureDelegate
 import com.lukeneedham.flowerpotrecycler.util.getFeatureDelegates
@@ -15,7 +16,7 @@ import com.lukeneedham.flowerpotrecycler.util.getFeatureDelegates
  */
 class StaticViewRecyclerAdapter(
     config: StaticViewRecyclerAdapterConfig?,
-    private val itemViewCreator: (Context) -> View
+    private val itemViewCreator: Builder<View>
 ) : RecyclerView.Adapter<StaticViewRecyclerViewHolder>() {
 
     private val featureDelegates: List<StaticViewAdapterFeatureDelegate> =
@@ -25,7 +26,7 @@ class StaticViewRecyclerAdapter(
         parent: ViewGroup,
         viewType: Int
     ): StaticViewRecyclerViewHolder {
-        val view = itemViewCreator(parent.context)
+        val view = itemViewCreator(parent)
         view.setOnClickListener {
             featureDelegates.forEach {
                 it.onClick()

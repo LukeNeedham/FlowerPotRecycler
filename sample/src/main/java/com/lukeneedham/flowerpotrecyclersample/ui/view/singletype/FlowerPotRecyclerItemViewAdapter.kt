@@ -1,31 +1,30 @@
 package com.lukeneedham.flowerpotrecyclersample.ui.view.singletype
 
-import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.DefaultDiffCallback
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.ViewHolder
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.AdapterFeatureDelegate
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.implementation.ItemLayoutParamsDelegate
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.implementation.OnItemClickDelegate
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.implementation.SelectableItemDelegate
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.position.AdapterPositionDelegate
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.position.implementation.LinearPositionDelegate
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.ViewHolder
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.singletype.DefaultSingleTypeRecyclerAdapter
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.singletype.SingleTypeRecyclerAdapter
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.singletype.recycleritemview.DefaultSingleTypeRecyclerItemViewAdapter
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.singletype.recycleritemview.SingleTypeRecyclerItemViewAdapter
 import com.lukeneedham.flowerpotrecyclersample.domain.FlowerPotModel
 import com.lukeneedham.flowerpotrecyclersample.ui.view.FlowerPotItemView
 
 /**
- * A demo of extending [DefaultSingleTypeRecyclerAdapter] to add your own functionality.
+ * A demo of extending [DefaultSingleTypeRecyclerItemViewAdapter] to add your own functionality.
  * In this case, adding [selectableItemDelegate].
  *
- * You can also override [SingleTypeRecyclerAdapter], which comes without the defaults,
+ * You can also override [SingleTypeRecyclerItemViewAdapter], which comes without the defaults,
  * so requires you to override [featureDelegates] and [positionDelegate]
  */
-class FlowerPotRecyclerAdapter(
+class FlowerPotRecyclerItemViewAdapter(
     onItemClick: (FlowerPotModel) -> Unit
-) : DefaultSingleTypeRecyclerAdapter<FlowerPotModel, FlowerPotItemView>() {
+) : DefaultSingleTypeRecyclerItemViewAdapter<FlowerPotModel, FlowerPotItemView>() {
     private val selectableItemDelegate = SelectableItemDelegate(this)
 
     // Optional override
@@ -44,10 +43,8 @@ class FlowerPotRecyclerAdapter(
     override val positionDelegate: AdapterPositionDelegate<FlowerPotModel> =
         LinearPositionDelegate(this, DefaultDiffCallback())
 
-    override val itemTypeClass = FlowerPotModel::class
-
-    override fun createItemView(context: Context) =
-        FlowerPotItemView(context)
+    override fun createItemView(parent: ViewGroup) =
+        FlowerPotItemView(parent.context)
 
     override fun onFailedToRecycleView(holder: ViewHolder): Boolean {
         return super.onFailedToRecycleView(holder)

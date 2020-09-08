@@ -4,13 +4,13 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.BaseAdapterFeatureDelegate
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.DelegatedRecyclerAdapter
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.singletype.SingleTypeRecyclerAdapter
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.singletype.recycleritemview.SingleTypeRecyclerItemViewAdapter
 
 /**
  * A delegate that allows for up to 1 item to be selected at a time. Initially, no item is selected.
  * To return to the no item selected state, use [resetSelection]
  *
- * To show the selected state, the ItemViewType of your [SingleTypeRecyclerAdapter] needs to override [View.setSelected]
+ * To show the selected state, the ItemViewType of your [SingleTypeRecyclerItemViewAdapter] needs to override [View.setSelected]
  */
 class SelectableItemDelegate<ItemType : Any>(
     private val adapter: DelegatedRecyclerAdapter<ItemType>,

@@ -9,7 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.lukeneedham.flowerpotrecycler.RecyclerAdapterBuilder
+import com.lukeneedham.flowerpotrecycler.SingleTypeRecyclerAdapterBuilder
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.config.AdapterConfig
 import com.lukeneedham.flowerpotrecycler.util.addItemLayoutParams
 import com.lukeneedham.flowerpotrecycler.util.addOnItemClickListener
@@ -39,13 +39,19 @@ class XmlLayoutFragment : Fragment() {
                     .show()
             }
         }
-        val recyclerAdapter = RecyclerAdapterBuilder.fromXml(
+
+        val recyclerAdapter = SingleTypeRecyclerAdapterBuilder.fromXml(
             R.layout.view_flower_pot_item,
             config
         ) { itemView, position, item ->
             itemView.potImageView.setImageResource(item.imageResId)
             itemView.potNameTextView.setText(item.nameResId)
         }
+
+        // Alternatively, we can create a static adapter if we don't need any binding to be done
+        val staticAdapter =
+            SingleTypeRecyclerAdapterBuilder.fromStaticXml(R.layout.view_flower_pot_item, config)
+
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = recyclerAdapter

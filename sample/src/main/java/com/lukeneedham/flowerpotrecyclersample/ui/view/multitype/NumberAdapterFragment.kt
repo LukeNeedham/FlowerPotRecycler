@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.RecyclerAdapterBuilder
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.config.AdapterConfig
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.BuilderBinderRegistry
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.RecyclerItemViewBuilderBinder
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.view.RecyclerItemViewBuilderBinder
 import com.lukeneedham.flowerpotrecycler.util.addItemLayoutParams
 import com.lukeneedham.flowerpotrecycler.util.addOnItemClickListener
 import com.lukeneedham.flowerpotrecyclersample.R
@@ -47,9 +47,9 @@ class NumberAdapterFragment : Fragment() {
         // This BuilderBinder says: when an item of type Int is encountered,
         // delegate its building and binding to IntItemView
         val intBuilderBinder =
-            RecyclerItemViewBuilderBinder.fromType<Int, IntItemView>()
+            RecyclerItemViewBuilderBinder.fromItemType<Int, IntItemView>()
         val doubleBuilderBinder =
-            RecyclerItemViewBuilderBinder.fromType<Double, DoubleItemView>()
+            RecyclerItemViewBuilderBinder.fromItemType<Double, DoubleItemView>()
 
         // Multi-type adapter from type registry
         // Config optional

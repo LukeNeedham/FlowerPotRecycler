@@ -3,9 +3,9 @@ package com.lukeneedham.flowerpotrecycler.delegatedadapter
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.FlowerPotRecyclerException
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.BuilderBinderRegistry
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.AdapterFeatureDelegate
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.position.AdapterPositionDelegate
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.BuilderBinderRegistry
 
 /** A base RecyclerView Adapter to encourage a delegated approach */
 abstract class DelegatedRecyclerAdapter<BaseItemType : Any> : RecyclerView.Adapter<ViewHolder>() {
@@ -18,11 +18,8 @@ abstract class DelegatedRecyclerAdapter<BaseItemType : Any> : RecyclerView.Adapt
         parent: ViewGroup,
         viewType: Int
     ): ViewHolder {
-        val view = builderBinderRegistry.createView(parent, viewType)
-        val viewHolder =
-            ViewHolder(
-                view
-            )
+        val view = builderBinderRegistry.build(parent, viewType)
+        val viewHolder = ViewHolder(view)
         featureDelegates.forEach {
             it.onViewHolderCreated(viewHolder, parent, viewType)
         }
@@ -59,10 +56,9 @@ abstract class DelegatedRecyclerAdapter<BaseItemType : Any> : RecyclerView.Adapt
     }
 
     private fun assertItemsHandled(items: List<BaseItemType>) {
-        val unhandledTypes = builderBinderRegistry.findUnhandledItems(items)
-        if (unhandledTypes.isNotEmpty()) {
-            val unhandledTypeNames = unhandledTypes.map { it.qualifiedName }
-            throw FlowerPotRecyclerException("No BuilderBinder is registered for item types: $unhandledTypeNames")
+        val unhandledItems = builderBinderRegistry.findUnhandledItems(items)
+        if (unhandledItems.isNotEmpty()) {
+            throw FlowerPotRecyclerException("No BuilderBinder is registered for items: $unhandledItems")
         }
     }
 }

@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.RecyclerAdapterBuilder
+import com.lukeneedham.flowerpotrecycler.SingleTypeRecyclerAdapterBuilder
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.config.AdapterConfig
 import com.lukeneedham.flowerpotrecycler.util.addItemLayoutParams
 import com.lukeneedham.flowerpotrecycler.util.addOnItemClickListener
@@ -45,17 +46,17 @@ class SingleViewTypeFragment : Fragment() {
         }
         // Config optional
         val recyclerAdapter =
-            RecyclerAdapterBuilder.fromView<FlowerPotModel, FlowerPotItemView>(config)
+            SingleTypeRecyclerAdapterBuilder.fromRecyclerItemView<FlowerPotModel, FlowerPotItemView>(config)
 
         // Alternatively, we could instantiate the view ourselves. Config optional
-        val recyclerAdapterFromViewCreator = RecyclerAdapterBuilder.fromViewCreator {
-            FlowerPotItemView(it)
+        val recyclerAdapterFromViewCreator = SingleTypeRecyclerAdapterBuilder.fromRecyclerItemViewCreator {
+            FlowerPotItemView(it.context)
         }
 
         // Alternatively, we could also specify the view class manually
         // This is useful when calling from Java. Config optional
         val recyclerAdapterFromViewClass =
-            RecyclerAdapterBuilder.fromViewClass(FlowerPotModel::class, FlowerPotItemView::class)
+            SingleTypeRecyclerAdapterBuilder.fromRecyclerItemViewClass(FlowerPotItemView::class)
 
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
