@@ -7,9 +7,8 @@ import com.lukeneedham.flowerpotrecycler.Builder
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.BuilderBinder
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.matcher.ClassMatcher
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.matcher.ItemMatcher
-import com.lukeneedham.flowerpotrecycler.util.BuilderBinderUtils
 import com.lukeneedham.flowerpotrecycler.util.BuilderBinderUtils.createEmptyBinder
-import com.lukeneedham.flowerpotrecycler.util.createBuilder
+import com.lukeneedham.flowerpotrecycler.util.extensions.createBuilder
 import kotlin.reflect.KClass
 
 /** builds the view with [builder] and binds with [binder] */

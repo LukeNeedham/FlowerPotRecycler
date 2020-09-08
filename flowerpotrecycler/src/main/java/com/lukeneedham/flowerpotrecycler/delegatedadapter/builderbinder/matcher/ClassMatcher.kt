@@ -1,6 +1,6 @@
 package com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.matcher
 
-import com.lukeneedham.flowerpotrecycler.util.TAG
+import com.lukeneedham.flowerpotrecycler.util.extensions.TAG
 import kotlin.reflect.KClass
 
 data class ClassMatcher<ItemType : Any>(val itemClass: KClass<ItemType>) :

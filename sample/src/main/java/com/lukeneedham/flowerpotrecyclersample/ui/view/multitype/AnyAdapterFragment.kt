@@ -13,8 +13,8 @@ import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.BuilderB
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.implementation.view.RecyclerItemViewBuilderBinder
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.implementation.view.ViewBuilderBinder
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.config.AdapterConfig
-import com.lukeneedham.flowerpotrecycler.util.addItemLayoutParams
-import com.lukeneedham.flowerpotrecycler.util.addOnItemClickListener
+import com.lukeneedham.flowerpotrecycler.util.extensions.addItemLayoutParams
+import com.lukeneedham.flowerpotrecycler.util.extensions.addOnItemClickListener
 import com.lukeneedham.flowerpotrecyclersample.R
 import com.lukeneedham.flowerpotrecyclersample.domain.FlowerPotDatabase
 import com.lukeneedham.flowerpotrecyclersample.domain.FlowerPotModel

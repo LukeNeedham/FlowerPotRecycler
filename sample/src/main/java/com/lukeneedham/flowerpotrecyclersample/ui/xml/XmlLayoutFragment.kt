@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.RecyclerAdapterBuilder
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.config.AdapterConfig
-import com.lukeneedham.flowerpotrecycler.util.addItemLayoutParams
-import com.lukeneedham.flowerpotrecycler.util.addOnItemClickListener
+import com.lukeneedham.flowerpotrecycler.util.extensions.addItemLayoutParams
+import com.lukeneedham.flowerpotrecycler.util.extensions.addOnItemClickListener
 import com.lukeneedham.flowerpotrecyclersample.R
 import com.lukeneedham.flowerpotrecyclersample.domain.FlowerPotDatabase
 import com.lukeneedham.flowerpotrecyclersample.domain.FlowerPotModel

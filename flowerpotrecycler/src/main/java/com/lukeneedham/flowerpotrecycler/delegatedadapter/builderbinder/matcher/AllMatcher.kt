@@ -1,6 +1,6 @@
 package com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.matcher
 
-import com.lukeneedham.flowerpotrecycler.util.TAG
+import com.lukeneedham.flowerpotrecycler.util.extensions.TAG
 
 /**
  * This matcher matches all items.

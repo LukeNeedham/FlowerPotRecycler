@@ -4,7 +4,7 @@ import com.lukeneedham.flowerpotrecycler.delegatedadapter.config.RecyclerAdapter
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.AdapterFeatureDelegate
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.position.AdapterPositionDelegate
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.BuilderBinderRegistry
-import com.lukeneedham.flowerpotrecycler.util.getFeatureDelegates
+import com.lukeneedham.flowerpotrecycler.util.extensions.getFeatureDelegates
 
 /**
  * Sets up the adapter with values from [config], if not null.

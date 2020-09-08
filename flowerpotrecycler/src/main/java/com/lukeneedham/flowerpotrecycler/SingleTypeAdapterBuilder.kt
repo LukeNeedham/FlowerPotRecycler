@@ -10,9 +10,8 @@ import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.implemen
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.implementation.view.ViewBuilderBinder
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.matcher.AllMatcher
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.config.RecyclerAdapterConfig
-import com.lukeneedham.flowerpotrecycler.util.BuilderBinderUtils.createBuilder
 import com.lukeneedham.flowerpotrecycler.util.BuilderBinderUtils.createEmptyBinder
-import com.lukeneedham.flowerpotrecycler.util.createBuilder
+import com.lukeneedham.flowerpotrecycler.util.extensions.createBuilder
 import kotlin.reflect.KClass
 
 object SingleTypeAdapterBuilder {

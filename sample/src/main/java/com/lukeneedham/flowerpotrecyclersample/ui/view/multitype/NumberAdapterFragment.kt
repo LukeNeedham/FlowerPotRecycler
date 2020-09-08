@@ -12,8 +12,8 @@ import com.lukeneedham.flowerpotrecycler.RecyclerAdapterBuilder
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.config.AdapterConfig
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.BuilderBinderRegistry
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.implementation.view.RecyclerItemViewBuilderBinder
-import com.lukeneedham.flowerpotrecycler.util.addItemLayoutParams
-import com.lukeneedham.flowerpotrecycler.util.addOnItemClickListener
+import com.lukeneedham.flowerpotrecycler.util.extensions.addItemLayoutParams
+import com.lukeneedham.flowerpotrecycler.util.extensions.addOnItemClickListener
 import com.lukeneedham.flowerpotrecyclersample.R
 import kotlinx.android.synthetic.main.fragment_xml_layout.*
 

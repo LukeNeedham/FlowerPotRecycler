@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lukeneedham.flowerpotrecycler.RecyclerAdapterBuilder
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.config.AdapterConfig
-import com.lukeneedham.flowerpotrecycler.util.addOnItemClickListener
+import com.lukeneedham.flowerpotrecycler.util.extensions.addOnItemClickListener
 import com.lukeneedham.flowerpotrecyclersample.domain.FlowerPotDatabase
 import com.lukeneedham.flowerpotrecyclersample.domain.FlowerPotModel
 import org.jetbrains.anko.*

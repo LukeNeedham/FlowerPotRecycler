@@ -1,4 +1,4 @@
-package com.lukeneedham.flowerpotrecycler.util
+package com.lukeneedham.flowerpotrecycler.util.extensions
 
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
