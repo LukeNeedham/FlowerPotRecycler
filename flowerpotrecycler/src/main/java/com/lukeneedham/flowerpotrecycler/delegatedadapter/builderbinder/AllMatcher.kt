@@ -7,7 +7,7 @@ import com.lukeneedham.flowerpotrecycler.util.TAG
  * This is potentially dangerous -
  * it's only real use-case is in adapters with a single item type
  */
-class AllMatcher<ItemType : Any> : ItemTypeMatcher<ItemType> {
+class AllMatcher<ItemType : Any> : ItemMatcher<ItemType> {
     override fun isMatch(item: Any) = true
 
     override fun toString() = TAG

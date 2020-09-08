@@ -3,7 +3,6 @@ package com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder
 import android.view.View
 import android.view.ViewGroup
 import com.lukeneedham.flowerpotrecycler.FlowerPotRecyclerException
-import kotlin.reflect.KClass
 
 /** Handles the building of the view, and the binding of the item for each item type */
 abstract class BuilderBinder<ItemType : Any, ItemViewType : View> {
@@ -12,7 +11,7 @@ abstract class BuilderBinder<ItemType : Any, ItemViewType : View> {
      * Determines whether an item 'matches' this BuilderBinder,
      * and should therefore handle its building and binding
      */
-    abstract val itemMatcher: ItemTypeMatcher<ItemType>
+    abstract val itemMatcher: ItemMatcher<ItemType>
 
     /** @return the view used to display items of type [ItemType] */
     abstract fun build(parent: ViewGroup): ItemViewType

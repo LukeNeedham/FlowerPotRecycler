@@ -1,12 +1,11 @@
 package com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.view
 
-import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import com.lukeneedham.flowerpotrecycler.Builder
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.BuilderBinder
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.ClassMatcher
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.ItemTypeMatcher
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.ItemMatcher
 import com.lukeneedham.flowerpotrecycler.util.build
 import kotlin.reflect.KClass
 
@@ -15,7 +14,7 @@ import kotlin.reflect.KClass
  * Because this is a static view, no binding is required
  */
 class StaticViewBuilderBinder<ItemType : Any, ItemViewType : View>(
-    override val itemMatcher: ItemTypeMatcher<ItemType>,
+    override val itemMatcher: ItemMatcher<ItemType>,
     private val builder: Builder<ItemViewType>
 ) : BuilderBinder<ItemType, ItemViewType>() {
 

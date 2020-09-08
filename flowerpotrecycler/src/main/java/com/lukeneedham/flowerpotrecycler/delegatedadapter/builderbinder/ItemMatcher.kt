@@ -1,5 +1,5 @@
 package com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder
 
-interface ItemTypeMatcher<ItemType : Any> {
+interface ItemMatcher<ItemType : Any> {
     fun isMatch(item: Any): Boolean
 }

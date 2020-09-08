@@ -4,7 +4,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.BuilderBinder
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.ClassMatcher
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.ItemTypeMatcher
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.ItemMatcher
 
 /**
  * An implementation of [BuilderBinder] which combines the building of the View, and the binding of the item,
@@ -14,7 +14,7 @@ import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.ItemType
  * within your implementation of [build] to add a callback to bind the item to the View.
  */
 class DeclarativeBuilderBinder<ItemType : Any>(
-    override val itemMatcher: ItemTypeMatcher<ItemType>,
+    override val itemMatcher: ItemMatcher<ItemType>,
     private val builder: DeclarativeBindingDsl<ItemType>.(ViewGroup) -> View
 ) : BuilderBinder<ItemType, View>() {
 

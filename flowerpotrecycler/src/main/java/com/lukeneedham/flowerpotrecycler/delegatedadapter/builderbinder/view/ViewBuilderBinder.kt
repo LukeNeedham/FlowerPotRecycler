@@ -6,13 +6,13 @@ import com.lukeneedham.flowerpotrecycler.Binder
 import com.lukeneedham.flowerpotrecycler.Builder
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.BuilderBinder
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.ClassMatcher
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.ItemTypeMatcher
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.ItemMatcher
 import com.lukeneedham.flowerpotrecycler.util.build
 import kotlin.reflect.KClass
 
 /** builds the view with [builder] and binds with [binder] */
 class ViewBuilderBinder<ItemType : Any, ItemViewType : View>(
-    override val itemMatcher: ItemTypeMatcher<ItemType>,
+    override val itemMatcher: ItemMatcher<ItemType>,
     private val builder: Builder<ItemViewType>,
     private val binder: Binder<ItemType, ItemViewType>
 ) : BuilderBinder<ItemType, ItemViewType>() {
