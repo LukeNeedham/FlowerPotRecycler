@@ -1,7 +1,8 @@
-package com.lukeneedham.flowerpotrecycler.delegatedadapter.multitype.builderbinder
+package com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder
 
 import android.content.Context
 import android.view.View
+import android.view.ViewGroup
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.RecyclerItemView
 import kotlin.reflect.KClass
 
@@ -11,8 +12,10 @@ class RecyclerItemViewBuilderBinder<ItemType : Any, ItemViewType>(
 ) : ItemBuilderBinder<ItemType, ItemViewType>()
         where ItemViewType : View, ItemViewType : RecyclerItemView<ItemType> {
 
-    override fun createView(context: Context): ItemViewType {
-        return viewCreator(context)
+    override fun createView(parent: ViewGroup): ItemViewType {
+        val view = viewCreator(parent.context)
+        // TODO: Generate layout params based on parent, like when inflating from XML
+        return view
     }
 
     override fun bind(itemView: ItemViewType, position: Int, item: ItemType) {

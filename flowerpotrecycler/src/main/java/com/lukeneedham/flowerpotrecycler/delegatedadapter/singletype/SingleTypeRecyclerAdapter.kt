@@ -3,9 +3,9 @@ package com.lukeneedham.flowerpotrecycler.delegatedadapter.singletype
 import android.content.Context
 import android.view.View
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.RecyclerItemView
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.multitype.DelegatedRecyclerAdapter
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.multitype.builderbinder.BuilderBinderRegistry
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.multitype.builderbinder.RecyclerItemViewBuilderBinder
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.DelegatedRecyclerAdapter
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.BuilderBinderRegistry
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.RecyclerItemViewBuilderBinder
 import kotlin.reflect.KClass
 
 /**

@@ -3,7 +3,7 @@ package com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.imp
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.BaseAdapterFeatureDelegate
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.multitype.DelegatedRecyclerAdapter
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.DelegatedRecyclerAdapter
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.singletype.SingleTypeRecyclerAdapter
 
 /**

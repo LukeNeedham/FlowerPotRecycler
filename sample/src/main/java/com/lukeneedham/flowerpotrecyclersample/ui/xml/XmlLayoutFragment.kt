@@ -42,7 +42,7 @@ class XmlLayoutFragment : Fragment() {
         val recyclerAdapter = RecyclerAdapterBuilder.fromXml(
             R.layout.view_flower_pot_item,
             config
-        ) { position, item, itemView ->
+        ) { itemView, position, item ->
             itemView.potImageView.setImageResource(item.imageResId)
             itemView.potNameTextView.setText(item.nameResId)
         }

@@ -10,7 +10,7 @@ import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.impl
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.implementation.SelectableItemDelegate
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.position.AdapterPositionDelegate
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.position.implementation.LinearPositionDelegate
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.multitype.ViewHolder
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.ViewHolder
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.singletype.DefaultSingleTypeRecyclerAdapter
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.singletype.SingleTypeRecyclerAdapter
 import com.lukeneedham.flowerpotrecyclersample.domain.FlowerPotModel

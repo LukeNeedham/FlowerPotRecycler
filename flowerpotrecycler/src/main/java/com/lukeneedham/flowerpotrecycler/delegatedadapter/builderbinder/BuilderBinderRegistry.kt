@@ -1,9 +1,9 @@
-package com.lukeneedham.flowerpotrecycler.delegatedadapter.multitype.builderbinder
+package com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder
 
-import android.content.Context
 import android.view.View
+import android.view.ViewGroup
 import com.lukeneedham.flowerpotrecycler.FlowerPotRecyclerException
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.multitype.ViewHolder
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.ViewHolder
 import kotlin.reflect.KClass
 
 /**
@@ -32,9 +32,9 @@ class BuilderBinderRegistry<BaseItemType : Any>(
         assertNoDuplicateBuilderBuilderType()
     }
 
-    fun createView(context: Context, itemTypeId: Int): View {
+    fun createView(parent: ViewGroup, itemTypeId: Int): View {
         val typeToView = typeIdToBuilderBinder.getValue(itemTypeId)
-        return typeToView.createView(context)
+        return typeToView.createView(parent)
     }
 
     fun bind(holder: ViewHolder, position: Int, item: BaseItemType) {

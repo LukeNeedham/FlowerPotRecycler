@@ -1,7 +1,8 @@
-package com.lukeneedham.flowerpotrecycler.delegatedadapter.multitype.builderbinder
+package com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder
 
 import android.content.Context
 import android.view.View
+import android.view.ViewGroup
 import kotlin.reflect.KClass
 
 /**
@@ -13,7 +14,7 @@ class StaticItemBuilderBinder<ItemType : Any, ItemViewType : View>(
     private val viewCreator: (Context) -> ItemViewType
 ) : ItemBuilderBinder<ItemType, ItemViewType>() {
 
-    override fun createView(context: Context): ItemViewType = viewCreator(context)
+    override fun createView(parent: ViewGroup): ItemViewType = viewCreator(parent.context)
 
     override fun bind(itemView: ItemViewType, position: Int, item: ItemType) {
         // NOOP - no binding needs to be done, because this view is static

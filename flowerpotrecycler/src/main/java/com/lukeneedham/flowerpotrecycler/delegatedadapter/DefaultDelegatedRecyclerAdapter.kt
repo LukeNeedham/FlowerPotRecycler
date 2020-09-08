@@ -1,4 +1,4 @@
-package com.lukeneedham.flowerpotrecycler.delegatedadapter.multitype
+package com.lukeneedham.flowerpotrecycler.delegatedadapter
 
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.AdapterFeatureDelegate
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.position.AdapterPositionDelegate

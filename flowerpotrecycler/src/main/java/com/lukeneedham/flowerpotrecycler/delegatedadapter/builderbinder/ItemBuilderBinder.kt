@@ -1,7 +1,7 @@
-package com.lukeneedham.flowerpotrecycler.delegatedadapter.multitype.builderbinder
+package com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder
 
-import android.content.Context
 import android.view.View
+import android.view.ViewGroup
 import com.lukeneedham.flowerpotrecycler.FlowerPotRecyclerException
 import kotlin.reflect.KClass
 
@@ -12,7 +12,7 @@ abstract class ItemBuilderBinder<ItemType : Any, ItemViewType : View> {
      */
     abstract val itemTypeClass: KClass<ItemType>
 
-    abstract fun createView(context: Context): ItemViewType
+    abstract fun createView(parent: ViewGroup): ItemViewType
 
     abstract fun bind(itemView: ItemViewType, position: Int, item: ItemType)
 
