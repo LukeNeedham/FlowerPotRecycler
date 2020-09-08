@@ -11,8 +11,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.RecyclerAdapterBuilder
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.view.RecyclerItemViewBuilderBinder
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.xml.StaticXmlBuilderBinder
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.implementation.view.RecyclerItemViewBuilderBinder
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.implementation.xml.XmlLabmdaBuilderBinder
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.config.AdapterConfig
 import com.lukeneedham.flowerpotrecycler.util.addItemLayoutParams
 import com.lukeneedham.flowerpotrecycler.util.addOnItemClickListener
@@ -55,7 +55,7 @@ class ChooseLayoutTypeFragment : Fragment() {
         }
 
         optionsRecyclerView.adapter = RecyclerAdapterBuilder.fromBuilderBinders(
-            StaticXmlBuilderBinder.fromType<HeaderItem>(R.layout.view_header_item),
+            XmlLabmdaBuilderBinder.fromStaticClass<HeaderItem>(R.layout.view_header_item),
             RecyclerItemViewBuilderBinder.fromItemType<ChoiceItem, ChoiceItemView>(),
             config = config
         )

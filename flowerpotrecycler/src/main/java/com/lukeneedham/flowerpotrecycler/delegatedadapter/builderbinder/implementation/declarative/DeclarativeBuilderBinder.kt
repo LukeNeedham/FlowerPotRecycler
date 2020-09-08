@@ -1,10 +1,10 @@
-package com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.declarative
+package com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.implementation.declarative
 
 import android.view.View
 import android.view.ViewGroup
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.BuilderBinder
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.ClassMatcher
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.ItemMatcher
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.matcher.ClassMatcher
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.matcher.ItemMatcher
 
 /**
  * An implementation of [BuilderBinder] which combines the building of the View, and the binding of the item,
@@ -40,6 +40,9 @@ class DeclarativeBuilderBinder<ItemType : Any>(
         inline fun <reified ItemType : Any> fromType(
             noinline builder: DeclarativeBindingDsl<ItemType>.(ViewGroup) -> View
         ): DeclarativeBuilderBinder<ItemType> =
-            DeclarativeBuilderBinder(ClassMatcher(ItemType::class), builder)
+            DeclarativeBuilderBinder(
+                ClassMatcher(
+                    ItemType::class
+                ), builder)
     }
 }

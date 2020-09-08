@@ -1,13 +1,13 @@
-package com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.view
+package com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.implementation.view
 
 import android.view.View
 import android.view.ViewGroup
 import com.lukeneedham.flowerpotrecycler.Builder
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.RecyclerItemView
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.BuilderBinder
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.ClassMatcher
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.ItemMatcher
-import com.lukeneedham.flowerpotrecycler.util.build
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.matcher.ClassMatcher
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.matcher.ItemMatcher
+import com.lukeneedham.flowerpotrecycler.util.createBuilder
 import kotlin.reflect.KClass
 
 /** Builds the item view with [viewCreator] and implicitly binds using [RecyclerItemView.setItem] */
@@ -33,16 +33,11 @@ class RecyclerItemViewBuilderBinder<ItemType : Any, ItemViewType>(
             viewClass: KClass<ItemViewType>
         ): RecyclerItemViewBuilderBinder<ItemType, ItemViewType>
                 where ItemViewType : View, ItemViewType : RecyclerItemView<ItemType> =
-            RecyclerItemViewBuilderBinder(ClassMatcher(itemClass)) {
-                viewClass.build(it.context)
-            }
+            RecyclerItemViewBuilderBinder(ClassMatcher(itemClass), viewClass.createBuilder())
 
         inline fun <reified ItemType : Any, reified ItemViewType> fromItemType():
                 RecyclerItemViewBuilderBinder<ItemType, ItemViewType>
                 where ItemViewType : View, ItemViewType : RecyclerItemView<ItemType> =
-            fromItemClass(
-                ItemType::class,
-                ItemViewType::class
-            )
+            fromItemClass(ItemType::class, ItemViewType::class)
     }
 }

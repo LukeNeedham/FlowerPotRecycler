@@ -3,7 +3,6 @@ package com.lukeneedham.flowerpotrecycler.delegatedadapter.config
 import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.AdapterFeatureDelegate
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.position.AdapterPositionDelegate
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.singletype.recycleritemview.ConfigurableSingleTypeRecyclerItemViewAdapter
 
 
 /**

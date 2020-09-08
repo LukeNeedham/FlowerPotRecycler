@@ -9,10 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.RecyclerAdapterBuilder
-import com.lukeneedham.flowerpotrecycler.SingleTypeRecyclerAdapterBuilder
-import com.lukeneedham.flowerpotrecycler.staticviewadapter.config.StaticViewAdapterConfig
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.config.AdapterConfig
 import com.lukeneedham.flowerpotrecycler.util.addItemLayoutParams
-import com.lukeneedham.flowerpotrecycler.util.addOnClickListener
+import com.lukeneedham.flowerpotrecycler.util.addOnItemClickListener
 import com.lukeneedham.flowerpotrecyclersample.R
 import kotlinx.android.synthetic.main.fragment_xml_layout.*
 
@@ -30,24 +29,25 @@ class StaticAdapterFragment : Fragment() {
         // Build a recyclerview for a static view, which doesn't require binding
 
         // Requires a different config for static views
-        val staticConfig = StaticViewAdapterConfig().apply {
+        val staticConfig = AdapterConfig<Any>().apply {
             addItemLayoutParams(
                 RecyclerView.LayoutParams(
                     RecyclerView.LayoutParams.MATCH_PARENT,
                     RecyclerView.LayoutParams.WRAP_CONTENT
                 )
             )
-            addOnClickListener {
+            addOnItemClickListener { _, _ ->
                 Toast.makeText(requireContext(), "Static view clicked", Toast.LENGTH_SHORT).show()
             }
         }
         val staticViewAdapter =
-            SingleTypeRecyclerAdapterBuilder.fromStaticView<ExampleStaticView>(staticConfig)
+            RecyclerAdapterBuilder.fromStaticView<Any, ExampleStaticView>(staticConfig)
 
         // Alternative function to specify view creation function explicitly
-        val staticViewAdapterAlternative = SingleTypeRecyclerAdapterBuilder.fromStaticViewCreator {
-            ExampleStaticView(it.context)
-        }
+        val staticViewAdapterAlternative =
+            RecyclerAdapterBuilder.fromStaticViewCreator<Any, ExampleStaticView> {
+                ExampleStaticView(it.context)
+            }
 
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)

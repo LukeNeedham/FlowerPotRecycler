@@ -1,4 +1,4 @@
-package com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.declarative
+package com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.implementation.declarative
 
 import com.lukeneedham.flowerpotrecycler.FlowerPotRecyclerException
 

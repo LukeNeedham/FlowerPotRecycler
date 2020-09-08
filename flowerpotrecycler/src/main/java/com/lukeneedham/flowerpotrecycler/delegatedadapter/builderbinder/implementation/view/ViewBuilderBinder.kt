@@ -1,13 +1,15 @@
-package com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.view
+package com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.implementation.view
 
 import android.view.View
 import android.view.ViewGroup
 import com.lukeneedham.flowerpotrecycler.Binder
 import com.lukeneedham.flowerpotrecycler.Builder
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.BuilderBinder
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.ClassMatcher
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.ItemMatcher
-import com.lukeneedham.flowerpotrecycler.util.build
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.matcher.ClassMatcher
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.matcher.ItemMatcher
+import com.lukeneedham.flowerpotrecycler.util.BuilderBinderUtils
+import com.lukeneedham.flowerpotrecycler.util.BuilderBinderUtils.createEmptyBinder
+import com.lukeneedham.flowerpotrecycler.util.createBuilder
 import kotlin.reflect.KClass
 
 /** builds the view with [builder] and binds with [binder] */
@@ -31,7 +33,11 @@ class ViewBuilderBinder<ItemType : Any, ItemViewType : View>(
             builder: Builder<ItemViewType>,
             binder: Binder<ItemType, ItemViewType>
         ): ViewBuilderBinder<ItemType, ItemViewType> =
-            ViewBuilderBinder(ClassMatcher(itemClass), builder, binder)
+            ViewBuilderBinder(
+                ClassMatcher(
+                    itemClass
+                ), builder, binder
+            )
 
         fun <ItemType : Any, ItemViewType : View> fromItemClassAutoBuild(
             itemClass: KClass<ItemType>,
@@ -40,7 +46,7 @@ class ViewBuilderBinder<ItemType : Any, ItemViewType : View>(
         ): ViewBuilderBinder<ItemType, ItemViewType> =
             fromItemClass(
                 itemClass,
-                builder = { viewClass.build(it.context) },
+                builder = viewClass.createBuilder(),
                 binder = binder
             )
 
@@ -54,5 +60,16 @@ class ViewBuilderBinder<ItemType : Any, ItemViewType : View>(
             noinline binder: Binder<ItemType, ItemViewType>
         ): ViewBuilderBinder<ItemType, ItemViewType> =
             fromItemClassAutoBuild(ItemType::class, ItemViewType::class, binder)
+
+        fun <ItemType : Any, ItemViewType : View> fromStaticClass(
+            itemClass: KClass<ItemType>,
+            viewClass: KClass<ItemViewType>
+        ): ViewBuilderBinder<ItemType, ItemViewType> {
+            return fromItemClassAutoBuild(itemClass, viewClass, createEmptyBinder())
+        }
+
+        inline fun <reified ItemType : Any, reified ItemViewType : View> fromStaticType():
+                ViewBuilderBinder<ItemType, ItemViewType> =
+            fromStaticClass(ItemType::class, ItemViewType::class)
     }
 }

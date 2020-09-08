@@ -3,6 +3,7 @@ package com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder
 import android.view.View
 import android.view.ViewGroup
 import com.lukeneedham.flowerpotrecycler.FlowerPotRecyclerException
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.matcher.ItemMatcher
 
 /** Handles the building of the view, and the binding of the item for each item type */
 abstract class BuilderBinder<ItemType : Any, ItemViewType : View> {

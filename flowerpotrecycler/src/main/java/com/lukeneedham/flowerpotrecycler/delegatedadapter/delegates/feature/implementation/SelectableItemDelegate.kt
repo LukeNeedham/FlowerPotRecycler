@@ -4,7 +4,6 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.BaseAdapterFeatureDelegate
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.DelegatedRecyclerAdapter
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.singletype.recycleritemview.SingleTypeRecyclerItemViewAdapter
 
 /**
  * A delegate that allows for up to 1 item to be selected at a time. Initially, no item is selected.

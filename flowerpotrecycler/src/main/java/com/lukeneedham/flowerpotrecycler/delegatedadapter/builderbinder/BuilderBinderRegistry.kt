@@ -4,7 +4,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.lukeneedham.flowerpotrecycler.FlowerPotRecyclerException
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.ViewHolder
-import kotlin.reflect.KClass
 
 /**
  * A registry of [BuilderBinder]s, which each handle a single item type.
@@ -87,6 +86,14 @@ class BuilderBinderRegistry<BaseItemType : Any>(
             throw FlowerPotRecyclerException(
                 "There are multiple BuilderBinders registered for item types: $duplicateBuilderBinderTypes"
             )
+        }
+    }
+
+    companion object {
+        fun <BaseItemType : Any> from(
+            vararg builderBinders: BuilderBinder<out BaseItemType, *>
+        ): BuilderBinderRegistry<BaseItemType> {
+            return BuilderBinderRegistry(listOf(*builderBinders))
         }
     }
 }

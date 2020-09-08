@@ -1,4 +1,4 @@
-package com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.xml
+package com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.implementation.xml
 
 import android.view.LayoutInflater
 import android.view.View

@@ -10,7 +10,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lukeneedham.flowerpotrecycler.RecyclerAdapterBuilder
-import com.lukeneedham.flowerpotrecycler.SingleTypeRecyclerAdapterBuilder
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.config.AdapterConfig
 import com.lukeneedham.flowerpotrecycler.util.addOnItemClickListener
 import com.lukeneedham.flowerpotrecyclersample.domain.FlowerPotDatabase
@@ -40,7 +39,7 @@ class AnkoLayoutFragment : Fragment() {
                             ).show()
                         }
                     }
-                    adapter = SingleTypeRecyclerAdapterBuilder.fromDeclarativeDsl(config) {
+                    adapter = RecyclerAdapterBuilder.fromDeclarativeDsl(config) {
                         UI {
                             linearLayout {
                                 imageView().apply {

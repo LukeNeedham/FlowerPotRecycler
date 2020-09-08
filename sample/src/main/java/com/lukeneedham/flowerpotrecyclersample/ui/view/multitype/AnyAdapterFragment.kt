@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.RecyclerAdapterBuilder
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.BuilderBinderRegistry
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.view.RecyclerItemViewBuilderBinder
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.view.StaticViewBuilderBinder
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.implementation.view.RecyclerItemViewBuilderBinder
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.implementation.view.ViewBuilderBinder
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.config.AdapterConfig
 import com.lukeneedham.flowerpotrecycler.util.addItemLayoutParams
 import com.lukeneedham.flowerpotrecycler.util.addOnItemClickListener
@@ -68,21 +68,19 @@ class AnyAdapterFragment : Fragment() {
         // a StaticAItemView will be shown in the corresponding position
         // In a real use-case, this might be a Header view
         val staticABuilderBinder =
-            StaticViewBuilderBinder.fromType<StaticA, StaticAItemView>()
+            ViewBuilderBinder.fromStaticType<StaticA, StaticAItemView>()
 
         val staticBBuilderBinder =
-            StaticViewBuilderBinder.fromType<StaticB, StaticBItemView>()
+            ViewBuilderBinder.fromStaticType<StaticB, StaticBItemView>()
 
         // Multi-type adapter from type registry
         // Config optional
         val builderBinderRegistry: BuilderBinderRegistry<Any> =
-            BuilderBinderRegistry(
-                listOf(
-                    flowerPotBuilderBinder,
-                    intBuilderBinder,
-                    staticABuilderBinder,
-                    staticBBuilderBinder
-                )
+            BuilderBinderRegistry.from(
+                flowerPotBuilderBinder,
+                intBuilderBinder,
+                staticABuilderBinder,
+                staticBBuilderBinder
             )
         val recyclerAdapter =
             RecyclerAdapterBuilder.fromBuilderBinderRegistry(builderBinderRegistry, adapterConfig)
