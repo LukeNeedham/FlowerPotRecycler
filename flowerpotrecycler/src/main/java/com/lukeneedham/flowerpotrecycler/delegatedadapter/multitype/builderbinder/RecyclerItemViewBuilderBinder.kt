@@ -7,7 +7,6 @@ import kotlin.reflect.KClass
 
 class RecyclerItemViewBuilderBinder<ItemType : Any, ItemViewType>(
     override val itemTypeClass: KClass<ItemType>,
-    override val itemViewTypeClass: KClass<ItemViewType>,
     private val viewCreator: (Context) -> ItemViewType
 ) : ItemBuilderBinder<ItemType, ItemViewType>()
         where ItemViewType : View, ItemViewType : RecyclerItemView<ItemType> {
@@ -27,8 +26,7 @@ class RecyclerItemViewBuilderBinder<ItemType : Any, ItemViewType>(
         ): RecyclerItemViewBuilderBinder<ItemType, ItemViewType>
                 where ItemViewType : View, ItemViewType : RecyclerItemView<ItemType> =
             RecyclerItemViewBuilderBinder(
-                itemClass,
-                viewClass
+                itemClass
             ) {
                 viewClass.java.getConstructor(Context::class.java).newInstance(it)
             }

@@ -17,16 +17,11 @@ abstract class SingleTypeRecyclerAdapter<ItemType : Any, ItemViewType> :
         where ItemViewType : View, ItemViewType : RecyclerItemView<ItemType> {
 
     abstract val itemTypeClass: KClass<ItemType>
-    abstract val itemViewTypeClass: KClass<ItemViewType>
 
     override val builderBinderRegistry: BuilderBinderRegistry<ItemType> by lazy {
         BuilderBinderRegistry(
             listOf(
-                RecyclerItemViewBuilderBinder(
-                    itemTypeClass,
-                    itemViewTypeClass,
-                    ::createItemView
-                )
+                RecyclerItemViewBuilderBinder(itemTypeClass, ::createItemView)
             )
         )
     }

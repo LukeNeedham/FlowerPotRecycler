@@ -141,7 +141,7 @@ object RecyclerAdapterBuilder {
         config: RecyclerAdapterConfig<ItemType>? = null
     ): SingleTypeRecyclerAdapter<ItemType, ItemViewType>
             where ItemViewType : View, ItemViewType : RecyclerItemView<ItemType> =
-        ConfigurableSingleTypeRecyclerAdapter(itemTypeClass, itemViewClass, config) {
+        ConfigurableSingleTypeRecyclerAdapter(itemTypeClass, config) {
             itemViewClass.java.getConstructor(Context::class.java).newInstance(it)
         }
 

@@ -45,7 +45,6 @@ class FlowerPotRecyclerAdapter(
         LinearPositionDelegate(this, DefaultDiffCallback())
 
     override val itemTypeClass = FlowerPotModel::class
-    override val itemViewTypeClass = FlowerPotItemView::class
 
     override fun createItemView(context: Context) =
         FlowerPotItemView(context)

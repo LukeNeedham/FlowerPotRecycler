@@ -12,16 +12,17 @@ abstract class ItemBuilderBinder<ItemType : Any, ItemViewType : View> {
      */
     abstract val itemTypeClass: KClass<ItemType>
 
-    abstract val itemViewTypeClass: KClass<ItemViewType>
-
     abstract fun createView(context: Context): ItemViewType
 
     abstract fun bind(itemView: ItemViewType, position: Int, item: ItemType)
 
     /* This is a nasty workaround to type-erasure */
+    @Suppress("UNCHECKED_CAST")
     fun bindUntyped(view: View, position: Int, item: Any) {
-        val typedView = itemViewTypeClass.java.cast(view)
-            ?: throw FlowerPotRecyclerException("View $view must be of type $itemViewTypeClass to bind with $this")
+        val typedView = view as? ItemViewType
+            ?: throw FlowerPotRecyclerException(
+                "View $view is of the wrong view type for BuilderBinder ($this) registered for item type $itemTypeClass"
+            )
         val typedItem = itemTypeClass.java.cast(item)
             ?: throw FlowerPotRecyclerException("Item $item must be of type $itemTypeClass to bind with $this")
         bind(typedView, position, typedItem)

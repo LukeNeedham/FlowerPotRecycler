@@ -15,7 +15,6 @@ import kotlin.reflect.KClass
  */
 class ConfigurableSingleTypeRecyclerAdapter<ItemType : Any, ItemViewType>(
     override val itemTypeClass: KClass<ItemType>,
-    override val itemViewTypeClass: KClass<ItemViewType>,
     config: RecyclerAdapterConfig<ItemType>?,
     private val itemViewCreator: (Context) -> ItemViewType
 ) : DefaultSingleTypeRecyclerAdapter<ItemType, ItemViewType>()
@@ -42,7 +41,6 @@ class ConfigurableSingleTypeRecyclerAdapter<ItemType : Any, ItemViewType>(
                 where ItemViewType : View, ItemViewType : RecyclerItemView<ItemType> {
             return ConfigurableSingleTypeRecyclerAdapter(
                 ItemType::class,
-                ItemViewType::class,
                 config,
                 itemViewCreator
             )

@@ -6,7 +6,6 @@ import kotlin.reflect.KClass
 
 class ConstructedItemBuilderBinder<ItemType : Any, ItemViewType : View>(
     override val itemTypeClass: KClass<ItemType>,
-    override val itemViewTypeClass: KClass<ItemViewType>,
     private val viewCreator: (Context) -> ItemViewType,
     private val itemBinder: (position: Int, item: ItemType, itemView: ItemViewType) -> Unit
 ) : ItemBuilderBinder<ItemType, ItemViewType>() {
