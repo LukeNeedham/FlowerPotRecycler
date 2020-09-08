@@ -10,7 +10,7 @@ import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.matcher.
  * An implementation of [BuilderBinder] which combines the building of the View, and the binding of the item,
  * into a single override. Useful if you are building the layout programmatically (for example, with Anko DSL Layout).
  *
- * Call [onItem][com.lukeneedham.flowerpotrecycler.autoadapter.builderbinder.declarative.DeclarativeBindingDsl.onItem]
+ * Call [DeclarativeBindingDsl.onItem]
  * within your implementation of [build] to add a callback to bind the item to the View.
  */
 class DeclarativeBuilderBinder<ItemType : Any>(

@@ -130,7 +130,7 @@ object RecyclerAdapterBuilder {
     }
 
     /**
-     * Create a [SingleTypeRecyclerItemViewAdapter], which handles a single type of item ([ItemType]) with a single view ([ItemViewType]).
+     * Create a [DelegatedRecyclerAdapter], which handles a single type of item ([ItemType]) with a single view ([ItemViewType]).
      *
      * To be used when View logic is contained within its own class.
      *
@@ -147,7 +147,7 @@ object RecyclerAdapterBuilder {
     }
 
     /**
-     * Create a [SingleTypeRecyclerItemViewAdapter], which handles a single type of item ([ItemType]) with a single view ([ItemViewType]).
+     * Create a [DelegatedRecyclerAdapter], which handles a single type of item ([ItemType]) with a single view ([ItemViewType]).
      *
      * To be used when View logic is contained within its own class.
      *

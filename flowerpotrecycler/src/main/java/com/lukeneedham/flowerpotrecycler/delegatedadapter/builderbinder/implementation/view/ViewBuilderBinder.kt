@@ -12,6 +12,7 @@ import com.lukeneedham.flowerpotrecycler.util.extensions.createBuilder
 import kotlin.reflect.KClass
 
 /** builds the view with [builder] and binds with [binder] */
+@Suppress("unused")
 class ViewBuilderBinder<ItemType : Any, ItemViewType : View>(
     override val itemMatcher: ItemMatcher<ItemType>,
     private val builder: Builder<ItemViewType>,

@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.lukeneedham.flowerpotrecycler.util.extensions
 
 import androidx.recyclerview.widget.RecyclerView

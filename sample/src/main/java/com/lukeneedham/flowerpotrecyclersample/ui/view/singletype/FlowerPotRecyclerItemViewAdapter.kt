@@ -2,6 +2,7 @@ package com.lukeneedham.flowerpotrecyclersample.ui.view.singletype
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.DefaultDelegatedRecyclerAdapter
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.DefaultDiffCallback
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.DelegatedRecyclerAdapter
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.ViewHolder
@@ -17,11 +18,11 @@ import com.lukeneedham.flowerpotrecyclersample.domain.FlowerPotModel
 import com.lukeneedham.flowerpotrecyclersample.ui.view.FlowerPotItemView
 
 /**
- * A demo of extending [DefaultSingleTypeRecyclerItemViewAdapter] to add your own functionality.
+ * A demo of extending [DelegatedRecyclerAdapter] to add your own functionality.
  * In this case, adding [selectableItemDelegate].
  *
- * You can also override [SingleTypeRecyclerItemViewAdapter], which comes without the defaults,
- * so requires you to override [featureDelegates] and [positionDelegate]
+ * You can also override [DefaultDelegatedRecyclerAdapter], which comes with defaults,
+ * so you don't need to override [featureDelegates] and [positionDelegate]
  */
 class FlowerPotRecyclerItemViewAdapter(
     onItemClick: (FlowerPotModel) -> Unit
@@ -32,7 +33,6 @@ class FlowerPotRecyclerItemViewAdapter(
         RecyclerItemViewBuilderBinder.fromItemType<FlowerPotModel, FlowerPotItemView>()
     )
 
-    // Optional override
     override val featureDelegates: List<AdapterFeatureDelegate<FlowerPotModel>> = listOf(
         ItemLayoutParamsDelegate(
             RecyclerView.LayoutParams(
@@ -44,11 +44,8 @@ class FlowerPotRecyclerItemViewAdapter(
         selectableItemDelegate
     )
 
-    // Optional override
     override val positionDelegate: AdapterPositionDelegate<FlowerPotModel> =
         LinearPositionDelegate(this, DefaultDiffCallback())
-
-    fun createItemView(parent: ViewGroup) = FlowerPotItemView(parent.context)
 
     override fun onFailedToRecycleView(holder: ViewHolder): Boolean {
         return super.onFailedToRecycleView(holder)

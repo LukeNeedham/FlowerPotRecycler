@@ -2,12 +2,13 @@ package com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.implementation.OnItemClickDelegate
 
 /** A delegate for extended functionality on the adapter */
 interface AdapterFeatureDelegate<ItemType> {
 
     /**
-     * A hook for after the ViewHolder has been created in [onCreateViewHolder].
+     * A hook for after the ViewHolder has been created in [RecyclerView.Adapter.onCreateViewHolder].
      * This hook can be used to modify the created View after creation.
      */
     fun onViewHolderCreated(

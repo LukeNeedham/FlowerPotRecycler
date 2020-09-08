@@ -20,7 +20,7 @@ class LinearPositionDelegate<ItemType>(
 
     override fun getItems(): List<ItemType> = asyncListDiffer.currentList
 
-    override fun getItemAt(position: Int) = asyncListDiffer.currentList[position]
+    override fun getItemAt(position: Int): ItemType = asyncListDiffer.currentList[position]
 
     override fun getItemCount() = asyncListDiffer.currentList.size
 

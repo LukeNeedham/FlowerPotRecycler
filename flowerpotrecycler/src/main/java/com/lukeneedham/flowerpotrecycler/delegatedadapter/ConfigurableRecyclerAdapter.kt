@@ -7,8 +7,8 @@ import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.BuilderB
 import com.lukeneedham.flowerpotrecycler.util.extensions.getFeatureDelegates
 
 /**
- * Sets up the adapter with values from [config], if not null.
- * If [config] is null, the values are the defaults as defined in [DefaultSingleTypeRecyclerAdapter]
+ * @param config supplies the setup for the adapter.
+ * If null, the values are the defaults as defined in [DefaultDelegatedRecyclerAdapter]
  */
 class ConfigurableRecyclerAdapter<BaseItemType : Any>(
     override val builderBinderRegistry: BuilderBinderRegistry<BaseItemType>,

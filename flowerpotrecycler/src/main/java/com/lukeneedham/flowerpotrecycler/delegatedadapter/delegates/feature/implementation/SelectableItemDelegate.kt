@@ -9,8 +9,9 @@ import com.lukeneedham.flowerpotrecycler.delegatedadapter.DelegatedRecyclerAdapt
  * A delegate that allows for up to 1 item to be selected at a time. Initially, no item is selected.
  * To return to the no item selected state, use [resetSelection]
  *
- * To show the selected state, the ItemViewType of your [SingleTypeRecyclerItemViewAdapter] needs to override [View.setSelected]
+ * To show the selected state, your ItemViewType needs to override [View.setSelected]
  */
+@Suppress("unused")
 class SelectableItemDelegate<ItemType : Any>(
     private val adapter: DelegatedRecyclerAdapter<ItemType>,
     private val onSelectedPositionChangeListener: (oldPosition: Int, newPosition: Int) -> Unit = { _, _ -> }

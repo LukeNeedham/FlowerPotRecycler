@@ -6,6 +6,7 @@ import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.matcher.
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.matcher.ItemMatcher
 import com.lukeneedham.flowerpotrecycler.util.BuilderBinderUtils.createEmptyBinder
 
+@Suppress("unused")
 class XmlLabmdaBuilderBinder<ItemType : Any>(
     @LayoutRes override val xmlLayoutResId: Int,
     override val itemMatcher: ItemMatcher<ItemType>,
