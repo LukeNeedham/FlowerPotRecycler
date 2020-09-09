@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/nav_graph"
-            app:startDestination="@id/chooseLayoutTypeFragment">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/nav_graph"
+        app:startDestination="@id/chooseLayoutTypeFragment">
 
     <fragment
             android:id="@+id/chooseLayoutTypeFragment"
-            android:name="com.lukeneedham.flowerpotrecyclersample.ui.feature.home.ChooseLayoutTypeFragment"
+            android:name="com.lukeneedham.flowerpotrecyclersample.ui.feature.home.HomeFragment"
             android:label="Flower Pot Recycler Demo">
         <action
-                android:id="@+id/action_chooseLayoutTypeFragment_to_xmlLayoutFragment"
-                app:destination="@id/xmlLayoutFragment"/>
+                android:id="@+id/action_chooseLayoutTypeFragment_to_xmlAdapterFragment"
+                app:destination="@id/xmlAdapterFragment" />
         <action
-                android:id="@+id/action_chooseLayoutTypeFragment_to_ankoWithDatabindingLayoutFragment"
-                app:destination="@id/ankoWithDatabindingLayoutFragment"/>
+                android:id="@+id/action_chooseLayoutTypeFragment_to_ankoFragment"
+                app:destination="@id/ankoFragment" />
         <action
-                android:id="@+id/action_chooseLayoutTypeFragment_to_viewClassFragment"
-                app:destination="@id/viewClassFragment" />
+                android:id="@+id/action_chooseLayoutTypeFragment_to_recyclerItemViewAdapterFragment"
+                app:destination="@id/recyclerItemViewAdapterFragment" />
+        <action
+                android:id="@+id/action_chooseLayoutTypeFragment_to_staticViewAdapterFragment"
+                app:destination="@id/staticViewAdapterFragment" />
         <action
                 android:id="@+id/action_chooseLayoutTypeFragment_to_anyAdapterFragment"
                 app:destination="@id/anyAdapterFragment" />
@@ -24,31 +27,42 @@
                 android:id="@+id/action_chooseLayoutTypeFragment_to_numberAdapterFragment"
                 app:destination="@id/numberAdapterFragment" />
         <action
-                android:id="@+id/action_chooseLayoutTypeFragment_to_staticAdapterFragment"
-                app:destination="@id/staticAdapterFragment" />
+                android:id="@+id/action_chooseLayoutTypeFragment_to_viewAdapterFragment"
+                app:destination="@id/viewAdapterFragment" />
+        <action
+                android:id="@+id/action_chooseLayoutTypeFragment_to_customAdapterFragment"
+                app:destination="@id/customAdapterFragment" />
     </fragment>
     <fragment
-            android:id="@+id/xmlLayoutFragment"
-            android:name="com.lukeneedham.flowerpotrecyclersample.ui.feature.xml.XmlLayoutFragment"
-            android:label="XML"/>
+            android:id="@+id/xmlAdapterFragment"
+            android:name="com.lukeneedham.flowerpotrecyclersample.ui.feature.xml.XmlAdapterFragment"
+            android:label="XML" />
     <fragment
-            android:id="@+id/ankoWithDatabindingLayoutFragment"
-            android:name="com.lukeneedham.flowerpotrecyclersample.ui.feature.anko.AnkoLayoutFragment"
-            android:label="Anko DSL"/>
+            android:id="@+id/ankoFragment"
+            android:name="com.lukeneedham.flowerpotrecyclersample.ui.feature.anko.AnkoFragment"
+            android:label="Anko DSL" />
     <fragment
-            android:id="@+id/viewClassFragment"
-            android:name="com.lukeneedham.flowerpotrecyclersample.ui.feature.view.singletype.SingleViewTypeFragment"
-            android:label="Custom view" />
+            android:id="@+id/recyclerItemViewAdapterFragment"
+            android:name="com.lukeneedham.flowerpotrecyclersample.ui.feature.recycleritemview.RecyclerItemViewAdapterFragment"
+            android:label="Recycler Item View" />
     <fragment
-            android:id="@+id/staticAdapterFragment"
-            android:name="com.lukeneedham.flowerpotrecyclersample.ui.feature.view.staticview.StaticAdapterFragment"
-            android:label="Static view" />
+            android:id="@+id/staticViewAdapterFragment"
+            android:name="com.lukeneedham.flowerpotrecyclersample.ui.feature.staticview.StaticViewAdapterFragment"
+            android:label="Static View" />
     <fragment
             android:id="@+id/anyAdapterFragment"
-            android:name="com.lukeneedham.flowerpotrecyclersample.ui.feature.view.multitype.AnyAdapterFragment"
-            android:label="Multi-type with anything" />
+            android:name="com.lukeneedham.flowerpotrecyclersample.ui.feature.multi.any.AnyAdapterFragment"
+            android:label="Multi-type of Anything" />
     <fragment
             android:id="@+id/numberAdapterFragment"
-            android:name="com.lukeneedham.flowerpotrecyclersample.ui.feature.view.multitype.NumberAdapterFragment"
-            android:label="Multi-type with Numbers" />
+            android:name="com.lukeneedham.flowerpotrecyclersample.ui.feature.multi.number.NumberAdapterFragment"
+            android:label="Multi-type of Number" />
+    <fragment
+            android:id="@+id/viewAdapterFragment"
+            android:name="com.lukeneedham.flowerpotrecyclersample.ui.feature.view.ViewAdapterFragment"
+            android:label="Custom View" />
+    <fragment
+            android:id="@+id/customAdapterFragment"
+            android:name="com.lukeneedham.flowerpotrecyclersample.ui.feature.customadapter.CustomAdapterFragment"
+            android:label="Custom Adapter" />
 </navigation>

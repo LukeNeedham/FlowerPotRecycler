@@ -117,7 +117,7 @@ val config = AdapterConfig<FlowerPotModel>().apply {
     addItemLayoutParams(
         // Configure your layout params however you like
         RecyclerView.LayoutParams(
-            RecyclerView.LayoutParams.WRAP_CONTENT,
+            RecyclerView.LayoutParams.MATCH_PARENT,
             RecyclerView.LayoutParams.WRAP_CONTENT
         ).apply {
             leftMargin = 10
