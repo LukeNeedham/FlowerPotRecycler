@@ -30,25 +30,25 @@
     <fragment
             android:id="@+id/xmlLayoutFragment"
             android:name="com.lukeneedham.flowerpotrecyclersample.ui.xml.XmlLayoutFragment"
-            android:label="XML Recycler"/>
+            android:label="XML"/>
     <fragment
             android:id="@+id/ankoWithDatabindingLayoutFragment"
             android:name="com.lukeneedham.flowerpotrecyclersample.ui.anko.AnkoLayoutFragment"
-            android:label="Anko DSL Recycler"/>
+            android:label="Anko DSL"/>
     <fragment
             android:id="@+id/viewClassFragment"
             android:name="com.lukeneedham.flowerpotrecyclersample.ui.view.singletype.SingleViewTypeFragment"
-            android:label="ViewClassFragment" />
+            android:label="Custom view" />
     <fragment
             android:id="@+id/staticAdapterFragment"
             android:name="com.lukeneedham.flowerpotrecyclersample.ui.view.staticview.StaticAdapterFragment"
-            android:label="StaticAdapterFragment" />
+            android:label="Static view" />
     <fragment
             android:id="@+id/anyAdapterFragment"
             android:name="com.lukeneedham.flowerpotrecyclersample.ui.view.multitype.AnyAdapterFragment"
-            android:label="AnyAdapterFragment" />
+            android:label="Multi-type with anything" />
     <fragment
             android:id="@+id/numberAdapterFragment"
             android:name="com.lukeneedham.flowerpotrecyclersample.ui.view.multitype.NumberAdapterFragment"
-            android:label="NumberAdapterFragment" />
+            android:label="Multi-type with Numbers" />
 </navigation>

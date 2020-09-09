@@ -10,7 +10,7 @@ import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.BuilderB
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.BuilderBinderRegistry
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.implementation.declarative.DeclarativeBindingDsl
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.implementation.declarative.DeclarativeBuilderBinder
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.implementation.xml.XmlLabmdaBuilderBinder
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.implementation.xml.XmlBuilderBinder
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.matcher.AllMatcher
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.config.RecyclerAdapterConfig
 import com.lukeneedham.flowerpotrecycler.util.BuilderBinderUtils.createEmptyBinder
@@ -86,7 +86,7 @@ object RecyclerAdapterBuilder {
         config: RecyclerAdapterConfig<ItemType>? = null,
         binder: Binder<ItemType, View>
     ): DelegatedRecyclerAdapter<ItemType> {
-        val builderBinder = XmlLabmdaBuilderBinder(
+        val builderBinder = XmlBuilderBinder(
             layoutResId,
             AllMatcher()
         ) { itemView: View, position: Int, item: ItemType ->
@@ -106,7 +106,7 @@ object RecyclerAdapterBuilder {
         @LayoutRes layoutResId: Int,
         config: RecyclerAdapterConfig<ItemType>? = null
     ): DelegatedRecyclerAdapter<ItemType> {
-        val builderBinder = XmlLabmdaBuilderBinder.fromStatic<ItemType>(layoutResId, AllMatcher())
+        val builderBinder = XmlBuilderBinder.fromStaticMatcher<ItemType>(layoutResId, AllMatcher())
         return SingleTypeAdapterBuilder.fromBuilderBinder(builderBinder, config)
     }
 

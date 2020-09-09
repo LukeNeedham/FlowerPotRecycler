@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.RecyclerAdapterBuilder
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.implementation.view.RecyclerItemViewBuilderBinder
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.implementation.xml.XmlLabmdaBuilderBinder
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.implementation.xml.XmlBuilderBinder
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.config.AdapterConfig
 import com.lukeneedham.flowerpotrecycler.util.extensions.addItemLayoutParams
 import com.lukeneedham.flowerpotrecycler.util.extensions.addOnItemClickListener
@@ -55,7 +55,7 @@ class ChooseLayoutTypeFragment : Fragment() {
         }
 
         optionsRecyclerView.adapter = RecyclerAdapterBuilder.fromBuilderBinders(
-            XmlLabmdaBuilderBinder.fromStaticClass<HeaderItem>(R.layout.view_header_item),
+            XmlBuilderBinder.fromStatic<HeaderItem>(R.layout.view_header_item),
             RecyclerItemViewBuilderBinder.fromItemType<ChoiceItem, ChoiceItemView>(),
             config = config
         )

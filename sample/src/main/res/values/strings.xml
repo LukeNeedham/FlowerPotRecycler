@@ -1,7 +1,12 @@
 <resources>
     <string name="app_name">FlowerPotRecyclerSample</string>
 
-    <string name="choose_layout_type">The Flower Pot Recycler library works nicely with both XML and Anko DSL layouts.</string>
+    <string name="choose_layout_type">
+        FlowerPotRecycler makes RecyclerView Adapters easy and safe, with incredible flexibility!
+        Includes first-class support for multiple-type adapters, single-type adapters,
+        static adapters, adapters from custom views, and adapters from XML layouts.
+        It even provides a DSL for declarative layouts like Anko!
+    </string>
     <string name="show_xml_layout">Show me the XML version!</string>
     <string name="show_anko_layout">Show me the Anko DSL version!</string>
     <string name="show_view_layout">Show me the View class version!</string>
