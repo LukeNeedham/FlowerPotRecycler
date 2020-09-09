@@ -121,7 +121,7 @@ object RecyclerAdapterBuilder {
      * @param builder The function to instantiate your [ItemViewType] class
      * @param config Configuration for the adapter
      */
-    fun <ItemType : Any, ItemViewType> fromRecyclerItemViewCreator(
+    fun <ItemType : Any, ItemViewType> fromRecyclerItemViewBuilder(
         config: RecyclerAdapterConfig<ItemType>? = null,
         builder: Builder<ItemViewType>
     ): DelegatedRecyclerAdapter<ItemType>
@@ -202,7 +202,7 @@ object RecyclerAdapterBuilder {
         return SingleTypeAdapterBuilder.fromViewClass(config, viewClass, createEmptyBinder())
     }
 
-    fun <ItemType : Any, ItemViewType : View> fromStaticViewCreator(
+    fun <ItemType : Any, ItemViewType : View> fromStaticViewBuilder(
         config: RecyclerAdapterConfig<ItemType>? = null,
         builder: Builder<ItemViewType>
     ): DelegatedRecyclerAdapter<ItemType> {

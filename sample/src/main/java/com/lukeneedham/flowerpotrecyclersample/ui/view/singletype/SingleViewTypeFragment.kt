@@ -48,7 +48,7 @@ class SingleViewTypeFragment : Fragment() {
             RecyclerAdapterBuilder.fromRecyclerItemView<FlowerPotModel, FlowerPotItemView>(config)
 
         // Alternatively, we could instantiate the view ourselves. Config optional
-        val recyclerAdapterFromViewCreator = RecyclerAdapterBuilder.fromRecyclerItemViewCreator {
+        val recyclerAdapterFromBuilder = RecyclerAdapterBuilder.fromRecyclerItemViewBuilder {
             FlowerPotItemView(it.context)
         }
 

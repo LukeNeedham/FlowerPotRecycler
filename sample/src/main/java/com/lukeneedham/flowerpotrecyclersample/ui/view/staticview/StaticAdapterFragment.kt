@@ -58,7 +58,7 @@ class StaticAdapterFragment : Fragment() {
 
         // Alternative function to specify view creation function explicitly
         val staticViewAdapterAlternative =
-            RecyclerAdapterBuilder.fromStaticViewCreator<Any, ExampleStaticView> {
+            RecyclerAdapterBuilder.fromStaticViewBuilder<Any, ExampleStaticView> {
                 ExampleStaticView(it.context)
             }
 

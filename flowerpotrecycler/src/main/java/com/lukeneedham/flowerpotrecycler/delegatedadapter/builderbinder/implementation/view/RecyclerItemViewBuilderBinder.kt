@@ -10,15 +10,15 @@ import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.matcher.
 import com.lukeneedham.flowerpotrecycler.util.extensions.createBuilder
 import kotlin.reflect.KClass
 
-/** Builds the item view with [viewCreator] and implicitly binds using [RecyclerItemView.setItem] */
+/** Builds the item view with [builder] and implicitly binds using [RecyclerItemView.setItem] */
 class RecyclerItemViewBuilderBinder<ItemType : Any, ItemViewType>(
     override val itemMatcher: ItemMatcher<ItemType>,
-    private val viewCreator: Builder<ItemViewType>
+    private val builder: Builder<ItemViewType>
 ) : BuilderBinder<ItemType, ItemViewType>()
         where ItemViewType : View, ItemViewType : RecyclerItemView<ItemType> {
 
     override fun build(parent: ViewGroup): ItemViewType {
-        val view = viewCreator(parent)
+        val view = builder(parent)
         // TODO: Generate layout params based on parent, like when inflating from XML
         return view
     }
