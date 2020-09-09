@@ -182,6 +182,10 @@ object RecyclerAdapterBuilder {
         return SingleTypeAdapterBuilder.fromViewType(config, binder)
     }
 
+
+    /*** From static view ***/
+
+
     inline fun <ItemType : Any, reified ItemViewType : View> fromStaticView(
         config: RecyclerAdapterConfig<ItemType>? = null
     ): DelegatedRecyclerAdapter<ItemType> {

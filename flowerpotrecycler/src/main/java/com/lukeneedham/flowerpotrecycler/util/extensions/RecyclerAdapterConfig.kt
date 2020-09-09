@@ -35,6 +35,15 @@ fun <ItemType : Any> RecyclerAdapterConfig<ItemType>.setLinear(
     positionDelegateCreator = { LinearPositionDelegate(it, diffCallback) }
 }
 
+/**
+ * Overrides the value of [RecyclerAdapterConfig.items] to instead use [numberOfItems] dummy items.
+ * The dummy items are simply instances of [Any].
+ * As such, it is your responsibility to ensure that your adapter can handle items of type [Any].
+ */
+fun RecyclerAdapterConfig<Any>.useDummyItems(numberOfItems: Int) {
+    items = List(numberOfItems) { Any() }
+}
+
 fun <ItemType : Any> RecyclerAdapterConfig<ItemType>.addDelegate(
     delegate: AdapterFeatureDelegate<ItemType>
 ) {

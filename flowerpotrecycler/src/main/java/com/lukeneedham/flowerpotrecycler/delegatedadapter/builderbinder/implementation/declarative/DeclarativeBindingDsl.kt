@@ -1,6 +1,6 @@
 package com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.implementation.declarative
 
-class DeclarativeBindingDsl<ItemType>(private val bindingManager: DeclarativeBindingManager<ItemType>) {
+class DeclarativeBindingDsl<ItemType>(private val binder: DeclarativeBinder<ItemType>) {
 
     /**
      * Use within [DeclarativeBuilderBinder.build]
@@ -8,10 +8,6 @@ class DeclarativeBindingDsl<ItemType>(private val bindingManager: DeclarativeBin
      * @param callback The action to perform when an item is bound to this View
      */
     fun onItem(callback: (ItemType) -> Unit) {
-        val currentBuilderParentViewId = bindingManager.requireCurrentViewId()
-        val existingCallbacks =
-            bindingManager.viewIdToBindCallbacks[currentBuilderParentViewId] ?: mutableListOf()
-        existingCallbacks.add(callback)
-        bindingManager.viewIdToBindCallbacks[currentBuilderParentViewId] = existingCallbacks
+        binder.addBindCallback(callback)
     }
 }

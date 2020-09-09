@@ -12,6 +12,7 @@ import com.lukeneedham.flowerpotrecycler.RecyclerAdapterBuilder
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.config.AdapterConfig
 import com.lukeneedham.flowerpotrecycler.util.extensions.addItemLayoutParams
 import com.lukeneedham.flowerpotrecycler.util.extensions.addOnItemClickListener
+import com.lukeneedham.flowerpotrecycler.util.extensions.useDummyItems
 import com.lukeneedham.flowerpotrecyclersample.R
 import kotlinx.android.synthetic.main.fragment_xml_layout.*
 
@@ -30,6 +31,18 @@ class StaticAdapterFragment : Fragment() {
 
         // Requires a different config for static views
         val staticConfig = AdapterConfig<Any>().apply {
+            // We want to show 1 view, but we don't care what the item actually is,
+            // since the view is static and no binding is done anyway.
+            // So we use 1 dummy item here.
+            // We need to make sure that items of type Any are handled by the adapter -
+            // RecyclerAdapterBuilder.fromStaticView takes care of this for us
+            items = listOf(Any())
+
+            // Alternatively, we can use the helper to do the same thing.
+            // This will override the value of [items] with as many 'Any' items as you specify.
+            // In this case, we want 1 dummy item, so this does exactly the same as the line above
+            useDummyItems(1)
+
             addItemLayoutParams(
                 RecyclerView.LayoutParams(
                     RecyclerView.LayoutParams.MATCH_PARENT,

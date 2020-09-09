@@ -20,7 +20,7 @@ object SingleTypeAdapterBuilder {
         builderBinder: BuilderBinder<ItemType, ItemViewType>,
         config: RecyclerAdapterConfig<ItemType>?
     ): DelegatedRecyclerAdapter<ItemType> {
-        val registry = BuilderBinderRegistry.from(builderBinder)
+        val registry = BuilderBinderRegistry(listOf(builderBinder))
         return ConfigurableRecyclerAdapter(registry, config)
     }
 

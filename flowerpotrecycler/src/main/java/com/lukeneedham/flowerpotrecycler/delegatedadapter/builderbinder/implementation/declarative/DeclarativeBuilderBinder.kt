@@ -18,31 +18,24 @@ class DeclarativeBuilderBinder<ItemType : Any>(
     private val builder: DeclarativeBindingDsl<ItemType>.(ViewGroup) -> View
 ) : BuilderBinder<ItemType, View>() {
 
-    private val bindingManager = DeclarativeBindingManager<ItemType>()
+    private val binder = DeclarativeBinder<ItemType>()
 
     override fun build(parent: ViewGroup): View {
-        bindingManager.currentViewId = parent.hashCode()
-        val dsl = DeclarativeBindingDsl(bindingManager)
-        return builder(dsl, parent)
+        binder.onPreViewBuild()
+        val dsl = DeclarativeBindingDsl(binder)
+        val view = builder(dsl, parent)
+        binder.onPostViewBuild(view)
+        return view
     }
 
     override fun bind(itemView: View, position: Int, item: ItemType) {
-        bindingManager.viewIdToBindCallbacks.forEach { (viewHash, callbacks) ->
-            if (viewHash == itemView.hashCode()) {
-                callbacks.forEach {
-                    it(item)
-                }
-            }
-        }
+        binder.bind(itemView, item)
     }
 
     companion object {
         inline fun <reified ItemType : Any> fromType(
             noinline builder: DeclarativeBindingDsl<ItemType>.(ViewGroup) -> View
         ): DeclarativeBuilderBinder<ItemType> =
-            DeclarativeBuilderBinder(
-                ClassMatcher(
-                    ItemType::class
-                ), builder)
+            DeclarativeBuilderBinder(ClassMatcher(ItemType::class), builder)
     }
 }

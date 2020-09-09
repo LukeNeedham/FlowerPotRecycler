@@ -2,7 +2,6 @@ package com.lukeneedham.flowerpotrecycler.delegatedadapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.lukeneedham.flowerpotrecycler.FlowerPotRecyclerException
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.BuilderBinderRegistry
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.feature.AdapterFeatureDelegate
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.delegates.position.AdapterPositionDelegate
@@ -51,14 +50,7 @@ abstract class DelegatedRecyclerAdapter<BaseItemType : Any> : RecyclerView.Adapt
     }
 
     open fun submitList(newItems: List<BaseItemType>, onDiffDone: () -> Unit = {}) {
-        assertItemsHandled(newItems)
+        builderBinderRegistry.assertItemsHandled(newItems)
         positionDelegate.submitList(newItems, onDiffDone)
-    }
-
-    private fun assertItemsHandled(items: List<BaseItemType>) {
-        val unhandledItems = builderBinderRegistry.findUnhandledItems(items)
-        if (unhandledItems.isNotEmpty()) {
-            throw FlowerPotRecyclerException("No BuilderBinder is registered for items: $unhandledItems")
-        }
     }
 }

@@ -23,7 +23,6 @@ class BuilderBinderRegistry<BaseItemType : Any>(
                 "No BuilderBinders have been registered, rendering this registry useless."
             )
         }
-        assertNoDuplicateBuilderBuilderType()
     }
 
     fun build(parent: ViewGroup, itemTypeId: Int): View {
@@ -42,12 +41,23 @@ class BuilderBinderRegistry<BaseItemType : Any>(
         return requireTypeIdForItem(item)
     }
 
-    /**
-     * @return the item types in [items] which do not have a registered BuilderBinder,
-     * and therefore cannot be handled
-     */
-    fun findUnhandledItems(items: List<BaseItemType>): List<BaseItemType> =
-        items.filter { getBuilderBinderForItem(it) == null }.distinct()
+    fun assertItemsHandled(items: List<BaseItemType>) {
+        val duplicateHandledItems = findDuplicateHandledItems(items)
+        if (duplicateHandledItems.isNotEmpty()) {
+            throw FlowerPotRecyclerException(
+                "There are multiple BuilderBinders registered for items: $duplicateHandledItems. " +
+                        "Please ensure each item is matched by exactly 1 BuilderBinder"
+            )
+        }
+
+        val unhandledItems = findUnhandledItems(items)
+        if (unhandledItems.isNotEmpty()) {
+            throw FlowerPotRecyclerException(
+                "There is no BuilderBinder registered for items: $unhandledItems. " +
+                        "Please ensure each item is matched by exactly 1 BuilderBinder"
+            )
+        }
+    }
 
     private fun getBuilderBinderForTypeId(typeId: Int): BuilderBinder<out BaseItemType, *>? =
         builderBinders.getOrNull(typeId)
@@ -75,19 +85,27 @@ class BuilderBinderRegistry<BaseItemType : Any>(
         getBuilderBinderForItem(item)
             ?: throw FlowerPotRecyclerException("No BuilderBinder registered for item: $item")
 
-    /** Throws an exception if there are multiple BuilderBinders registered for the same item type */
-    private fun assertNoDuplicateBuilderBuilderType() {
-        val duplicateBuilderBinderTypes = builderBinders.groupingBy { it.itemMatcher }
-            .eachCount()
-            .filter { it.value > 1 }
-            .map { it.key }
-
-        if (duplicateBuilderBinderTypes.isNotEmpty()) {
-            throw FlowerPotRecyclerException(
-                "There are multiple BuilderBinders registered for item types: $duplicateBuilderBinderTypes"
-            )
+    /**
+     * @return all the items in [items] which can be handled by multiple registered BuilderBinder,
+     * and therefore create ambiguity
+     */
+    private fun findDuplicateHandledItems(items: List<BaseItemType>): List<BaseItemType> {
+        val duplicateMatchedItems = mutableListOf<BaseItemType>()
+        items.forEach { item ->
+            val builderBindersForItem = builderBinders.filter { it.matchesItem(item) }
+            if (builderBindersForItem.size > 1) {
+                duplicateMatchedItems.add(item)
+            }
         }
+        return duplicateMatchedItems.distinct()
     }
+
+    /**
+     * @return all the items in [items] which do not have a registered BuilderBinder,
+     * and therefore cannot be handled
+     */
+    private fun findUnhandledItems(items: List<BaseItemType>): List<BaseItemType> =
+        items.filter { getBuilderBinderForItem(it) == null }.distinct()
 
     companion object {
         fun <BaseItemType : Any> from(
