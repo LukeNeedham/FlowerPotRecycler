@@ -1,20 +1,20 @@
-package com.lukeneedham.flowerpotrecyclersample.ui.view.multitype
+package com.lukeneedham.flowerpotrecyclersample.ui.feature.view.multitype
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.RecyclerAdapterBuilder
-import com.lukeneedham.flowerpotrecycler.delegatedadapter.config.AdapterConfig
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.BuilderBinderRegistry
 import com.lukeneedham.flowerpotrecycler.delegatedadapter.builderbinder.implementation.view.RecyclerItemViewBuilderBinder
+import com.lukeneedham.flowerpotrecycler.delegatedadapter.config.AdapterConfig
 import com.lukeneedham.flowerpotrecycler.util.extensions.addItemLayoutParams
 import com.lukeneedham.flowerpotrecycler.util.extensions.addOnItemClickListener
 import com.lukeneedham.flowerpotrecyclersample.R
+import com.lukeneedham.flowerpotrecyclersample.ui.util.showSnackbar
 import kotlinx.android.synthetic.main.fragment_xml_layout.*
 
 class NumberAdapterFragment : Fragment() {
@@ -39,8 +39,7 @@ class NumberAdapterFragment : Fragment() {
                 )
             )
             addOnItemClickListener { item, position ->
-                val context = requireContext()
-                Toast.makeText(context, item.toString(), Toast.LENGTH_SHORT).show()
+                showSnackbar(item.toString())
             }
         }
 

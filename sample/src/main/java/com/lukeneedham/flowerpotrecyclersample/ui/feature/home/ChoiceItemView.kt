@@ -1,4 +1,4 @@
-package com.lukeneedham.flowerpotrecyclersample.ui.home
+package com.lukeneedham.flowerpotrecyclersample.ui.feature.home
 
 import android.content.Context
 import android.util.AttributeSet

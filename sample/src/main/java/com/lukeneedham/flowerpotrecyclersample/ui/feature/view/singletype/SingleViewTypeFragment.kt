@@ -1,10 +1,9 @@
-package com.lukeneedham.flowerpotrecyclersample.ui.view.singletype
+package com.lukeneedham.flowerpotrecyclersample.ui.feature.view.singletype
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,7 +14,8 @@ import com.lukeneedham.flowerpotrecycler.util.extensions.addOnItemClickListener
 import com.lukeneedham.flowerpotrecyclersample.R
 import com.lukeneedham.flowerpotrecyclersample.domain.FlowerPotDatabase
 import com.lukeneedham.flowerpotrecyclersample.domain.FlowerPotModel
-import com.lukeneedham.flowerpotrecyclersample.ui.view.FlowerPotItemView
+import com.lukeneedham.flowerpotrecyclersample.ui.util.showSnackbar
+import com.lukeneedham.flowerpotrecyclersample.ui.feature.view.FlowerPotItemView
 import kotlinx.android.synthetic.main.fragment_xml_layout.*
 
 class SingleViewTypeFragment : Fragment() {
@@ -38,9 +38,7 @@ class SingleViewTypeFragment : Fragment() {
                 )
             )
             addOnItemClickListener { item, position ->
-                val context = requireContext()
-                Toast.makeText(context, context.getString(item.nameResId), Toast.LENGTH_SHORT)
-                    .show()
+                showSnackbar(item.nameResId)
             }
         }
         // Config optional

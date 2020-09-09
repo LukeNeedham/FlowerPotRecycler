@@ -1,4 +1,4 @@
-package com.lukeneedham.flowerpotrecyclersample.ui.home
+package com.lukeneedham.flowerpotrecyclersample.ui.feature.home
 
 import android.os.Bundle
 import android.view.LayoutInflater

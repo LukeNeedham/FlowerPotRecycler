@@ -9,15 +9,15 @@ android {
         versionCode 25
         versionName "6.1.0"
 
-        consumerProguardFiles "proguard-rules.pro"
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-proguard-rules.pro"
     }
 
     buildTypes {
+        debug {
+            minifyEnabled false
+        }
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }

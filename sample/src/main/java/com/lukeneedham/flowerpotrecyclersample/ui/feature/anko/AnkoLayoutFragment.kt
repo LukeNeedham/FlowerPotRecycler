@@ -1,4 +1,4 @@
-package com.lukeneedham.flowerpotrecyclersample.ui.anko
+package com.lukeneedham.flowerpotrecyclersample.ui.feature.anko
 
 import android.os.Bundle
 import android.view.Gravity
@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lukeneedham.flowerpotrecycler.RecyclerAdapterBuilder
@@ -14,6 +13,7 @@ import com.lukeneedham.flowerpotrecycler.delegatedadapter.config.AdapterConfig
 import com.lukeneedham.flowerpotrecycler.util.extensions.addOnItemClickListener
 import com.lukeneedham.flowerpotrecyclersample.domain.FlowerPotDatabase
 import com.lukeneedham.flowerpotrecyclersample.domain.FlowerPotModel
+import com.lukeneedham.flowerpotrecyclersample.ui.util.showSnackbar
 import org.jetbrains.anko.*
 import org.jetbrains.anko.recyclerview.v7.recyclerView
 import org.jetbrains.anko.support.v4.UI
@@ -31,12 +31,7 @@ class AnkoLayoutFragment : Fragment() {
                     val config = AdapterConfig<FlowerPotModel>().apply {
                         items = FlowerPotDatabase.getAllEntries()
                         addOnItemClickListener { item, position ->
-                            val context = requireContext()
-                            Toast.makeText(
-                                context,
-                                context.getString(item.nameResId),
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            showSnackbar(item.nameResId)
                         }
                     }
                     adapter = RecyclerAdapterBuilder.fromDeclarativeDsl(config) {

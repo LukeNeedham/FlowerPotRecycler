@@ -1,10 +1,9 @@
-package com.lukeneedham.flowerpotrecyclersample.ui.view.multitype
+package com.lukeneedham.flowerpotrecyclersample.ui.feature.view.multitype
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,7 +17,8 @@ import com.lukeneedham.flowerpotrecycler.util.extensions.addOnItemClickListener
 import com.lukeneedham.flowerpotrecyclersample.R
 import com.lukeneedham.flowerpotrecyclersample.domain.FlowerPotDatabase
 import com.lukeneedham.flowerpotrecyclersample.domain.FlowerPotModel
-import com.lukeneedham.flowerpotrecyclersample.ui.view.FlowerPotItemView
+import com.lukeneedham.flowerpotrecyclersample.ui.util.showSnackbar
+import com.lukeneedham.flowerpotrecyclersample.ui.feature.view.FlowerPotItemView
 import kotlinx.android.synthetic.main.fragment_xml_layout.*
 
 class AnyAdapterFragment : Fragment() {
@@ -50,8 +50,14 @@ class AnyAdapterFragment : Fragment() {
                 )
             )
             addOnItemClickListener { item, position ->
-                val context = requireContext()
-                Toast.makeText(context, item.toString(), Toast.LENGTH_SHORT).show()
+                val text = when(item) {
+                    is FlowerPotModel -> "Flower Pot: " + getString(item.nameResId)
+                    is Int -> "Int: $item"
+                    is StaticA -> "Static A"
+                    is StaticB -> "Static B"
+                    else -> "Other"
+                }
+                showSnackbar(text)
             }
         }
 

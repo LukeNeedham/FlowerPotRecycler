@@ -1,10 +1,9 @@
-package com.lukeneedham.flowerpotrecyclersample.ui.view.staticview
+package com.lukeneedham.flowerpotrecyclersample.ui.feature.view.staticview
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,6 +13,7 @@ import com.lukeneedham.flowerpotrecycler.util.extensions.addItemLayoutParams
 import com.lukeneedham.flowerpotrecycler.util.extensions.addOnItemClickListener
 import com.lukeneedham.flowerpotrecycler.util.extensions.useDummyItems
 import com.lukeneedham.flowerpotrecyclersample.R
+import com.lukeneedham.flowerpotrecyclersample.ui.util.showSnackbar
 import kotlinx.android.synthetic.main.fragment_xml_layout.*
 
 class StaticAdapterFragment : Fragment() {
@@ -50,7 +50,7 @@ class StaticAdapterFragment : Fragment() {
                 )
             )
             addOnItemClickListener { _, _ ->
-                Toast.makeText(requireContext(), "Static view clicked", Toast.LENGTH_SHORT).show()
+                showSnackbar("Static view clicked")
             }
         }
         val staticViewAdapter =
