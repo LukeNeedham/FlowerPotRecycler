@@ -31,6 +31,6 @@ class FlowerPotItemView @JvmOverloads constructor(
 
     override fun setSelected(selected: Boolean) {
         super.setSelected(selected)
-        potNameTextView.textColor = if(selected) Color.GREEN else unselectedTextColor
+        potNameTextView.textColor = if (selected) Color.GREEN else unselectedTextColor
     }
 }

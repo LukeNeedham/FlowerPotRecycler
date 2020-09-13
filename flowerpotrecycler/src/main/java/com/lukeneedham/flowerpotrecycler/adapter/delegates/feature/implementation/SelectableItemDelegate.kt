@@ -3,26 +3,30 @@ package com.lukeneedham.flowerpotrecycler.adapter.delegates.feature.implementati
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.adapter.DelegatedRecyclerAdapter
+import com.lukeneedham.flowerpotrecycler.adapter.ViewHolder
 import com.lukeneedham.flowerpotrecycler.adapter.delegates.feature.BaseAdapterFeatureDelegate
 
 /**
  * A delegate that allows for up to 1 item to be selected at a time. Initially, no item is selected.
  * To return to the no item selected state, use [resetSelection]
  *
- * To show the selected state, your ItemViewType needs to override [View.setSelected]
+ * To show the selected state, [onViewSelected] will be called.
+ * It defaults to calling [View.setSelected],
+ * so if using the default [ItemViewType] needs to override [View.setSelected]
  */
-@Suppress("unused")
-class SelectableItemDelegate<ItemType : Any>(
-    private val adapter: DelegatedRecyclerAdapter<ItemType>,
+@Suppress("unused", "MemberVisibilityCanBePrivate")
+class SelectableItemDelegate<ItemType : Any, ItemViewType : View>(
+    private val adapter: DelegatedRecyclerAdapter<ItemType, ItemViewType>,
     private val onSelectedPositionChangeListener: (oldPosition: Int, newPosition: Int) -> Unit = { _, _ -> },
     /**
      * The callback for each item view when its selected state changes.
      * The default is to simply call [View.setSelected].
-     * Don't forget to reset the UI to the unselected state when [isSelected] is false.
+     * Don't forget to reset the UI to the unselected state when an item is unselected.
      */
-    private val onViewSelected: (itemView: View, isSelected: Boolean, item: ItemType) -> Unit =
+    private val onViewSelected:
+        (itemView: ItemViewType, item: ItemType, isSelected: Boolean) -> Unit =
         ::defaultOnViewSelected
-) : BaseAdapterFeatureDelegate<ItemType>() {
+) : BaseAdapterFeatureDelegate<ItemType, ItemViewType>() {
 
     private var selectedItemPosition: Int = RecyclerView.NO_POSITION
         set(value) {
@@ -37,29 +41,31 @@ class SelectableItemDelegate<ItemType : Any>(
             onSelectedPositionChangeListener(oldPosition, value)
         }
 
-    override fun onBindViewHolder(
-        holder: RecyclerView.ViewHolder,
-        position: Int
+    override fun onViewHolderBound(
+        holder: ViewHolder<ItemViewType>,
+        position: Int,
+        itemView: ItemViewType,
+        item: ItemType
     ) {
-        val item = adapter.positionDelegate.getItemAt(position)
-        val itemView = holder.itemView
         // Check for matching items, rather than position.
         // This allows for handling of duplicate items at different positions
-        val selectedItem = if (selectedItemPosition == RecyclerView.NO_POSITION) {
-            null
-        } else {
-            getSelectedItem()
-        }
-        onViewSelected(itemView, selectedItem == item, item)
+        val selectedItem = getSelectedItem()
+        val isSelected = selectedItem == item
+        onViewSelected(itemView, item, isSelected)
     }
 
     override fun onItemClick(item: ItemType, position: Int) {
         selectedItemPosition = position
     }
 
-    fun getSelectedPosition() = selectedItemPosition
+    fun getSelectedPosition(): Int = selectedItemPosition
 
-    fun getSelectedItem() = adapter.positionDelegate.getItemAt(selectedItemPosition)
+    fun getSelectedItem(): ItemType? =
+        if (selectedItemPosition == RecyclerView.NO_POSITION) {
+            null
+        } else {
+            adapter.positionDelegate.getItemAt(selectedItemPosition)
+        }
 
     fun selectPosition(position: Int) {
         selectedItemPosition = position
@@ -75,10 +81,10 @@ class SelectableItemDelegate<ItemType : Any>(
     }
 
     companion object {
-        fun <ItemType : Any> defaultOnViewSelected(
-            itemView: View,
-            isSelected: Boolean,
-            item: ItemType
+        fun <ItemType : Any, ItemViewType : View> defaultOnViewSelected(
+            itemView: ItemViewType,
+            item: ItemType,
+            isSelected: Boolean
         ) {
             itemView.isSelected = isSelected
         }

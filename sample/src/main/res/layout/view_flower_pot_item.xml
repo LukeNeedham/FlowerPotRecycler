@@ -29,6 +29,7 @@
             android:layout_marginBottom="8dp"
             android:gravity="center_vertical"
             android:labelFor="@+id/potImageView"
+            android:textColor="@android:color/black"
             android:textSize="20sp"
             tools:ignore="LabelFor"
             tools:text="@string/pot_big" />

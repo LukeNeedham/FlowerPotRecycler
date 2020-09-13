@@ -1,5 +1,6 @@
 package com.lukeneedham.flowerpotrecyclersample.ui.feature.anko
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -28,7 +29,7 @@ class AnkoFragment : Fragment() {
             linearLayout {
                 recyclerView {
                     layoutManager = LinearLayoutManager(context)
-                    val config = AdapterConfig<FlowerPotModel>().apply {
+                    val config = AdapterConfig<FlowerPotModel, View>().apply {
                         items = FlowerPotDatabase.getAllEntries()
                         addOnItemClickListener { item, position ->
                             showSnackbar(item.nameResId)
@@ -52,6 +53,7 @@ class AnkoFragment : Fragment() {
 
                                 textView().apply {
                                     textSize = 20f
+                                    textColor = Color.BLACK
                                     gravity = Gravity.CENTER_VERTICAL
                                     lparams {
                                         margin = dip(8)

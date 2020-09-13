@@ -26,9 +26,9 @@ import com.lukeneedham.flowerpotrecyclersample.ui.feature.FlowerPotItemView
  */
 class CustomAdapter(
     onItemClick: (FlowerPotModel) -> Unit
-) : DelegatedRecyclerAdapter<FlowerPotModel>() {
+) : DelegatedRecyclerAdapter<FlowerPotModel, FlowerPotItemView>() {
     private val selectableItemDelegate =
-        SelectableItemDelegate(this) { itemView, isSelected, item ->
+        SelectableItemDelegate(this) { itemView, item, isSelected ->
             // Here we specify how to handle each item view select state update.
             // This is redundant, as the default is just to call [View.setSelected] anyway.
             itemView.isSelected = isSelected
@@ -38,21 +38,22 @@ class CustomAdapter(
         RecyclerItemViewBuilderBinder.create<FlowerPotModel, FlowerPotItemView>()
     )
 
-    override val featureDelegates: List<AdapterFeatureDelegate<FlowerPotModel>> = listOf(
-        ItemLayoutParamsDelegate(
-            RecyclerView.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-        ),
-        OnItemClickDelegate { item, position -> onItemClick(item) },
-        selectableItemDelegate
-    )
+    override val featureDelegates: List<AdapterFeatureDelegate<FlowerPotModel, FlowerPotItemView>> =
+        listOf(
+            ItemLayoutParamsDelegate(
+                RecyclerView.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+            ),
+            OnItemClickDelegate { item, position -> onItemClick(item) },
+            selectableItemDelegate
+        )
 
     override val positionDelegate: AdapterPositionDelegate<FlowerPotModel> =
         LinearPositionDelegate(this, DefaultDiffCallback())
 
-    override fun onFailedToRecycleView(holder: ViewHolder): Boolean {
+    override fun onFailedToRecycleView(holder: ViewHolder<FlowerPotItemView>): Boolean {
         return super.onFailedToRecycleView(holder)
         // Since we've subclassed RecyclerView we can override all its methods
         // Maybe we want to do something here, for example

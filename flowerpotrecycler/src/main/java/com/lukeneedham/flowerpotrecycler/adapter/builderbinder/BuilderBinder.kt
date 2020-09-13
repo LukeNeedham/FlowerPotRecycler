@@ -10,7 +10,7 @@ abstract class BuilderBinder<ItemType : Any, ItemViewType : View> {
 
     /**
      * Determines whether an item 'matches' this BuilderBinder,
-     * and should therefore handle its building and binding
+     * and should therefore handle its building and binding.
      */
     abstract val itemMatcher: ItemMatcher<ItemType>
 

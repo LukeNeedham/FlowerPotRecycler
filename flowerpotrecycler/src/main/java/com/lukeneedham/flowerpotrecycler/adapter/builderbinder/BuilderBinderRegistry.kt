@@ -11,10 +11,12 @@ import com.lukeneedham.flowerpotrecycler.adapter.ViewHolder
  * and each item type submitted to the adapter must have a registered [BuilderBinder].
  * If either of these conditions are violated, this class will throw an exception to let you know.
  *
- * [BaseItemType] provides an upper bound on the types registered
+ * [BaseItemType] provides an upper bound on the item types registered.
+ * [BaseItemViewType] provides an upper bound on the view types registered.
  */
-class BuilderBinderRegistry<BaseItemType : Any>(
-    val builderBinders: List<BuilderBinder<out BaseItemType, *>>
+@Suppress("MemberVisibilityCanBePrivate")
+class BuilderBinderRegistry<BaseItemType : Any, BaseItemViewType : View>(
+    val builderBinders: List<BuilderBinder<out BaseItemType, out BaseItemViewType>>
 ) {
 
     init {
@@ -25,12 +27,12 @@ class BuilderBinderRegistry<BaseItemType : Any>(
         }
     }
 
-    fun build(parent: ViewGroup, itemTypeId: Int): View {
+    fun build(parent: ViewGroup, itemTypeId: Int): BaseItemViewType {
         val builderBinder = requireBuilderBinderForTypeId(itemTypeId)
         return builderBinder.build(parent)
     }
 
-    fun bind(holder: ViewHolder, position: Int, item: BaseItemType) {
+    fun bind(holder: ViewHolder<BaseItemViewType>, position: Int, item: BaseItemType) {
         val typeToView = requireBuilderBinderForItem(item)
         val view = holder.itemView
         typeToView.bindUntyped(view, position, item)
@@ -59,10 +61,10 @@ class BuilderBinderRegistry<BaseItemType : Any>(
         }
     }
 
-    private fun getBuilderBinderForTypeId(typeId: Int): BuilderBinder<out BaseItemType, *>? =
+    private fun getBuilderBinderForTypeId(typeId: Int): BuilderBinder<out BaseItemType, out BaseItemViewType>? =
         builderBinders.getOrNull(typeId)
 
-    private fun requireBuilderBinderForTypeId(typeId: Int): BuilderBinder<out BaseItemType, *> =
+    private fun requireBuilderBinderForTypeId(typeId: Int): BuilderBinder<out BaseItemType, out BaseItemViewType> =
         getBuilderBinderForTypeId(typeId)
             ?: throw FlowerPotRecyclerException("No BuilderBinder registered for type id: $typeId")
 
@@ -78,10 +80,10 @@ class BuilderBinderRegistry<BaseItemType : Any>(
         getTypeIdForItem(item)
             ?: throw FlowerPotRecyclerException("No BuilderBinder registered for item: $item")
 
-    private fun getBuilderBinderForItem(item: BaseItemType): BuilderBinder<out BaseItemType, *>? =
+    private fun getBuilderBinderForItem(item: BaseItemType): BuilderBinder<out BaseItemType, out BaseItemViewType>? =
         builderBinders.firstOrNull { it.matchesItem(item) }
 
-    private fun requireBuilderBinderForItem(item: BaseItemType): BuilderBinder<out BaseItemType, *> =
+    private fun requireBuilderBinderForItem(item: BaseItemType): BuilderBinder<out BaseItemType, out BaseItemViewType> =
         getBuilderBinderForItem(item)
             ?: throw FlowerPotRecyclerException("No BuilderBinder registered for item: $item")
 
@@ -108,9 +110,9 @@ class BuilderBinderRegistry<BaseItemType : Any>(
         items.filter { getBuilderBinderForItem(it) == null }.distinct()
 
     companion object {
-        fun <BaseItemType : Any> from(
-            vararg builderBinders: BuilderBinder<out BaseItemType, *>
-        ): BuilderBinderRegistry<BaseItemType> {
+        fun <BaseItemType : Any, BaseItemViewType : View> from(
+            vararg builderBinders: BuilderBinder<out BaseItemType, out BaseItemViewType>
+        ): BuilderBinderRegistry<BaseItemType, BaseItemViewType> {
             return BuilderBinderRegistry(listOf(*builderBinders))
         }
     }

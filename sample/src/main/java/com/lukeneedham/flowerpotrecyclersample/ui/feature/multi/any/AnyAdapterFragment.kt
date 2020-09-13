@@ -1,9 +1,7 @@
 package com.lukeneedham.flowerpotrecyclersample.ui.feature.multi.any
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,8 +15,8 @@ import com.lukeneedham.flowerpotrecycler.util.extensions.addOnItemClickListener
 import com.lukeneedham.flowerpotrecyclersample.R
 import com.lukeneedham.flowerpotrecyclersample.domain.FlowerPotDatabase
 import com.lukeneedham.flowerpotrecyclersample.domain.FlowerPotModel
-import com.lukeneedham.flowerpotrecyclersample.ui.feature.multi.*
 import com.lukeneedham.flowerpotrecyclersample.ui.feature.FlowerPotItemView
+import com.lukeneedham.flowerpotrecyclersample.ui.feature.multi.IntItemView
 import com.lukeneedham.flowerpotrecyclersample.ui.util.showSnackbar
 import kotlinx.android.synthetic.main.fragment_recyclerview_layout.*
 
@@ -31,7 +29,7 @@ class AnyAdapterFragment : Fragment(R.layout.fragment_recyclerview_layout) {
 
         // The config is of the shared super-type
         // We want to show ints and Strings, so the shared-super class is Any
-        val adapterConfig = AdapterConfig<Any>().apply {
+        val adapterConfig = AdapterConfig<Any, View>().apply {
             val flowerPotItems = FlowerPotDatabase.getAllEntries()
             val intItems = listOf(1, 2, 3, 4, 5)
             val staticItems = listOf(
@@ -77,7 +75,7 @@ class AnyAdapterFragment : Fragment(R.layout.fragment_recyclerview_layout) {
 
         // Multi-type adapter from type registry
         // Config optional
-        val builderBinderRegistry: BuilderBinderRegistry<Any> =
+        val builderBinderRegistry: BuilderBinderRegistry<Any, View> =
             BuilderBinderRegistry.from(
                 flowerPotBuilderBinder,
                 intBuilderBinder,

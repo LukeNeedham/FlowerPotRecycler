@@ -1,7 +1,9 @@
 package com.lukeneedham.flowerpotrecycler.adapter.delegates.feature.implementation
 
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.lukeneedham.flowerpotrecycler.adapter.ViewHolder
 import com.lukeneedham.flowerpotrecycler.adapter.delegates.feature.BaseAdapterFeatureDelegate
 
 /**
@@ -9,17 +11,18 @@ import com.lukeneedham.flowerpotrecycler.adapter.delegates.feature.BaseAdapterFe
  * to allow layout params to be calculated lazily.
  * Useful to delay measuring until the initial layout passes are complete.
  */
-class ItemLayoutParamsLazyDelegate<ItemType>(
+class ItemLayoutParamsLazyDelegate<ItemType : Any, ItemViewType : View>(
     private val layoutParamsCreator: () -> RecyclerView.LayoutParams
-) : BaseAdapterFeatureDelegate<ItemType>() {
+) : BaseAdapterFeatureDelegate<ItemType, ItemViewType>() {
 
     private val layoutParams by lazy { layoutParamsCreator() }
 
     override fun onViewHolderCreated(
-        viewHolder: RecyclerView.ViewHolder,
         parent: ViewGroup,
-        viewType: Int
+        viewType: Int,
+        viewHolder: ViewHolder<ItemViewType>,
+        itemView: ItemViewType
     ) {
-        viewHolder.itemView.layoutParams = RecyclerView.LayoutParams(layoutParams)
+        itemView.layoutParams = RecyclerView.LayoutParams(layoutParams)
     }
 }

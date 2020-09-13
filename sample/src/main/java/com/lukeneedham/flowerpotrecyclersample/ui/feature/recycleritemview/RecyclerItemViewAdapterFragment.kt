@@ -1,9 +1,7 @@
 package com.lukeneedham.flowerpotrecyclersample.ui.feature.recycleritemview
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,7 +21,7 @@ class RecyclerItemViewAdapterFragment : Fragment(R.layout.fragment_recyclerview_
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val config = AdapterConfig<FlowerPotModel>().apply {
+        val config = AdapterConfig<FlowerPotModel, FlowerPotItemView>().apply {
             items = FlowerPotDatabase.getAllEntries()
             addItemLayoutParams(
                 RecyclerView.LayoutParams(
@@ -36,14 +34,17 @@ class RecyclerItemViewAdapterFragment : Fragment(R.layout.fragment_recyclerview_
             }
         }
         // Config optional
-        val recyclerAdapter = SingleTypeRecyclerAdapterBuilder
-            .fromRecyclerItemView<FlowerPotModel, FlowerPotItemView>(config)
+        val recyclerAdapter =
+            SingleTypeRecyclerAdapterBuilder
+                .fromRecyclerItemView<FlowerPotModel, FlowerPotItemView>(config)
+
+        // Also, type params used above are optional, as they can be inferred from config:
+        val recyclerAdapterInferredType =
+            SingleTypeRecyclerAdapterBuilder.fromRecyclerItemView(config)
 
         // Alternatively, we could instantiate the view ourselves. Config optional
         val recyclerAdapterFromBuilder = SingleTypeRecyclerAdapterBuilder.fromRecyclerItemView {
-            FlowerPotItemView(
-                it.context
-            )
+            FlowerPotItemView(it.context)
         }
 
         recyclerView.apply {

@@ -1,5 +1,6 @@
 package com.lukeneedham.flowerpotrecycler.adapter
 
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.BuilderBinderRegistry
@@ -7,40 +8,46 @@ import com.lukeneedham.flowerpotrecycler.adapter.delegates.feature.AdapterFeatur
 import com.lukeneedham.flowerpotrecycler.adapter.delegates.position.AdapterPositionDelegate
 
 /** A base RecyclerView Adapter to encourage a delegated approach */
-abstract class DelegatedRecyclerAdapter<BaseItemType : Any> : RecyclerView.Adapter<ViewHolder>() {
+abstract class DelegatedRecyclerAdapter<BaseItemType : Any, BaseItemViewType : View> :
+    RecyclerView.Adapter<ViewHolder<BaseItemViewType>>() {
 
-    abstract val featureDelegates: List<AdapterFeatureDelegate<BaseItemType>>
+    abstract val featureDelegates: List<AdapterFeatureDelegate<BaseItemType, BaseItemViewType>>
     abstract val positionDelegate: AdapterPositionDelegate<BaseItemType>
-    abstract val builderBinderRegistry: BuilderBinderRegistry<BaseItemType>
+    abstract val builderBinderRegistry: BuilderBinderRegistry<BaseItemType, BaseItemViewType>
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): ViewHolder {
+    ): ViewHolder<BaseItemViewType> {
         val view = builderBinderRegistry.build(parent, viewType)
         val viewHolder = ViewHolder(view)
+
         featureDelegates.forEach {
-            it.onViewHolderCreated(viewHolder, parent, viewType)
+            it.onViewHolderCreated(parent, viewType, viewHolder, view)
         }
+
         return viewHolder
     }
 
-    override fun getItemCount() = positionDelegate.getItemCount()
+    override fun getItemCount(): Int = positionDelegate.getItemCount()
 
     override fun onBindViewHolder(
-        holder: ViewHolder,
+        holder: ViewHolder<BaseItemViewType>,
         position: Int
     ) {
         val item = positionDelegate.getItemAt(position)
-        val itemView = holder.itemView
+        val itemView = holder.typedItemView
         builderBinderRegistry.bind(holder, position, item)
+
+        featureDelegates.forEach {
+            it.onViewHolderBound(holder, position, itemView, item)
+        }
+        // Called after onViewHolderBound to override any click listener set on itemView incorrectly
+        // during onViewHolderBound. For compatibility, all click handling must go through onItemClick
         itemView.setOnClickListener {
             featureDelegates.forEach {
                 it.onItemClick(item, position)
             }
-        }
-        featureDelegates.forEach {
-            it.onBindViewHolder(holder, position)
         }
     }
 

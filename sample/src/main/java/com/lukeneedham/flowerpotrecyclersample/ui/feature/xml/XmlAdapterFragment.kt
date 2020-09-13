@@ -23,7 +23,7 @@ class XmlAdapterFragment : Fragment(R.layout.fragment_recyclerview_layout) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val config = AdapterConfig<FlowerPotModel>().apply {
+        val config = AdapterConfig<FlowerPotModel, View>().apply {
             items = FlowerPotDatabase.getAllEntries()
             addItemLayoutParams(RecyclerView.LayoutParams(MATCH_PARENT, WRAP_CONTENT))
             addOnItemClickListener { item, position ->

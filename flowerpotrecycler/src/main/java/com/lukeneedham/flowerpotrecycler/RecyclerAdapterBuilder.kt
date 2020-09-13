@@ -1,5 +1,6 @@
 package com.lukeneedham.flowerpotrecycler
 
+import android.view.View
 import com.lukeneedham.flowerpotrecycler.adapter.ConfigurableRecyclerAdapter
 import com.lukeneedham.flowerpotrecycler.adapter.DelegatedRecyclerAdapter
 import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.BuilderBinder
@@ -16,10 +17,10 @@ object RecyclerAdapterBuilder {
      * @param builderBinderRegistry handles creating views and binding items on behalf of the adapter
      * @param config Configuration for the adapter
      */
-    fun <BaseItemType : Any> fromBuilderBinderRegistry(
-        builderBinderRegistry: BuilderBinderRegistry<BaseItemType>,
-        config: RecyclerAdapterConfig<BaseItemType>? = null
-    ): DelegatedRecyclerAdapter<BaseItemType> =
+    fun <BaseItemType : Any, BaseItemViewType : View> fromBuilderBinderRegistry(
+        builderBinderRegistry: BuilderBinderRegistry<BaseItemType, BaseItemViewType>,
+        config: RecyclerAdapterConfig<BaseItemType, BaseItemViewType>? = null
+    ): DelegatedRecyclerAdapter<BaseItemType, BaseItemViewType> =
         ConfigurableRecyclerAdapter(builderBinderRegistry, config)
 
     /**
@@ -29,9 +30,9 @@ object RecyclerAdapterBuilder {
      * which each handle creating the view and binding items for a single item type
      * @param config Configuration for the adapter
      */
-    fun <BaseItemType : Any> fromBuilderBinders(
-        vararg builderBinders: BuilderBinder<out BaseItemType, *>,
-        config: RecyclerAdapterConfig<BaseItemType>? = null
-    ): DelegatedRecyclerAdapter<BaseItemType> =
+    fun <BaseItemType : Any, BaseItemViewType : View> fromBuilderBinders(
+        vararg builderBinders: BuilderBinder<out BaseItemType, out BaseItemViewType>,
+        config: RecyclerAdapterConfig<BaseItemType, BaseItemViewType>? = null
+    ): DelegatedRecyclerAdapter<BaseItemType, BaseItemViewType> =
         ConfigurableRecyclerAdapter(BuilderBinderRegistry.from(*builderBinders), config)
 }

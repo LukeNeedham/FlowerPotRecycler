@@ -23,7 +23,7 @@ class ViewAdapterFragment : Fragment(R.layout.fragment_recyclerview_layout) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val config = AdapterConfig<FlowerPotModel>().apply {
+        val config = AdapterConfig<FlowerPotModel, FlowerPotItemView>().apply {
             items = FlowerPotDatabase.getAllEntries()
             addItemLayoutParams(RecyclerView.LayoutParams(MATCH_PARENT, WRAP_CONTENT))
             addOnItemClickListener { item, position ->
@@ -44,10 +44,9 @@ class ViewAdapterFragment : Fragment(R.layout.fragment_recyclerview_layout) {
 
         // Alternatively, we can use the default view builder
         val alternativeAdapter = SingleTypeRecyclerAdapterBuilder
-            .fromView<FlowerPotModel, FlowerPotItemView>(config) { itemView, position, item ->
+            .fromView(config) { itemView, position, item ->
                 itemView.setItem(position, item)
             }
-
 
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)

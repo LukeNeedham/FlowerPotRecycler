@@ -16,7 +16,6 @@ import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.implementation.vi
 import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.implementation.view.ViewBuilderBinder
 import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.implementation.xml.XmlBuilderBinder
 import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.matcher.ClassMatcher
-import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.matcher.ItemMatcher
 import com.lukeneedham.flowerpotrecycler.adapter.config.RecyclerAdapterConfig
 import com.lukeneedham.flowerpotrecycler.util.BuilderBinderUtils.createBuilder
 import com.lukeneedham.flowerpotrecycler.util.BuilderBinderUtils.createEmptyBinder
@@ -25,71 +24,89 @@ import com.lukeneedham.flowerpotrecycler.util.BuilderBinderUtils.createEmptyBind
 object SingleTypeRecyclerAdapterBuilder {
 
     /**
-     * Auto-generate an adapter.
-     * To be used when creating the item View programmatically (for example, with Anko DSL Layouts)
+     * @return a [DelegatedRecyclerAdapter] to handle a single item type,
+     * with an item View built programmatically (for example, with Anko DSL Layouts).
      *
      * Use [DeclarativeBindingDsl.onItem]
      * within your builder to update the UI when an item is bound.
-     * @param builder The callback for building item Views
+     *
      * @param config Optional configuration for the adapter
+     * @param builder The callback for building item Views
      */
     inline fun <reified ItemType : Any> fromDeclarativeDsl(
-        config: RecyclerAdapterConfig<ItemType>? = null,
-        matcher: ItemMatcher<ItemType> = ClassMatcher(ItemType::class),
+        config: RecyclerAdapterConfig<ItemType, View>? = null,
         noinline builder: DeclarativeBindingDsl<ItemType>.(ViewGroup) -> View
-    ): DelegatedRecyclerAdapter<ItemType> {
+    ): DelegatedRecyclerAdapter<ItemType, View> {
+        val matcher = ClassMatcher(ItemType::class)
         val builderBinder = DeclarativeBuilderBinder(matcher, builder)
         return fromBuilderBinder(builderBinder, config)
     }
 
     /**
-     * Auto-generate an adapter.
-     * To be used when creating the item View from inflating an XML layout.
+     * @return a [DelegatedRecyclerAdapter] to handle a single item type, with an XML layout.
+     *
      * @param layoutResId The XML layout resource ID to inflate to build the View
      * @param config Optional configuration for the adapter
      * @param binder The callback for binding each item to its View
      */
     inline fun <reified ItemType : Any> fromXml(
         @LayoutRes layoutResId: Int,
-        config: RecyclerAdapterConfig<ItemType>? = null,
-        matcher: ItemMatcher<ItemType> = ClassMatcher(ItemType::class),
+        config: RecyclerAdapterConfig<ItemType, View>? = null,
         noinline binder: Binder<ItemType, View> = createEmptyBinder()
-    ): DelegatedRecyclerAdapter<ItemType> {
+    ): DelegatedRecyclerAdapter<ItemType, View> {
+        val matcher = ClassMatcher(ItemType::class)
         val builderBinder = XmlBuilderBinder(layoutResId, matcher, binder)
         return fromBuilderBinder(builderBinder, config)
     }
 
     /**
-     * Create a [DelegatedRecyclerAdapter] to handle a single type of item ([ItemType]) with a single view ([ItemViewType]).
+     * @return a [DelegatedRecyclerAdapter] to handle a single item type,
+     * with a [RecyclerItemView] of type [ItemViewType].
      *
-     * To be used when View logic is contained within its own class. Binding is handled with [RecyclerItemView.setItem]
+     * Binding is handled with [RecyclerItemView.setItem].
+     *
      * @param config Configuration for the adapter
-     * @param builder The function to instantiate your [ItemViewType] class
+     * @param builder The callback to instantiate your [ItemViewType] class
      */
     inline fun <reified ItemType : Any, reified ItemViewType> fromRecyclerItemView(
-        config: RecyclerAdapterConfig<ItemType>? = null,
-        matcher: ItemMatcher<ItemType> = ClassMatcher(ItemType::class),
+        config: RecyclerAdapterConfig<ItemType, ItemViewType>? = null,
         noinline builder: Builder<ItemViewType> = createBuilder()
-    ): DelegatedRecyclerAdapter<ItemType>
+    ): DelegatedRecyclerAdapter<ItemType, ItemViewType>
             where ItemViewType : View, ItemViewType : RecyclerItemView<ItemType> {
+        val matcher = ClassMatcher(ItemType::class)
         val builderBinder = RecyclerItemViewBuilderBinder(matcher, builder)
         return fromBuilderBinder(builderBinder, config)
     }
 
+    /**
+     * @return a [DelegatedRecyclerAdapter] to handle a single item type,
+     * with a [View] of type [ItemViewType].
+     *
+     * @param config Configuration for the adapter
+     * @param builder The callback to instantiate your [ItemViewType] class
+     */
     inline fun <reified ItemType : Any, reified ItemViewType : View> fromView(
-        config: RecyclerAdapterConfig<ItemType>? = null,
-        matcher: ItemMatcher<ItemType> = ClassMatcher(ItemType::class),
+        config: RecyclerAdapterConfig<ItemType, ItemViewType>? = null,
         noinline builder: Builder<ItemViewType> = createBuilder(),
         noinline binder: Binder<ItemType, ItemViewType> = createEmptyBinder()
-    ): DelegatedRecyclerAdapter<ItemType> {
+    ): DelegatedRecyclerAdapter<ItemType, ItemViewType> {
+        val matcher = ClassMatcher(ItemType::class)
         val builderBinder = ViewBuilderBinder(matcher, builder, binder)
         return fromBuilderBinder(builderBinder, config)
     }
 
+    /**
+     * @return a [DelegatedRecyclerAdapter] to handle a single item type,
+     * with a single [BuilderBinder].
+     *
+     * @param builderBinder The [BuilderBinder] used to instantiate your views of type [ItemViewType],
+     * and to bind items of type [ItemType] to them.
+     * @param config Configuration for the adapter
+     */
     fun <ItemType : Any, ItemViewType : View> fromBuilderBinder(
         builderBinder: BuilderBinder<ItemType, ItemViewType>,
-        config: RecyclerAdapterConfig<ItemType>?
-    ): DelegatedRecyclerAdapter<ItemType> {
+        config: RecyclerAdapterConfig<ItemType, ItemViewType>?
+    ): DelegatedRecyclerAdapter<ItemType, ItemViewType> {
         val registry = BuilderBinderRegistry(listOf(builderBinder))
         return ConfigurableRecyclerAdapter(registry, config)
     }

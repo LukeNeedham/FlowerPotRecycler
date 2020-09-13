@@ -1,9 +1,7 @@
 package com.lukeneedham.flowerpotrecyclersample.ui.feature.multi.number
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,7 +23,7 @@ class NumberAdapterFragment : Fragment(R.layout.fragment_recyclerview_layout) {
 
         // The config is of the shared super-type
         // We want to show ints and doubles, so the shared-super class is Number
-        val numberAdapterConfig = AdapterConfig<Number>().apply {
+        val numberAdapterConfig = AdapterConfig<Number, View>().apply {
             items = listOf(1, 2, 3.0)
             addItemLayoutParams(
                 RecyclerView.LayoutParams(
@@ -47,10 +45,9 @@ class NumberAdapterFragment : Fragment(R.layout.fragment_recyclerview_layout) {
 
         // Multi-type adapter from type registry
         // Config optional
-        val numberRegistry =
-            BuilderBinderRegistry<Number>(
-                listOf(intBuilderBinder, doubleBuilderBinder)
-            )
+        val numberRegistry = BuilderBinderRegistry<Number, View>(
+            listOf(intBuilderBinder, doubleBuilderBinder)
+        )
         val numberAdapter =
             RecyclerAdapterBuilder.fromBuilderBinderRegistry(numberRegistry, numberAdapterConfig)
 

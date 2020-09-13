@@ -1,32 +1,39 @@
 package com.lukeneedham.flowerpotrecycler.adapter.delegates.feature
 
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.lukeneedham.flowerpotrecycler.adapter.delegates.feature.implementation.OnItemClickDelegate
+import com.lukeneedham.flowerpotrecycler.adapter.ViewHolder
 
 /** A delegate for extended functionality on the adapter */
-interface AdapterFeatureDelegate<ItemType> {
+interface AdapterFeatureDelegate<ItemType : Any, ItemViewType : View> {
 
     /**
      * A hook for after the ViewHolder has been created in [RecyclerView.Adapter.onCreateViewHolder].
      * This hook can be used to modify the created View after creation.
      */
     fun onViewHolderCreated(
-        viewHolder: RecyclerView.ViewHolder,
         parent: ViewGroup,
-        viewType: Int
+        viewType: Int,
+        viewHolder: ViewHolder<ItemViewType>,
+        itemView: ItemViewType
     )
 
     /**
-    A hook for after the adapter has done it's work in [onBindViewHolder]
-    Warning: Do not change the onClickListener of the item view from here,
-    as to do so will remove any previously set onClickListener!
-    Instead, use [onItemClick]
+     * A hook for after the adapter has done it's work in [RecyclerView.Adapter.onBindViewHolder].
+     *
+     * Warning: Do not change the onClickListener of the item view from here,
+     * as it will be overridden by [onItemClick]. Instead, use [onItemClick] directly.
      */
-    fun onBindViewHolder(
-        holder: RecyclerView.ViewHolder,
-        position: Int
+    fun onViewHolderBound(
+        holder: ViewHolder<ItemViewType>,
+        position: Int,
+        itemView: ItemViewType,
+        item: ItemType
     )
 
+    /**
+     * A hook for when an item view is clicked
+     */
     fun onItemClick(item: ItemType, position: Int)
 }

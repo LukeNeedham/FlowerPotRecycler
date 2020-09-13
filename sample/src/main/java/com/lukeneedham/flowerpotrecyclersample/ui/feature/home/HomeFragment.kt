@@ -26,7 +26,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             orientation = RecyclerView.VERTICAL
         }
 
-        val config = AdapterConfig<Any>().apply {
+        val config = AdapterConfig<Any, View>().apply {
             items = listOf(HeaderItem) + ChoiceItem.values()
             addItemLayoutParams(RecyclerView.LayoutParams(MATCH_PARENT, WRAP_CONTENT))
             addOnItemClickListener { item, position ->

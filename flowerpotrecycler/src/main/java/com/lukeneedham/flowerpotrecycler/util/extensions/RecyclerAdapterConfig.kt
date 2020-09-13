@@ -2,6 +2,7 @@
 
 package com.lukeneedham.flowerpotrecycler.util.extensions
 
+import android.view.View
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.adapter.DefaultDiffCallback
@@ -18,7 +19,7 @@ import com.lukeneedham.flowerpotrecycler.adapter.delegates.position.implementati
  * @param diffCallback an optional [DiffUtil.ItemCallback], used to calculate the diff when items change.
  * Defaults to [DefaultDiffCallback]
  */
-fun <ItemType : Any> RecyclerAdapterConfig<ItemType>.setCyclic(
+fun <ItemType : Any> RecyclerAdapterConfig<ItemType, *>.setCyclic(
     diffCallback: DiffUtil.ItemCallback<ItemType> = DefaultDiffCallback()
 ) {
     positionDelegateCreator = { CyclicPositionDelegate(it, diffCallback) }
@@ -29,7 +30,7 @@ fun <ItemType : Any> RecyclerAdapterConfig<ItemType>.setCyclic(
  * @param diffCallback an optional [DiffUtil.ItemCallback], used to calculate the diff when items change.
  * Defaults to [DefaultDiffCallback]
  */
-fun <ItemType : Any> RecyclerAdapterConfig<ItemType>.setLinear(
+fun <ItemType : Any> RecyclerAdapterConfig<ItemType, *>.setLinear(
     diffCallback: DiffUtil.ItemCallback<ItemType> = DefaultDiffCallback()
 ) {
     positionDelegateCreator = { LinearPositionDelegate(it, diffCallback) }
@@ -37,32 +38,32 @@ fun <ItemType : Any> RecyclerAdapterConfig<ItemType>.setLinear(
 
 /**
  * Overrides the value of [RecyclerAdapterConfig.items] to instead use [numberOfItems] dummy items.
- * The dummy items are simply instances of [Any].
- * As such, it is your responsibility to ensure that your adapter can handle items of type [Any].
+ * The dummy items are simply [Unit].
+ * As such, it is your responsibility to ensure that your adapter can handle items of type [Unit].
  */
-fun RecyclerAdapterConfig<Any>.useDummyItems(numberOfItems: Int) {
-    items = List(numberOfItems) { Any() }
+fun RecyclerAdapterConfig<Unit, *>.useDummyItems(numberOfItems: Int) {
+    items = List(numberOfItems) { Unit }
 }
 
-fun <ItemType : Any> RecyclerAdapterConfig<ItemType>.addDelegate(
-    delegate: AdapterFeatureDelegate<ItemType>
+fun <ItemType : Any, ItemViewType : View> RecyclerAdapterConfig<ItemType, ItemViewType>.addDelegate(
+    delegate: AdapterFeatureDelegate<ItemType, ItemViewType>
 ) {
     featureDelegateCreators.add { delegate }
 }
 
-fun <ItemType : Any> RecyclerAdapterConfig<ItemType>.addDelegate(
-    delegateCreator: (adapter: RecyclerView.Adapter<*>) -> AdapterFeatureDelegate<ItemType>
+fun <ItemType : Any, ItemViewType : View> RecyclerAdapterConfig<ItemType, ItemViewType>.addDelegate(
+    delegateCreator: (adapter: RecyclerView.Adapter<*>) -> AdapterFeatureDelegate<ItemType, ItemViewType>
 ) {
     featureDelegateCreators.add(delegateCreator)
 }
 
-fun <ItemType : Any> RecyclerAdapterConfig<ItemType>.addOnItemClickListener(
+fun <ItemType : Any, ItemViewType : View> RecyclerAdapterConfig<ItemType, ItemViewType>.addOnItemClickListener(
     listener: (item: ItemType, position: Int) -> Unit
 ) {
     addDelegate(OnItemClickDelegate(listener))
 }
 
-fun RecyclerAdapterConfig<*>.addItemLayoutParams(
+fun <ItemType : Any, ItemViewType : View> RecyclerAdapterConfig<ItemType, ItemViewType>.addItemLayoutParams(
     layoutParams: RecyclerView.LayoutParams
 ) {
     addDelegate(ItemLayoutParamsDelegate(layoutParams))
@@ -72,12 +73,12 @@ fun RecyclerAdapterConfig<*>.addItemLayoutParams(
  * [layoutParamsCreator] will be called exactly once, to create the layoutParams lazily,
  * when the first view is created.
  */
-fun RecyclerAdapterConfig<*>.addItemLayoutParamsLazy(
+fun <ItemType : Any, ItemViewType : View> RecyclerAdapterConfig<ItemType, ItemViewType>.addItemLayoutParamsLazy(
     layoutParamsCreator: () -> RecyclerView.LayoutParams
 ) {
     addDelegate(ItemLayoutParamsLazyDelegate(layoutParamsCreator))
 }
 
-fun <ItemType : Any> RecyclerAdapterConfig<ItemType>.getFeatureDelegates(
+fun <ItemType : Any, ItemViewType : View> RecyclerAdapterConfig<ItemType, ItemViewType>.getFeatureDelegates(
     adapter: RecyclerView.Adapter<*>
-): List<AdapterFeatureDelegate<ItemType>> = featureDelegateCreators.map { it.invoke(adapter) }
+): List<AdapterFeatureDelegate<ItemType, ItemViewType>> = featureDelegateCreators.map { it.invoke(adapter) }
