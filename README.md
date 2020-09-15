@@ -3,9 +3,9 @@ Are you sick of writing an Adapter for every RecyclerView? Me too. Never write a
 
 &ast; Or at least make it less painful.
 
-# To Setup
+# Setup
 
-0. (If you aren't already using JitPack) Add JitPack in your root build.gradle, at the end of repositories:
+1. (If you aren't already using JitPack) Add JitPack in your root build.gradle, at the end of repositories:
 
 ```groovy
 allprojects {
@@ -15,105 +15,162 @@ allprojects {
 }
 ```
   
-1. Add the dependency for FlowerPotRecycler:
+2. Add the dependency for FlowerPotRecycler:
 
 ```groovy
 dependencies {
-  implementation 'com.github.lukeneedham:flowerpotrecycler:6.0.4'
+  implementation 'com.github.lukeneedham:flowerpotrecycler:7.0.0'
 }
 ```
 
 Latest release:
 [![](https://jitpack.io/v/LukeNeedham/FlowerPotRecycler.svg)](https://jitpack.io/#LukeNeedham/FlowerPotRecycler)
 
-# To Use:
-Create a RecyclerView as normal, then create an adapter with one of the static factories from `RecyclerAdapterBuilder`
-
 # Sample
-See https://github.com/LukeNeedham/FlowerPotRecycler/tree/master/sample
 
-# Dedicated Item View
+See https://github.com/LukeNeedham/FlowerPotRecycler/tree/master/sample for examples of
+all the different ways this library can help you.
 
-The recommended approach is to encapsulate your RecyclerView Item binding logic in its own custom View class. This class needs to implement `RecyclerItemView<MyItemType>`.
+# Premise
+
+This library introduces 2 main ideas:
+
+- `BuilderBinder`: A single BuilderBinder is responsible for a single item type, and handles its:
+    - Building - Creating the view. Called during `onCreateViewHolder`.
+    - Binding - Binding an item to the view. Called during `onBindViewHolder`.
+    We can use mix-and-match these `BuilderBinder`s to create complex `Adapter`s in a semantic, type-safe, and composable way.
+
+- `RecyclerItemView`: An interface to be implemented in a custom or compound `View`,
+to mark it as the item view to use for a certain item type in a `RecyclerView`.
+Each `RecyclerItemView` must implement `setItem`, which is responsible for binding the item provided.
+
+# BuilderBinder
+
+All `BuilderBinder`s extend from the `BuilderBinder` class - meaning that you can easily write your own custom implementation!
+
+That said, the library includes the most common `BuilderBinder`s:
+
+- `RecyclerItemViewBuilderBinder`
+Used for `RecyclerItemView`s. The builder function is passed as a parameter, and the binder is delegated to `RecyclerItemView.setItem`.
+
+- `ViewBuilderBinder`
+Used for generic `View`s. Both builder and binder functions are passed as parameters.
+
+- `XmlBuilderBinder`
+Used for XML layouts. The builder simply inflates the XML layout file, and the binder is passed as a parameter.
+
+- `DeclarativeBuilderBinder`
+Used for declarative layouts, like Anko DSL. The builder is the declarative layout function, passed as a parameter, and the binder is delegated to DSL `onItem` calls within your original layout.
+
+See the sample for example usages of all of these `BuilderBinder`s.
+
+Each `BuilderBinder` type also provides a static `BuilderBinder.create` factory with a default builder and binder. For example:
+
+```kotlin
+// BuilderBinder for a `RecyclerItemView`, built from the reflective View constructor
+RecyclerItemViewBuilderBinder.create<FlowerPotModel, FlowerPotItemView>()
+
+// BuilderBinder for a static XML layout, which does no binding
+XmlBuilderBinder.create<HeaderItem>(R.layout.view_header_item)
+```
+
+# RecyclerItemView
+
+The recommended approach is to encapsulate your item binding logic in its own custom `View` class. This class needs to implement `RecyclerItemView<ItemType>`.
 
 Here's an example:
 
 ```kotlin
-class MyRecyclerItemView @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr), RecyclerItemView<MyItemType> {
+// This View handles items of type `FlowerPotModel`
+class FlowerPotItemView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
+    FrameLayout(context, attrs, defStyleAttr), RecyclerItemView<FlowerPotModel> {
 
     init {
         TODO("Setup your View however you like, just like in any normal custom or compound View")
     }
 
-    override fun setItem(position: Int, item: MyItemType) {
-        // Write your binding logic here
+    override fun setItem(position: Int, item: FlowerPotModel) {
+        TODO("Write your binding logic here")
     }
 }
 ```
 
-Then, setup your adapter to use this View class:
+The recommended approach is to use a `RecyclerItemViewBuilderBinder` with a custom `RecyclerItemView` whenever binding is necessary.
+For static views, which require no binding, prefer to use `XmlBuilderBinder` or `ViewBuilderBinder`.
+
+# Multi-type Adapter
+
+Once you've created a `BuilderBinder` for each item type you want to handle,
+simply pass them to one of the static factories in `RecyclerAdapterBuilder`.
+
+The Adapter will wrap the provided `BuilderBinder`s into a `BuilderBinderRegistry`,
+to which it will delegate building and binding.
+
+You can either do this implictly, with:
+`RecyclerAdapterBuilder.fromBuilderBinders(yourBuilderBinder1, yourBuilderBinder2, ...)`
+
+Or, you can instantiate the `BuilderBinderRegistry` yourself, and create the `Adapter` with:
+`RecyclerAdapterBuilder.fromBuilderBinderRegistry(yourBuilderBinderRegistry)`
+
+# Single-type Adapter
+
+Sometimes you only need a simple `Adapter` for handling a single type of item. In these cases, it's even easier - the library will create an `Adapter` with a single implicit `BuilderBinder`.
+
+Use one of the static factories from `SingleTypeRecyclerAdapterBuilder`.
+
+For example:
 
 ```kotlin
-val adapter = RecyclerAdapterBuilder.fromView<MyItemType, MyRecyclerItemView>()
-recyclerView.adapter = adapter
+// Creates an adapter containing a single default RecyclerItemViewBuilderBinder.
+// This adapter will handle items of type `FlowerPotModel` with a `FlowerPotItemView`.
+val recyclerAdapter = SingleTypeRecyclerAdapterBuilder.fromRecyclerItemView<FlowerPotModel, FlowerPotItemView>()
 ```
-
-That's it! For more advanced options, read on!
 
 # Config
 
-You can pass an optional RecyclerAdapterConfig to every `RecyclerAdapterBuilder` function.
+You can pass an optional RecyclerAdapterConfig to every `RecyclerAdapterBuilder` and `SingleTypeRecyclerAdapterBuilder` function.
 
 This config contains parameters used for setting up the auto-generated Adapter.
 
-To create a config, most of the time you can simply create an instance of `AdapterConfig`, which contains a useful default configuration.
-There is also the option to implement `RecyclerAdapterConfig` yourself.
+To create a config, simply instantiate `AdapterConfig` and update the config as desired. Alternatively, you can manually implement `RecyclerAdapterConfig`.
 
-In `AdapterConfig` are the configuration options:
-- `items` - a list of items to show in the Adapter. Can always be updated with `Adapter.submitList`. Defaults to an empty list.
-- `featureDelegateCreators` - a list of functions to instantiate `AdapterFeatureDelegate`s. More on them later. Defaults to an empty list (no feature delegates)
-- `positionDelegateCreator` - a function to instantiate the `AdapterPositionDelegate`. More on that later. Defaults to instantiate `null` (uses the default position delegate)
+In `RecyclerAdapterConfig` are the configuration options:
+- `items` - a list of items to show in the Adapter. Can always be updated later with `Adapter.submitList`. Defaults to an empty list.
+- `featureDelegateCreators` - a list of functions to instantiate `AdapterFeatureDelegate`s. These are composable features which hook into your `Adapter`. Defaults to no feature delegates.
+- `positionDelegateCreator` - a function to instantiate the `AdapterPositionDelegate`, which is responsible for positioning items. Defaults to a `LinearPositionDelegate`.
 
-# AdapterFeatureDelegate
+## AdapterFeatureDelegate
 
-Each `AdapterFeatureDelegate` hooks into Adapter calls to provide an encapsulated and re-usable component for a certain feature.
+An `AdapterFeatureDelegate` hooks into `Adapter` calls to provide an encapsulated and re-usable component for a certain feature.
 
 You can easily create your own delegate by implementing `AdapterFeatureDelegate`.
 
-A number of common delegates are also provided in the library. They are:
+A number of common delegates are also provided in the library, including:
 - `OnItemClickDelegate` - adds an on item click listener to the Adapter
-- `ItemLayoutParamsDelegate` - adds layout params to your item views. This is especially important for Adapters built from a `RecyclerItemView` class, as layout params cannot be inferred from custom Views.
+- `ItemLayoutParamsDelegate` - adds layout params to your item views. This is especially important for Adapters built from a `RecyclerItemView` class, as layout params cannot be inferred from custom `View`s.
 - `SelectableItemDelegate`- a delegate that allows for up to 1 item in the Adapter to be selected at a time
 
-# AdapterPositionDelegate
+## AdapterPositionDelegate
 
-The `AdapterPositionDelegate` is responsible for positioning items in the Adapter. 
-Most of the time, you won't need to worry about this - in the majority of cases, the default `AdapterPositionDelegate` is what you want.
+The `AdapterPositionDelegate` is responsible for positioning items in the Adapter. Most of the time, you won't need to worry about this.
 
 The default delegate is a `LinearPositionDelegate` (shows list items in order from first to last) using the `DefaultDiffCallback` (checks for object equality).
 
-The other provided position delegate is the `CyclicPositionDelegate`, which makes the RecyclerView cyclic - that is, the list of items wraps-around.
-To allow the user to scroll infinitely in both directions, you need to first center the RecyclerView. You can use the extension provided in this library:
+The other provided position delegate is the `CyclicPositionDelegate`, which makes the RecyclerView cyclic - that is, the list of items wraps-around. To allow the user to scroll infinitely in both directions, you need to first center the RecyclerView. You can use the extension provided in this library:
 `recyclerView.scrollToCenter()`
 
 You can also easily create your own position delegate by implementing `AdapterPositionDelegate`.
 
-If you want to use a different diff callback, or a different position delegate, set the `positionDelegateCreator` in `RecyclerAdapterConfig`.
+To use a different diff callback, you can also pass it as the parameter to `RecyclerAdapterConfig.setLinear` or `RecyclerAdapterConfig.setCyclic`.
 
-# Config example
+## Config Example
 
-There are also a number of utility extensions on `RecyclerAdapterConfig`, provided to make configuration as easy as possible. 
-They can be seen in `flowerpotrecycler/util/RecyclerAdapterConfig.kt`.
-Some of them are shown off in the following example.
+There are also a number of extension functions on `RecyclerAdapterConfig`, provided to make configuration as easy as possible. Some of them are shown off in the following example.
 
 ```kotlin
-val config = AdapterConfig<FlowerPotModel>().apply {
+val config = AdapterConfig<FlowerPotModel, FlowerPotItemView>().apply {
     items = listOf(item1, item2, item3)
-    // Extension function to add an `ItemLayoutParamsDelegate`
+    // Adds an `ItemLayoutParamsDelegate`
     addItemLayoutParams(
         // Configure your layout params however you like
         RecyclerView.LayoutParams(
@@ -122,102 +179,20 @@ val config = AdapterConfig<FlowerPotModel>().apply {
         ).apply {
             leftMargin = 10
             rightMargin = 10
-        }   
+        }
     )
-    // Extension function to add an `OnItemClickDelegate`
+    // Adds an `OnItemClickDelegate`
     addOnItemClickListener { item, position ->
         val context = requireContext()
         Toast.makeText(context, context.getString(item.nameResId), Toast.LENGTH_SHORT)
             .show()
     }
-    // Extension function to use the `CyclicPositionDelegate` with the `DefaultDiffCallback`
-    // This makes the items wrap-around
+    // Uses the `CyclicPositionDelegate` with the `DefaultDiffCallback` to make items wrap-around
     setCyclic()
 }
 
-val recyclerAdapter = RecyclerAdapterBuilder.fromView<FlowerPotModel, FlowerPotItemView>(config)
-
-recyclerView.adapter = recyclerAdapter
-recyclerView.layoutManager = LinearLayoutManager(context)
+val recyclerAdapter = SingleTypeRecyclerAdapterBuilder.fromRecyclerItemView<FlowerPotModel, FlowerPotItemView>(config)
 ```
-
-# Alternative Adapter Creation Methods
-
-Along with the recommended custom View approach, FlowerPotRecycler provides a number of alternative methods to auto-generate adapters:
-
-<details>
-  <summary>From XML resource</summary>
-  
-  This allows you to create an adapter which will display each item by inflating the provided layout resource, and bind it using the provided binding function.
-  
-  For example:
-  
-  ```kotlin
-  val adapter = RecyclerAdapterBuilder.fromXml(R.layout.pot_recycler_item_view) { position, item, itemView ->
-      // This is your binding logic
-      itemView.potImageView.setImageResource(item.imageResId)
-      itemView.potNameTextView.setText(item.nameResId)
-  }
-  ```
-  
-  For a full example, see:
-  https://github.com/LukeNeedham/FlowerPotRecyclerDSL-Sample/blob/master/app/src/main/java/com/lukeneedham/flowerpotrecyclersample/XmlLayoutFragment.kt
-  
-</details>
-
-<details>
-  <summary>With declarative DSL (Anko, Compose)</summary>
-  
-  FlowerPotRecycler provides a binding DSL, with the function `onItem(...)`.
-  This allows you to add a callback to bind the item to the view. Useful when using a declarative UI, like Anko or Compose.
-  
-  `fun <ItemType> RecyclerView.setupWithDeclarativeDsl(items: List<ItemType>, builder: DataBindingDsl<ItemType>.(ViewGroup) -> View)`
-  
-  If using Anko in a Fragment, this might look like:
-  ```kotlin
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-  
-          val recyclerData = listOf(
-            Pot(R.string.good_flower_pot, R.drawable.good_flower_pot),
-            Pot(R.string.bad_flower_pot, R.drawable.bad_flower_pot),
-            Pot(R.string.ugly_flower_pot, R.drawable.ugly_flower_pot)
-          )
-  
-          return UI {
-              linearLayout {
-                  recyclerView {
-                      layoutManager = LinearLayoutManager(context)
-                      adapter = RecyclerAdapterBuilder.fromDeclarativeDsl(recyclerData) { parent ->
-                          UI {
-                              linearLayout {
-                                  imageView().apply {
-                                      scaleType = ImageView.ScaleType.CENTER_CROP
-  
-                                      onItem {
-                                          setImageResource(it.imageResId)
-                                      }
-                                  }
-  
-                                  textView().apply {
-                                      textSize = 20f
-  
-                                      onItem {
-                                          setText(it.nameResId)
-                                      }
-                                  }
-                              }
-                          }.view
-                      }
-                  }.lparams(matchParent, wrapContent)
-              }
-          }.view
-      }
-  ```
-  
-  For a full example, see:
-  https://github.com/LukeNeedham/FlowerPotRecyclerDSL-Sample/blob/master/app/src/main/java/com/lukeneedham/flowerpotrecyclersample/AnkoLayoutFragment.kt
-  
-</details>
 
 # But what if I really really really need a custom adapter?
 
@@ -225,46 +200,26 @@ Then FlowerPotRecycler eases the pain.
 
 In some cases you really do need your own custom adapter - for example, if you want to make RecyclerView items selectable.
 
-To minimise the boilerplate needed in your adapters in these cases, extend from `DelegatedRecyclerAdapter`, or `DefaultDelegatedRecyclerAdapter` to get useful defaults.
+You can see an example in `CustomAdapter` in the samples.
 
-See `CustomRecyclerAdapter` for a full example.
+To minimise the boilerplate in these cases, extend from `DelegatedRecyclerAdapter`.
 
 You can of course also override the standard RecyclerView methods, like `onBindViewHolder`, to supplement or replace the provided behaviour.
 
-Within `DelegatedRecyclerAdapter` you can also access and change configurations like:
-- `featureDelegates` (list of delegates providing extra composable functionality)
-- `positionDelegate` (responsible for arranging items in the Adapter)
+Within `DelegatedRecyclerAdapter` you can also override `featureDelegates` and the `positionDelegate`.
 
 # Updating RecyclerView Data
-  
-You may wish to update your RecyclerView items.
 
-For this you can use `submitList(...)` on your adapter.
+You may wish to update your RecyclerView items. For this you can use `submitList(...)` on your adapter.
 
-Updates are calculated asynchronously using DiffUtil, allowing changes to be animated.
+Updates are calculated asynchronously using DiffUtil, allowing changes to be animated. You can also pass a callback to `submitList`, which will be called when the asynchronous diff process completes.
 
-You can also pass a callback to `submitList`, which will be called when the asynchronous diff process completes. This can be useful when you need to position the recyclerview at a certain item, for example:
-
-```kotlin
-val adapter = RecyclerAdapterBuilder.fromView { MyRecyclerItemView(it) }
-
-// When data is received from DB / API / whenever it's ready:
-adapter.submitList(newData) {
-    // Scroll to the end of the RecyclerView - this can only be done when the diff is done and items are laid out
-    recyclerView.scrollToPosition(newData.lastIndex)
-}
-```
-
-By default, the diff is done using a default `DiffCallback`, which just checks for object equality. To provide a custom `DiffCallback`, provide a `positionDelegateCreator` in `RecyclerAdapterConfig`  
+By default, the diff is done using a default `DiffCallback`, which just checks for object equality. To use a different diff callback, pass it as the parameter to `RecyclerAdapterConfig.setLinear` or `RecyclerAdapterConfig.setCyclic`.
 
 # Help! My RecyclerView isn't showing anything!
 
 1 - Make sure you've set a `LayoutManager` ;-)
 
-2 - Make sure you've supplied data to your adapter (via `submitList` if no initial data is supplied)
+2 - Make sure you've supplied data to your adapter (via `submitList` if no initial data is supplied in the config)
 
-3 - If using a compound view, make sure you set LayoutParams (see `ItemLayoutParamsDelegate`)
-
-# Limitations
-
-FlowerPotRecycler cannot currently handle multiple view types. This is currently in progress.
+3 - If using a compound view, make sure you set `LayoutParams` (see `ItemLayoutParamsDelegate`)
