@@ -45,7 +45,7 @@ class AnyAdapterFragment : Fragment(R.layout.fragment_recyclerview_layout) {
                     RecyclerView.LayoutParams.WRAP_CONTENT
                 )
             )
-            addOnItemClickListener { item, position ->
+            addOnItemClickListener { item, _, _ ->
                 val text = when (item) {
                     is FlowerPotModel -> "Flower Pot: " + getString(item.nameResId)
                     is Int -> "Int: $item"

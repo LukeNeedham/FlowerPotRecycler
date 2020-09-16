@@ -31,7 +31,7 @@ class NumberAdapterFragment : Fragment(R.layout.fragment_recyclerview_layout) {
                     RecyclerView.LayoutParams.WRAP_CONTENT
                 )
             )
-            addOnItemClickListener { item, position ->
+            addOnItemClickListener { item, _, _ ->
                 showSnackbar(item.toString())
             }
         }

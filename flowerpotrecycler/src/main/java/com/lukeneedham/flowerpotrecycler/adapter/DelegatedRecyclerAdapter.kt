@@ -46,7 +46,7 @@ abstract class DelegatedRecyclerAdapter<BaseItemType : Any, BaseItemViewType : V
         // during onViewHolderBound. For compatibility, all click handling must go through onItemClick
         itemView.setOnClickListener {
             featureDelegates.forEach {
-                it.onItemClick(item, position)
+                it.onItemClick(item, position, itemView)
             }
         }
     }

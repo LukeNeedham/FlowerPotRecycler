@@ -31,7 +31,7 @@ class AnkoFragment : Fragment() {
                     layoutManager = LinearLayoutManager(context)
                     val config = AdapterConfig<FlowerPotModel, View>().apply {
                         items = FlowerPotDatabase.getAllEntries()
-                        addOnItemClickListener { item, position ->
+                        addOnItemClickListener { item, _, _ ->
                             showSnackbar(item.nameResId)
                         }
                     }

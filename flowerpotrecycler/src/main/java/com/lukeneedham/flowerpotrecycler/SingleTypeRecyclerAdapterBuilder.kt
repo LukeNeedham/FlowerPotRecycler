@@ -79,11 +79,14 @@ object SingleTypeRecyclerAdapterBuilder {
     }
 
     /**
+     * If your [ItemViewType] is a [RecyclerItemView], prefer to use [fromRecyclerItemView] instead.
+     *
      * @return a [DelegatedRecyclerAdapter] to handle a single item type,
      * with a [View] of type [ItemViewType].
      *
      * @param config Configuration for the adapter
      * @param builder The callback to instantiate your [ItemViewType] class
+     * @param binder The callback for binding each item to its View
      */
     inline fun <reified ItemType : Any, reified ItemViewType : View> fromView(
         config: RecyclerAdapterConfig<ItemType, ItemViewType>? = null,

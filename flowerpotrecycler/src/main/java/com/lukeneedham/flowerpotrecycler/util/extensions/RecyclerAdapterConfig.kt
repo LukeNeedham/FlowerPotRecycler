@@ -58,7 +58,7 @@ fun <ItemType : Any, ItemViewType : View> RecyclerAdapterConfig<ItemType, ItemVi
 }
 
 fun <ItemType : Any, ItemViewType : View> RecyclerAdapterConfig<ItemType, ItemViewType>.addOnItemClickListener(
-    listener: (item: ItemType, position: Int) -> Unit
+    listener: (item: ItemType, position: Int, itemView: ItemViewType) -> Unit
 ) {
     addDelegate(OnItemClickDelegate(listener))
 }

@@ -35,5 +35,5 @@ interface AdapterFeatureDelegate<ItemType : Any, ItemViewType : View> {
     /**
      * A hook for when an item view is clicked
      */
-    fun onItemClick(item: ItemType, position: Int)
+    fun onItemClick(item: ItemType, position: Int, itemView: ItemViewType)
 }

@@ -29,7 +29,7 @@ class RecyclerItemViewAdapterFragment : Fragment(R.layout.fragment_recyclerview_
                     RecyclerView.LayoutParams.WRAP_CONTENT
                 )
             )
-            addOnItemClickListener { item, position ->
+            addOnItemClickListener { item, _, _ ->
                 showSnackbar(item.nameResId)
             }
         }

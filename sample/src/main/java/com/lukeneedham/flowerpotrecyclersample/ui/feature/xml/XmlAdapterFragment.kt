@@ -26,7 +26,7 @@ class XmlAdapterFragment : Fragment(R.layout.fragment_recyclerview_layout) {
         val config = AdapterConfig<FlowerPotModel, View>().apply {
             items = FlowerPotDatabase.getAllEntries()
             addItemLayoutParams(RecyclerView.LayoutParams(MATCH_PARENT, WRAP_CONTENT))
-            addOnItemClickListener { item, position ->
+            addOnItemClickListener { item, _, _ ->
                 showSnackbar(item.nameResId)
             }
         }

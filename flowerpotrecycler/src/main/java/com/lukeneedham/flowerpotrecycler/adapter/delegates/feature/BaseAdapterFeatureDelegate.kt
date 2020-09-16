@@ -24,6 +24,6 @@ abstract class BaseAdapterFeatureDelegate<ItemType : Any, ItemViewType : View> :
     ) {
     }
 
-    override fun onItemClick(item: ItemType, position: Int) {
+    override fun onItemClick(item: ItemType, position: Int, itemView: ItemViewType) {
     }
 }

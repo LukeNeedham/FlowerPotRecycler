@@ -46,7 +46,7 @@ class CustomAdapter(
                     ViewGroup.LayoutParams.WRAP_CONTENT
                 )
             ),
-            OnItemClickDelegate { item, position -> onItemClick(item) },
+            OnItemClickDelegate { item, _, _ -> onItemClick(item) },
             selectableItemDelegate
         )
 

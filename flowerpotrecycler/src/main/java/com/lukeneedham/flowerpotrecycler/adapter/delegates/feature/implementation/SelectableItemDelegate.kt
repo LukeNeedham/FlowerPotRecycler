@@ -54,7 +54,7 @@ class SelectableItemDelegate<ItemType : Any, ItemViewType : View>(
         onViewSelected(itemView, item, isSelected)
     }
 
-    override fun onItemClick(item: ItemType, position: Int) {
+    override fun onItemClick(item: ItemType, position: Int, itemView: ItemViewType) {
         selectedItemPosition = position
     }
 

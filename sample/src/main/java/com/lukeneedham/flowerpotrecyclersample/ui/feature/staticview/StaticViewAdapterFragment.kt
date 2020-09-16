@@ -41,7 +41,7 @@ class StaticViewAdapterFragment : Fragment(R.layout.fragment_recyclerview_layout
                     RecyclerView.LayoutParams.WRAP_CONTENT
                 )
             )
-            addOnItemClickListener { _, _ ->
+            addOnItemClickListener { _, _, _ ->
                 showSnackbar("Static view clicked")
             }
         }
