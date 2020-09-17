@@ -6,9 +6,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.RecyclerAdapterBuilder
-import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.BuilderBinderRegistry
 import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.implementation.view.RecyclerItemViewBuilderBinder
 import com.lukeneedham.flowerpotrecycler.adapter.config.AdapterConfig
+import com.lukeneedham.flowerpotrecycler.adapter.itemtypedelegate.ItemTypeBuilder
 import com.lukeneedham.flowerpotrecycler.util.extensions.addItemLayoutParams
 import com.lukeneedham.flowerpotrecycler.util.extensions.addOnItemClickListener
 import com.lukeneedham.flowerpotrecyclersample.R
@@ -25,37 +25,33 @@ class NumberAdapterFragment : Fragment(R.layout.fragment_recyclerview_layout) {
         // We want to show ints and doubles, so the shared-super class is Number
         val numberAdapterConfig = AdapterConfig<Number, View>().apply {
             items = listOf(1, 2, 3.0)
-            addItemLayoutParams(
-                RecyclerView.LayoutParams(
-                    RecyclerView.LayoutParams.MATCH_PARENT,
-                    RecyclerView.LayoutParams.WRAP_CONTENT
-                )
-            )
-            addOnItemClickListener { item, _, _ ->
-                showSnackbar(item.toString())
-            }
         }
+
+        val itemLayoutParams = RecyclerView.LayoutParams(
+            RecyclerView.LayoutParams.MATCH_PARENT,
+            RecyclerView.LayoutParams.WRAP_CONTENT
+        )
+
+        val itemClickListener = { item: Any -> showSnackbar(item.toString()) }
 
         // This BuilderBinder says: when an item of type Int is encountered,
         // delegate its building and binding to IntItemView
-        val intBuilderBinder =
-            RecyclerItemViewBuilderBinder.create<Int, IntItemView>()
-        val doubleBuilderBinder =
-            RecyclerItemViewBuilderBinder.create<Double, DoubleItemView>()
+        val intDelegate =
+            ItemTypeBuilder.from<Int, IntItemView>(RecyclerItemViewBuilderBinder.create()) {
+                addItemLayoutParams(itemLayoutParams)
+                addOnItemClickListener { item, _, _ -> itemClickListener(item) }
+            }
 
-        // Multi-type adapter from type registry
-        // Config optional
-        val numberRegistry = BuilderBinderRegistry<Number, View>(
-            listOf(intBuilderBinder, doubleBuilderBinder)
-        )
-        val numberAdapter =
-            RecyclerAdapterBuilder.fromBuilderBinderRegistry(numberRegistry, numberAdapterConfig)
+        val doubleDelegate =
+            ItemTypeBuilder.from<Double, DoubleItemView>(RecyclerItemViewBuilderBinder.create()) {
+                addItemLayoutParams(itemLayoutParams)
+                addOnItemClickListener { item, _, _ -> itemClickListener(item) }
+            }
 
-        // Alternatively, a function using varargs
         // Config optional
-        val numberAdapterAlternative = RecyclerAdapterBuilder.fromBuilderBinders(
-            intBuilderBinder,
-            doubleBuilderBinder,
+        val numberAdapter = RecyclerAdapterBuilder.fromItemTypeBuilders(
+            intDelegate,
+            doubleDelegate,
             config = numberAdapterConfig
         )
 

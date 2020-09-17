@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.SingleTypeRecyclerAdapterBuilder
 import com.lukeneedham.flowerpotrecycler.adapter.config.AdapterConfig
+import com.lukeneedham.flowerpotrecycler.adapter.config.SingleTypeAdapterConfig
 import com.lukeneedham.flowerpotrecycler.util.extensions.addItemLayoutParams
 import com.lukeneedham.flowerpotrecycler.util.extensions.addOnItemClickListener
 import com.lukeneedham.flowerpotrecycler.util.extensions.useDummyItems
@@ -22,7 +23,7 @@ class StaticViewAdapterFragment : Fragment(R.layout.fragment_recyclerview_layout
         // Build a recyclerview for a static view, which doesn't require binding
 
         // Requires a different config for static views
-        val config = AdapterConfig<Unit, ExampleStaticView>().apply {
+        val config = SingleTypeAdapterConfig<Unit, ExampleStaticView>().apply {
             // We want to show 1 view, but we don't care what the item actually is,
             // since the view is static and no binding is done anyway.
             // For this reason, we use Unit as the item type, and we show 1 Unit item.

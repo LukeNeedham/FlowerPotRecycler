@@ -13,9 +13,8 @@ import com.lukeneedham.flowerpotrecycler.util.BuilderBinderUtils.createEmptyBind
 @Suppress("unused")
 class XmlBuilderBinder<ItemType : Any>(
     @LayoutRes val xmlLayoutResId: Int,
-    override val itemMatcher: ItemMatcher<ItemType>,
     private val binder: (itemView: View, position: Int, item: ItemType) -> Unit
-) : BuilderBinder<ItemType, View>() {
+) : BuilderBinder<ItemType, View> {
 
     override fun build(parent: ViewGroup): View {
         return LayoutInflater.from(parent.context).inflate(xmlLayoutResId, parent, false)
@@ -28,9 +27,8 @@ class XmlBuilderBinder<ItemType : Any>(
     companion object {
         inline fun <reified ItemType : Any> create(
             @LayoutRes xmlLayoutResId: Int,
-            matcher: ItemMatcher<ItemType> = ClassMatcher(ItemType::class),
             noinline binder: Binder<ItemType, View> = createEmptyBinder()
         ): XmlBuilderBinder<ItemType> =
-            XmlBuilderBinder(xmlLayoutResId, matcher, binder)
+            XmlBuilderBinder(xmlLayoutResId, binder)
     }
 }

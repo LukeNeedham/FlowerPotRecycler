@@ -7,13 +7,12 @@ import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.Builder
 import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.BuilderBinder
 import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.matcher.ClassMatcher
 import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.matcher.ItemMatcher
-import com.lukeneedham.flowerpotrecycler.util.BuilderBinderUtils.createBuilder
+import com.lukeneedham.flowerpotrecycler.util.BuilderBinderUtils.createReflectiveBuilder
 
 /** Builds the item view with [builder] and implicitly binds using [RecyclerItemView.setItem] */
 class RecyclerItemViewBuilderBinder<ItemType : Any, ItemViewType>(
-    override val itemMatcher: ItemMatcher<ItemType>,
     private val builder: Builder<ItemViewType>
-) : BuilderBinder<ItemType, ItemViewType>()
+) : BuilderBinder<ItemType, ItemViewType>
         where ItemViewType : View, ItemViewType : RecyclerItemView<ItemType> {
 
     override fun build(parent: ViewGroup): ItemViewType {
@@ -26,10 +25,9 @@ class RecyclerItemViewBuilderBinder<ItemType : Any, ItemViewType>(
 
     companion object {
         inline fun <reified ItemType : Any, reified ItemViewType> create(
-            matcher: ItemMatcher<ItemType> = ClassMatcher(ItemType::class),
-            noinline builder: Builder<ItemViewType> = createBuilder()
+            noinline builder: Builder<ItemViewType> = createReflectiveBuilder()
         ): RecyclerItemViewBuilderBinder<ItemType, ItemViewType>
                 where ItemViewType : View, ItemViewType : RecyclerItemView<ItemType> =
-            RecyclerItemViewBuilderBinder(matcher, builder)
+            RecyclerItemViewBuilderBinder(builder)
     }
 }

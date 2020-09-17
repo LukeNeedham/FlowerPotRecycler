@@ -10,7 +10,7 @@ import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lukeneedham.flowerpotrecycler.SingleTypeRecyclerAdapterBuilder
-import com.lukeneedham.flowerpotrecycler.adapter.config.AdapterConfig
+import com.lukeneedham.flowerpotrecycler.adapter.config.SingleTypeAdapterConfig
 import com.lukeneedham.flowerpotrecycler.util.extensions.addOnItemClickListener
 import com.lukeneedham.flowerpotrecyclersample.domain.FlowerPotDatabase
 import com.lukeneedham.flowerpotrecyclersample.domain.FlowerPotModel
@@ -29,7 +29,7 @@ class AnkoFragment : Fragment() {
             linearLayout {
                 recyclerView {
                     layoutManager = LinearLayoutManager(context)
-                    val config = AdapterConfig<FlowerPotModel, View>().apply {
+                    val config = SingleTypeAdapterConfig<FlowerPotModel, View>().apply {
                         items = FlowerPotDatabase.getAllEntries()
                         addOnItemClickListener { item, _, _ ->
                             showSnackbar(item.nameResId)

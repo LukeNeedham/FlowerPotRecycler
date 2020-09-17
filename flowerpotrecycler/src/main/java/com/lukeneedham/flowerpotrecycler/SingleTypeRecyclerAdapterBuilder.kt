@@ -9,16 +9,17 @@ import com.lukeneedham.flowerpotrecycler.adapter.RecyclerItemView
 import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.Binder
 import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.Builder
 import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.BuilderBinder
-import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.BuilderBinderRegistry
 import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.implementation.declarative.DeclarativeBindingDsl
 import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.implementation.declarative.DeclarativeBuilderBinder
 import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.implementation.view.RecyclerItemViewBuilderBinder
 import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.implementation.view.ViewBuilderBinder
 import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.implementation.xml.XmlBuilderBinder
 import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.matcher.ClassMatcher
-import com.lukeneedham.flowerpotrecycler.adapter.config.RecyclerAdapterConfig
-import com.lukeneedham.flowerpotrecycler.util.BuilderBinderUtils.createBuilder
+import com.lukeneedham.flowerpotrecycler.adapter.config.SingleTypeAdapterConfig
+import com.lukeneedham.flowerpotrecycler.adapter.delegates.feature.config.FeatureConfig
+import com.lukeneedham.flowerpotrecycler.adapter.itemtypedelegate.ItemTypeBuilder
 import com.lukeneedham.flowerpotrecycler.util.BuilderBinderUtils.createEmptyBinder
+import com.lukeneedham.flowerpotrecycler.util.BuilderBinderUtils.createReflectiveBuilder
 
 /** Builds Adapters which handle a single type of item with a single view type */
 object SingleTypeRecyclerAdapterBuilder {
@@ -34,11 +35,10 @@ object SingleTypeRecyclerAdapterBuilder {
      * @param builder The callback for building item Views
      */
     inline fun <reified ItemType : Any> fromDeclarativeDsl(
-        config: RecyclerAdapterConfig<ItemType, View>? = null,
+        config: SingleTypeAdapterConfig<ItemType, View>? = null,
         noinline builder: DeclarativeBindingDsl<ItemType>.(ViewGroup) -> View
     ): DelegatedRecyclerAdapter<ItemType, View> {
-        val matcher = ClassMatcher(ItemType::class)
-        val builderBinder = DeclarativeBuilderBinder(matcher, builder)
+        val builderBinder = DeclarativeBuilderBinder(builder)
         return fromBuilderBinder(builderBinder, config)
     }
 
@@ -51,11 +51,10 @@ object SingleTypeRecyclerAdapterBuilder {
      */
     inline fun <reified ItemType : Any> fromXml(
         @LayoutRes layoutResId: Int,
-        config: RecyclerAdapterConfig<ItemType, View>? = null,
+        config: SingleTypeAdapterConfig<ItemType, View>? = null,
         noinline binder: Binder<ItemType, View> = createEmptyBinder()
     ): DelegatedRecyclerAdapter<ItemType, View> {
-        val matcher = ClassMatcher(ItemType::class)
-        val builderBinder = XmlBuilderBinder(layoutResId, matcher, binder)
+        val builderBinder = XmlBuilderBinder(layoutResId, binder)
         return fromBuilderBinder(builderBinder, config)
     }
 
@@ -69,12 +68,11 @@ object SingleTypeRecyclerAdapterBuilder {
      * @param builder The callback to instantiate your [ItemViewType] class
      */
     inline fun <reified ItemType : Any, reified ItemViewType> fromRecyclerItemView(
-        config: RecyclerAdapterConfig<ItemType, ItemViewType>? = null,
-        noinline builder: Builder<ItemViewType> = createBuilder()
+        config: SingleTypeAdapterConfig<ItemType, ItemViewType>? = null,
+        noinline builder: Builder<ItemViewType> = createReflectiveBuilder()
     ): DelegatedRecyclerAdapter<ItemType, ItemViewType>
             where ItemViewType : View, ItemViewType : RecyclerItemView<ItemType> {
-        val matcher = ClassMatcher(ItemType::class)
-        val builderBinder = RecyclerItemViewBuilderBinder(matcher, builder)
+        val builderBinder = RecyclerItemViewBuilderBinder(builder)
         return fromBuilderBinder(builderBinder, config)
     }
 
@@ -89,12 +87,11 @@ object SingleTypeRecyclerAdapterBuilder {
      * @param binder The callback for binding each item to its View
      */
     inline fun <reified ItemType : Any, reified ItemViewType : View> fromView(
-        config: RecyclerAdapterConfig<ItemType, ItemViewType>? = null,
-        noinline builder: Builder<ItemViewType> = createBuilder(),
+        config: SingleTypeAdapterConfig<ItemType, ItemViewType>? = null,
+        noinline builder: Builder<ItemViewType> = createReflectiveBuilder(),
         noinline binder: Binder<ItemType, ItemViewType> = createEmptyBinder()
     ): DelegatedRecyclerAdapter<ItemType, ItemViewType> {
-        val matcher = ClassMatcher(ItemType::class)
-        val builderBinder = ViewBuilderBinder(matcher, builder, binder)
+        val builderBinder = ViewBuilderBinder(builder, binder)
         return fromBuilderBinder(builderBinder, config)
     }
 
@@ -106,11 +103,13 @@ object SingleTypeRecyclerAdapterBuilder {
      * and to bind items of type [ItemType] to them.
      * @param config Configuration for the adapter
      */
-    fun <ItemType : Any, ItemViewType : View> fromBuilderBinder(
+    inline fun <reified ItemType : Any, ItemViewType : View> fromBuilderBinder(
         builderBinder: BuilderBinder<ItemType, ItemViewType>,
-        config: RecyclerAdapterConfig<ItemType, ItemViewType>?
+        config: SingleTypeAdapterConfig<ItemType, ItemViewType>? = null
     ): DelegatedRecyclerAdapter<ItemType, ItemViewType> {
-        val registry = BuilderBinderRegistry(listOf(builderBinder))
-        return ConfigurableRecyclerAdapter(registry, config)
+        val matcher = ClassMatcher(ItemType::class)
+        val featureConfig = config ?: FeatureConfig<ItemType, ItemViewType>()
+        val builderBinderSetup = ItemTypeBuilder(builderBinder, matcher, featureConfig)
+        return ConfigurableRecyclerAdapter(listOf(builderBinderSetup), config)
     }
 }

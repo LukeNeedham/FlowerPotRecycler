@@ -1,12 +1,13 @@
-package com.lukeneedham.flowerpotrecycler.adapter.builderbinder
+package com.lukeneedham.flowerpotrecycler.adapter.itemtypedelegate
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.FlowerPotRecyclerException
 import com.lukeneedham.flowerpotrecycler.adapter.ViewHolder
 
 /**
- * A registry of [BuilderBinder]s, which each handle a single item type.
+ * A registry of [ItemTypeDelegate]s, which each handle a single item type.
  * No one item type may be handled by multiple [BuilderBinder]s,
  * and each item type submitted to the adapter must have a registered [BuilderBinder].
  * If either of these conditions are violated, this class will throw an exception to let you know.
@@ -15,30 +16,32 @@ import com.lukeneedham.flowerpotrecycler.adapter.ViewHolder
  * [BaseItemViewType] provides an upper bound on the view types registered.
  */
 @Suppress("MemberVisibilityCanBePrivate")
-class BuilderBinderRegistry<BaseItemType : Any, BaseItemViewType : View>(
-    val builderBinders: List<BuilderBinder<out BaseItemType, out BaseItemViewType>>
+class ItemTypeRegistry<BaseItemType : Any, BaseItemViewType : View>(
+    val itemTypeDelegates: List<ItemTypeDelegate<out BaseItemType, out BaseItemViewType>>
 ) {
 
     init {
-        if (builderBinders.isEmpty()) {
+        if (itemTypeDelegates.isEmpty()) {
             throw FlowerPotRecyclerException(
                 "No BuilderBinders have been registered, rendering this registry useless."
             )
         }
     }
 
-    fun build(parent: ViewGroup, itemTypeId: Int): BaseItemViewType {
-        val builderBinder = requireBuilderBinderForTypeId(itemTypeId)
-        return builderBinder.build(parent)
+    fun build(parent: ViewGroup, itemTypeId: Int): ViewHolder<BaseItemViewType> {
+        val builderBinderWithFeatures = requireBuilderBinderForTypeId(itemTypeId)
+        val view = builderBinderWithFeatures.build(parent)
+        val viewHolder = ViewHolder(view)
+        builderBinderWithFeatures.onBuilt(parent, itemTypeId, viewHolder)
+        return viewHolder
     }
 
     fun bind(holder: ViewHolder<BaseItemViewType>, position: Int, item: BaseItemType) {
-        val typeToView = requireBuilderBinderForItem(item)
-        val view = holder.itemView
-        typeToView.bindUntyped(view, position, item)
+        val builderBinderWithFeatures = requireBuilderBinderForItem(item)
+        builderBinderWithFeatures.bindUntyped(holder, position, item)
     }
 
-    /** Type id is simply the index of the BuilderBinder in [builderBinders] responsible for the item */
+    /** Type id is simply the index of the BuilderBinder in [itemTypeDelegates] responsible for the item */
     fun getTypeId(item: BaseItemType): Int {
         return requireTypeIdForItem(item)
     }
@@ -61,15 +64,15 @@ class BuilderBinderRegistry<BaseItemType : Any, BaseItemViewType : View>(
         }
     }
 
-    private fun getBuilderBinderForTypeId(typeId: Int): BuilderBinder<out BaseItemType, out BaseItemViewType>? =
-        builderBinders.getOrNull(typeId)
+    private fun getBuilderBinderForTypeId(typeId: Int): ItemTypeDelegate<out BaseItemType, out BaseItemViewType>? =
+        itemTypeDelegates.getOrNull(typeId)
 
-    private fun requireBuilderBinderForTypeId(typeId: Int): BuilderBinder<out BaseItemType, out BaseItemViewType> =
+    private fun requireBuilderBinderForTypeId(typeId: Int): ItemTypeDelegate<out BaseItemType, out BaseItemViewType> =
         getBuilderBinderForTypeId(typeId)
             ?: throw FlowerPotRecyclerException("No BuilderBinder registered for type id: $typeId")
 
     private fun getTypeIdForItem(item: BaseItemType): Int? {
-        val index = builderBinders.indexOfLast { it.matchesItem(item) }
+        val index = itemTypeDelegates.indexOfLast { it.matchesItem(item) }
         if (index == -1) {
             return null
         }
@@ -80,10 +83,10 @@ class BuilderBinderRegistry<BaseItemType : Any, BaseItemViewType : View>(
         getTypeIdForItem(item)
             ?: throw FlowerPotRecyclerException("No BuilderBinder registered for item: $item")
 
-    private fun getBuilderBinderForItem(item: BaseItemType): BuilderBinder<out BaseItemType, out BaseItemViewType>? =
-        builderBinders.firstOrNull { it.matchesItem(item) }
+    private fun getBuilderBinderForItem(item: BaseItemType): ItemTypeDelegate<out BaseItemType, out BaseItemViewType>? =
+        itemTypeDelegates.firstOrNull { it.matchesItem(item) }
 
-    private fun requireBuilderBinderForItem(item: BaseItemType): BuilderBinder<out BaseItemType, out BaseItemViewType> =
+    private fun requireBuilderBinderForItem(item: BaseItemType): ItemTypeDelegate<out BaseItemType, out BaseItemViewType> =
         getBuilderBinderForItem(item)
             ?: throw FlowerPotRecyclerException("No BuilderBinder registered for item: $item")
 
@@ -94,7 +97,7 @@ class BuilderBinderRegistry<BaseItemType : Any, BaseItemViewType : View>(
     private fun findDuplicateHandledItems(items: List<BaseItemType>): List<BaseItemType> {
         val duplicateMatchedItems = mutableListOf<BaseItemType>()
         items.forEach { item ->
-            val builderBindersForItem = builderBinders.filter { it.matchesItem(item) }
+            val builderBindersForItem = itemTypeDelegates.filter { it.matchesItem(item) }
             if (builderBindersForItem.size > 1) {
                 duplicateMatchedItems.add(item)
             }
@@ -110,10 +113,14 @@ class BuilderBinderRegistry<BaseItemType : Any, BaseItemViewType : View>(
         items.filter { getBuilderBinderForItem(it) == null }.distinct()
 
     companion object {
-        fun <BaseItemType : Any, BaseItemViewType : View> from(
-            vararg builderBinders: BuilderBinder<out BaseItemType, out BaseItemViewType>
-        ): BuilderBinderRegistry<BaseItemType, BaseItemViewType> {
-            return BuilderBinderRegistry(listOf(*builderBinders))
+        fun <BaseItemType : Any, BaseItemViewType : View> create(
+            itemTypeBuilders: List<ItemTypeBuilder<out BaseItemType, out BaseItemViewType>>,
+            adapter: RecyclerView.Adapter<*>
+        ): ItemTypeRegistry<BaseItemType, BaseItemViewType> {
+            val itemTypeDelegates = itemTypeBuilders.map {
+                it.build(adapter)
+            }
+            return ItemTypeRegistry(itemTypeDelegates)
         }
     }
 }

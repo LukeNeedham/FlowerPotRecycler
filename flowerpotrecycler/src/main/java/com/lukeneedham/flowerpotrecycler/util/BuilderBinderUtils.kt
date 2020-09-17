@@ -6,7 +6,7 @@ import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.Builder
 import com.lukeneedham.flowerpotrecycler.util.extensions.createBuilder
 
 object BuilderBinderUtils {
-    inline fun <reified ViewType : View> createBuilder(): Builder<ViewType> {
+    inline fun <reified ViewType : View> createReflectiveBuilder(): Builder<ViewType> {
         return ViewType::class.createBuilder()
     }
 

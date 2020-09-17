@@ -6,10 +6,10 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.RecyclerAdapterBuilder
-import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.BuilderBinderRegistry
 import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.implementation.view.RecyclerItemViewBuilderBinder
 import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.implementation.view.ViewBuilderBinder
 import com.lukeneedham.flowerpotrecycler.adapter.config.AdapterConfig
+import com.lukeneedham.flowerpotrecycler.adapter.itemtypedelegate.ItemTypeBuilder
 import com.lukeneedham.flowerpotrecycler.util.extensions.addItemLayoutParams
 import com.lukeneedham.flowerpotrecycler.util.extensions.addOnItemClickListener
 import com.lukeneedham.flowerpotrecyclersample.R
@@ -32,66 +32,57 @@ class AnyAdapterFragment : Fragment(R.layout.fragment_recyclerview_layout) {
         val adapterConfig = AdapterConfig<Any, View>().apply {
             val flowerPotItems = FlowerPotDatabase.getAllEntries()
             val intItems = listOf(1, 2, 3, 4, 5)
-            val staticItems = listOf(
-                StaticA,
-                StaticB
-            )
+            val staticItems = listOf(StaticA, StaticB)
             // Only add items of types which have a registered BuilderBinder
             // Otherwise, the adapter will throw an error
             items = (flowerPotItems + intItems + staticItems).shuffled()
-            addItemLayoutParams(
-                RecyclerView.LayoutParams(
-                    RecyclerView.LayoutParams.MATCH_PARENT,
-                    RecyclerView.LayoutParams.WRAP_CONTENT
-                )
-            )
-            addOnItemClickListener { item, _, _ ->
-                val text = when (item) {
-                    is FlowerPotModel -> "Flower Pot: " + getString(item.nameResId)
-                    is Int -> "Int: $item"
-                    is StaticA -> "Static A"
-                    is StaticB -> "Static B"
-                    else -> "Other"
-                }
-                showSnackbar(text)
-            }
         }
+
+        val itemLayoutParams = RecyclerView.LayoutParams(
+            RecyclerView.LayoutParams.MATCH_PARENT,
+            RecyclerView.LayoutParams.WRAP_CONTENT
+        )
 
         // This BuilderBinder says: when an item of type FlowerPotModel is encountered,
         // delegate its building and binding to FlowerPotItemView
-        val flowerPotBuilderBinder =
-            RecyclerItemViewBuilderBinder.create<FlowerPotModel, FlowerPotItemView>()
+        val flowerPotDelegate = ItemTypeBuilder.from<FlowerPotModel, FlowerPotItemView>(
+            RecyclerItemViewBuilderBinder.create()
+        ) {
+            addItemLayoutParams(itemLayoutParams)
+            addOnItemClickListener { item, _, _ ->
+                showSnackbar("Flower Pot: " + getString(item.nameResId))
+            }
+        }
 
-        val intBuilderBinder =
-            RecyclerItemViewBuilderBinder.create<Int, IntItemView>()
+        val intDelegate = ItemTypeBuilder.from<Int, IntItemView>(
+            RecyclerItemViewBuilderBinder.create()
+        ) {
+            addItemLayoutParams(itemLayoutParams)
+            addOnItemClickListener { item, _, _ -> showSnackbar("Int: $item") }
+        }
 
         // StaticA is a singleton.
         // For every StaticA in the list of items submitted to the adapter,
         // a StaticAItemView will be shown in the corresponding position
         // In a real use-case, this might be a Header view
-        val staticABuilderBinder = ViewBuilderBinder.create<StaticA, StaticAItemView>()
+        val staticADelegate = ItemTypeBuilder.from<StaticA, StaticAItemView>(
+            ViewBuilderBinder.create()
+        ) {
+            addItemLayoutParams(itemLayoutParams)
+        }
 
-        val staticBBuilderBinder = ViewBuilderBinder.create<StaticB, StaticBItemView>()
+        val staticBDelegate = ItemTypeBuilder.from<StaticB, StaticBItemView>(
+            ViewBuilderBinder.create()
+        ) {
+            addItemLayoutParams(itemLayoutParams)
+        }
 
-        // Multi-type adapter from type registry
         // Config optional
-        val builderBinderRegistry: BuilderBinderRegistry<Any, View> =
-            BuilderBinderRegistry.from(
-                flowerPotBuilderBinder,
-                intBuilderBinder,
-                staticABuilderBinder,
-                staticBBuilderBinder
-            )
-        val recyclerAdapter =
-            RecyclerAdapterBuilder.fromBuilderBinderRegistry(builderBinderRegistry, adapterConfig)
-
-        // Alternatively, a function using varargs
-        // Config optional
-        val adapterAlternative = RecyclerAdapterBuilder.fromBuilderBinders(
-            flowerPotBuilderBinder,
-            intBuilderBinder,
-            staticABuilderBinder,
-            staticBBuilderBinder,
+        val recyclerAdapter = RecyclerAdapterBuilder.fromItemTypeBuilders(
+            flowerPotDelegate,
+            intDelegate,
+            staticADelegate,
+            staticBDelegate,
             config = adapterConfig
         )
 

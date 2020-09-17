@@ -3,8 +3,6 @@ package com.lukeneedham.flowerpotrecycler.adapter.builderbinder.implementation.d
 import android.view.View
 import android.view.ViewGroup
 import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.BuilderBinder
-import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.matcher.ClassMatcher
-import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.matcher.ItemMatcher
 
 /**
  * An implementation of [BuilderBinder] which combines the building of the View, and the binding of the item,
@@ -14,9 +12,8 @@ import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.matcher.ItemMatch
  * within your implementation of [build] to add a callback to bind the item to the View.
  */
 class DeclarativeBuilderBinder<ItemType : Any>(
-    override val itemMatcher: ItemMatcher<ItemType>,
     private val builder: DeclarativeBindingDsl<ItemType>.(ViewGroup) -> View
-) : BuilderBinder<ItemType, View>() {
+) : BuilderBinder<ItemType, View> {
 
     private val binder = DeclarativeBinder<ItemType>()
 
@@ -34,9 +31,8 @@ class DeclarativeBuilderBinder<ItemType : Any>(
 
     companion object {
         inline fun <reified ItemType : Any> create(
-            matcher: ItemMatcher<ItemType> = ClassMatcher(ItemType::class),
             noinline builder: DeclarativeBindingDsl<ItemType>.(ViewGroup) -> View
         ): DeclarativeBuilderBinder<ItemType> =
-            DeclarativeBuilderBinder(matcher, builder)
+            DeclarativeBuilderBinder(builder)
     }
 }
