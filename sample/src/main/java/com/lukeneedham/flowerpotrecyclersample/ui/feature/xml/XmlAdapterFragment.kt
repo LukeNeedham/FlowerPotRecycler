@@ -7,7 +7,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.lukeneedham.flowerpotrecycler.SingleTypeRecyclerAdapterBuilder
+import com.lukeneedham.flowerpotrecycler.SingleTypeRecyclerAdapterCreator
 import com.lukeneedham.flowerpotrecycler.adapter.config.SingleTypeAdapterConfig
 import com.lukeneedham.flowerpotrecycler.util.extensions.addItemLayoutParams
 import com.lukeneedham.flowerpotrecycler.util.extensions.addOnItemClickListener
@@ -31,7 +31,7 @@ class XmlAdapterFragment : Fragment(R.layout.fragment_recyclerview_layout) {
             }
         }
 
-        val recyclerAdapter = SingleTypeRecyclerAdapterBuilder.fromXml(
+        val recyclerAdapter = SingleTypeRecyclerAdapterCreator.fromXml(
             R.layout.view_flower_pot_item,
             config
         ) { itemView, position, item ->
@@ -41,7 +41,7 @@ class XmlAdapterFragment : Fragment(R.layout.fragment_recyclerview_layout) {
 
         // Alternatively, we can create a static adapter if we don't need any binding to be done
         val staticAdapter =
-            SingleTypeRecyclerAdapterBuilder.fromXml(R.layout.view_flower_pot_item, config)
+            SingleTypeRecyclerAdapterCreator.fromXml(R.layout.view_flower_pot_item, config)
 
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)

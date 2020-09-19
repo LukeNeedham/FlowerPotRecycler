@@ -1,16 +1,18 @@
 package com.lukeneedham.flowerpotrecyclersample.ui.feature.customadapter
 
-import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.adapter.DefaultDelegatedRecyclerAdapter
 import com.lukeneedham.flowerpotrecycler.adapter.DefaultDiffCallback
 import com.lukeneedham.flowerpotrecycler.adapter.DelegatedRecyclerAdapter
 import com.lukeneedham.flowerpotrecycler.adapter.ViewHolder
-import com.lukeneedham.flowerpotrecycler.adapter.itemtypedelegate.ItemTypeBuilder
 import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.implementation.view.RecyclerItemViewBuilderBinder
+import com.lukeneedham.flowerpotrecycler.adapter.delegates.feature.config.FeatureConfig
 import com.lukeneedham.flowerpotrecycler.adapter.delegates.feature.implementation.SelectableItemDelegate
 import com.lukeneedham.flowerpotrecycler.adapter.delegates.position.AdapterPositionDelegate
 import com.lukeneedham.flowerpotrecycler.adapter.delegates.position.implementation.LinearPositionDelegate
+import com.lukeneedham.flowerpotrecycler.adapter.itemtype.ItemTypeConfig
 import com.lukeneedham.flowerpotrecycler.util.extensions.addDelegate
 import com.lukeneedham.flowerpotrecycler.util.extensions.addItemLayoutParams
 import com.lukeneedham.flowerpotrecycler.util.extensions.addOnItemClickListener
@@ -34,18 +36,16 @@ class CustomAdapter(
             itemView.isSelected = isSelected
         }
 
-    override val itemTypeBuilders: List<ItemTypeBuilder<FlowerPotModel, FlowerPotItemView>> =
+    override val itemTypeConfigs: List<ItemTypeConfig<FlowerPotModel, FlowerPotItemView>> =
         listOf(
-            ItemTypeBuilder.from(RecyclerItemViewBuilderBinder.create()) {
-                addItemLayoutParams(
-                    RecyclerView.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT
-                    )
-                )
-                addOnItemClickListener { item, _, _ -> onItemClick(item) }
-                addDelegate(selectableItemDelegate)
-            }
+            ItemTypeConfig.newInstance(
+                RecyclerItemViewBuilderBinder.newInstance(),
+                FeatureConfig<FlowerPotModel, FlowerPotItemView>().apply {
+                    addItemLayoutParams(RecyclerView.LayoutParams(MATCH_PARENT, WRAP_CONTENT))
+                    addOnItemClickListener { item, _, _ -> onItemClick(item) }
+                    addDelegate(selectableItemDelegate)
+                }
+            )
         )
 
     override val positionDelegate: AdapterPositionDelegate<FlowerPotModel> =

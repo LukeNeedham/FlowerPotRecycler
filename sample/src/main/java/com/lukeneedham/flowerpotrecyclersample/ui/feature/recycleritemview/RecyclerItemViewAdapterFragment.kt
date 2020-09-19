@@ -5,7 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.lukeneedham.flowerpotrecycler.SingleTypeRecyclerAdapterBuilder
+import com.lukeneedham.flowerpotrecycler.SingleTypeRecyclerAdapterCreator
 import com.lukeneedham.flowerpotrecycler.adapter.config.SingleTypeAdapterConfig
 import com.lukeneedham.flowerpotrecycler.util.extensions.addItemLayoutParams
 import com.lukeneedham.flowerpotrecycler.util.extensions.addOnItemClickListener
@@ -33,16 +33,16 @@ class RecyclerItemViewAdapterFragment : Fragment(R.layout.fragment_recyclerview_
                 showSnackbar(item.nameResId)
             }
         }
-        // Config optional
-        val recyclerAdapter = SingleTypeRecyclerAdapterBuilder
+        // adapterConfig optional
+        val recyclerAdapter = SingleTypeRecyclerAdapterCreator
             .fromRecyclerItemView<FlowerPotModel, FlowerPotItemView>(config)
 
         // Also, type params used above are optional, as they can be inferred from config:
         val recyclerAdapterInferredType =
-            SingleTypeRecyclerAdapterBuilder.fromRecyclerItemView(config)
+            SingleTypeRecyclerAdapterCreator.fromRecyclerItemView(config)
 
-        // Alternatively, we could instantiate the view ourselves. Config optional
-        val recyclerAdapterFromBuilder = SingleTypeRecyclerAdapterBuilder.fromRecyclerItemView {
+        // Alternatively, we could instantiate the view ourselves. adapterConfig optional
+        val recyclerAdapterFromBuilder = SingleTypeRecyclerAdapterCreator.fromRecyclerItemView {
             FlowerPotItemView(it.context)
         }
 

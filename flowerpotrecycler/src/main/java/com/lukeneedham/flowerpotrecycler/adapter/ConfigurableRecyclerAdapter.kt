@@ -1,7 +1,7 @@
 package com.lukeneedham.flowerpotrecycler.adapter
 
 import android.view.View
-import com.lukeneedham.flowerpotrecycler.adapter.itemtypedelegate.ItemTypeBuilder
+import com.lukeneedham.flowerpotrecycler.adapter.itemtype.ItemTypeConfig
 import com.lukeneedham.flowerpotrecycler.adapter.config.RecyclerAdapterConfig
 import com.lukeneedham.flowerpotrecycler.adapter.delegates.position.AdapterPositionDelegate
 
@@ -10,7 +10,7 @@ import com.lukeneedham.flowerpotrecycler.adapter.delegates.position.AdapterPosit
  * If null, the values are the defaults as defined in [DefaultDelegatedRecyclerAdapter]
  */
 class ConfigurableRecyclerAdapter<BaseItemType : Any, BaseItemViewType : View>(
-    override val itemTypeBuilders: List<ItemTypeBuilder<out BaseItemType, out BaseItemViewType>>,
+    override val itemTypeConfigs: List<ItemTypeConfig<out BaseItemType, out BaseItemViewType>>,
     config: RecyclerAdapterConfig<BaseItemType, BaseItemViewType>?
 ) : DefaultDelegatedRecyclerAdapter<BaseItemType, BaseItemViewType>() {
 

@@ -10,6 +10,6 @@ abstract class DefaultDelegatedRecyclerAdapter<BaseItemType : Any, BaseItemViewT
     DelegatedRecyclerAdapter<BaseItemType, BaseItemViewType>() {
 
     override val positionDelegate: AdapterPositionDelegate<BaseItemType> by lazy {
-        DefaultPositionDelegate.create<BaseItemType>(this)
+        DefaultPositionDelegate.newInstance<BaseItemType>(this)
     }
 }

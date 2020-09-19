@@ -16,13 +16,12 @@ import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.implementation.vi
 import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.implementation.xml.XmlBuilderBinder
 import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.matcher.ClassMatcher
 import com.lukeneedham.flowerpotrecycler.adapter.config.SingleTypeAdapterConfig
-import com.lukeneedham.flowerpotrecycler.adapter.delegates.feature.config.FeatureConfig
-import com.lukeneedham.flowerpotrecycler.adapter.itemtypedelegate.ItemTypeBuilder
+import com.lukeneedham.flowerpotrecycler.adapter.itemtype.ItemTypeConfig
 import com.lukeneedham.flowerpotrecycler.util.BuilderBinderUtils.createEmptyBinder
 import com.lukeneedham.flowerpotrecycler.util.BuilderBinderUtils.createReflectiveBuilder
 
-/** Builds Adapters which handle a single type of item with a single view type */
-object SingleTypeRecyclerAdapterBuilder {
+/** Creates Adapters which handle a single type of item with a single view type */
+object SingleTypeRecyclerAdapterCreator {
 
     /**
      * @return a [DelegatedRecyclerAdapter] to handle a single item type,
@@ -108,8 +107,7 @@ object SingleTypeRecyclerAdapterBuilder {
         config: SingleTypeAdapterConfig<ItemType, ItemViewType>? = null
     ): DelegatedRecyclerAdapter<ItemType, ItemViewType> {
         val matcher = ClassMatcher(ItemType::class)
-        val featureConfig = config ?: FeatureConfig<ItemType, ItemViewType>()
-        val builderBinderSetup = ItemTypeBuilder(builderBinder, matcher, featureConfig)
+        val builderBinderSetup = ItemTypeConfig.newInstance(builderBinder, config, matcher)
         return ConfigurableRecyclerAdapter(listOf(builderBinderSetup), config)
     }
 }

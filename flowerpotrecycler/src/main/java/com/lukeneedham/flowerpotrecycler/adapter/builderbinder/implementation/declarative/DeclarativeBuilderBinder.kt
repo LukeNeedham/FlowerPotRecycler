@@ -30,7 +30,7 @@ class DeclarativeBuilderBinder<ItemType : Any>(
     }
 
     companion object {
-        inline fun <reified ItemType : Any> create(
+        inline fun <reified ItemType : Any> newInstance(
             noinline builder: DeclarativeBindingDsl<ItemType>.(ViewGroup) -> View
         ): DeclarativeBuilderBinder<ItemType> =
             DeclarativeBuilderBinder(builder)

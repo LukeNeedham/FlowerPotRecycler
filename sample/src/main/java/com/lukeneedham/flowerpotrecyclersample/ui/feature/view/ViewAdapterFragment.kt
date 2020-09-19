@@ -7,7 +7,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.lukeneedham.flowerpotrecycler.SingleTypeRecyclerAdapterBuilder
+import com.lukeneedham.flowerpotrecycler.SingleTypeRecyclerAdapterCreator
 import com.lukeneedham.flowerpotrecycler.adapter.config.SingleTypeAdapterConfig
 import com.lukeneedham.flowerpotrecycler.util.extensions.addItemLayoutParams
 import com.lukeneedham.flowerpotrecycler.util.extensions.addOnItemClickListener
@@ -31,7 +31,7 @@ class ViewAdapterFragment : Fragment(R.layout.fragment_recyclerview_layout) {
             }
         }
 
-        val recyclerAdapter = SingleTypeRecyclerAdapterBuilder.fromView(
+        val recyclerAdapter = SingleTypeRecyclerAdapterCreator.fromView(
             config,
             builder = { FlowerPotItemView(it.context) },
             binder = { itemView, position, item ->
@@ -43,7 +43,7 @@ class ViewAdapterFragment : Fragment(R.layout.fragment_recyclerview_layout) {
         )
 
         // Alternatively, we can use the default view builder
-        val alternativeAdapter = SingleTypeRecyclerAdapterBuilder
+        val alternativeAdapter = SingleTypeRecyclerAdapterCreator
             .fromView(config) { itemView, position, item ->
                 itemView.setItem(position, item)
             }

@@ -1,4 +1,4 @@
-package com.lukeneedham.flowerpotrecycler.adapter.itemtypedelegate
+package com.lukeneedham.flowerpotrecycler.adapter.itemtype
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
@@ -16,34 +16,26 @@ import com.lukeneedham.flowerpotrecycler.adapter.delegates.feature.config.Featur
  * This allows the [ItemTypeDelegate] to be created only when a [RecyclerView.Adapter] is provided,
  * which allows [AdapterFeatureDelegate]s to reference the Adapter.
  */
-data class ItemTypeBuilder<ItemType : Any, ItemViewType : View>(
+data class ItemTypeConfig<ItemType : Any, ItemViewType : View>(
     val builderBinder: BuilderBinder<ItemType, ItemViewType>,
-    val itemMatcher: ItemMatcher<ItemType>,
-    val featureDelegateConfig: FeatureDelegateConfig<ItemType, ItemViewType>
+    val featureDelegateConfig: FeatureDelegateConfig<ItemType, ItemViewType>,
+    val itemMatcher: ItemMatcher<ItemType>
 ) {
-    fun build(adapter: RecyclerView.Adapter<*>): ItemTypeDelegate<ItemType, ItemViewType> {
+    fun createItemTypeDelegate(adapter: RecyclerView.Adapter<*>):
+            ItemTypeDelegate<ItemType, ItemViewType> {
         val featureDelegates = featureDelegateConfig.delegateCreators.map { it.invoke(adapter) }
         return ItemTypeDelegate(builderBinder, itemMatcher, featureDelegates)
     }
 
     companion object {
-        inline fun <reified ItemType : Any, ItemViewType : View> from(
+        /** Create an [ItemTypeConfig] */
+        inline fun <reified ItemType : Any, ItemViewType : View> newInstance(
             builderBinder: BuilderBinder<ItemType, ItemViewType>,
             featureConfig: FeatureDelegateConfig<ItemType, ItemViewType>? = null,
             itemMatcher: ItemMatcher<ItemType> = ClassMatcher(ItemType::class)
-            ): ItemTypeBuilder<ItemType, ItemViewType> {
-            val config = featureConfig ?: FeatureConfig()
-            return ItemTypeBuilder(builderBinder, itemMatcher, config)
-        }
-
-        inline fun <reified ItemType : Any, ItemViewType : View> from(
-            builderBinder: BuilderBinder<ItemType, ItemViewType>,
-            itemMatcher: ItemMatcher<ItemType> = ClassMatcher(ItemType::class),
-            featureDelegateDsl: FeatureDelegateConfig<ItemType, ItemViewType>.() -> Unit = {}
-        ): ItemTypeBuilder<ItemType, ItemViewType> {
-            val featureConfig = FeatureConfig<ItemType, ItemViewType>()
-            featureConfig.featureDelegateDsl()
-            return ItemTypeBuilder(builderBinder, itemMatcher, featureConfig)
+        ): ItemTypeConfig<ItemType, ItemViewType> {
+            val featureConfigOrEmpty = featureConfig ?: FeatureConfig()
+            return ItemTypeConfig(builderBinder, featureConfigOrEmpty, itemMatcher)
         }
     }
 }

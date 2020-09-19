@@ -101,74 +101,95 @@ For static views, which require no binding, prefer to use `XmlBuilderBinder` or 
 # Multi-type Adapter
 
 Once you've created a `BuilderBinder` for each item type you want to handle,
-simply pass them to one of the static factories in `RecyclerAdapterBuilder`.
+you need to wrap each `BuilderBinder` in an `ItemTypeConfig`.
+Then, simply pass them to a static factory in `RecyclerAdapterCreator`. For example:
+```kotlin
+recyclerView.adapter = RecyclerAdapterCreator.fromItemTypeConfigs(
+    ItemTypeConfig.newInstance<HeaderItem, View>(
+        XmlBuilderBinder.newInstance(R.layout.view_header_item)
+    ),
+    ItemTypeConfig.newInstance<ChoiceItem, ChoiceItemView>(
+        RecyclerItemViewBuilderBinder.newInstance()
+    ),
+    adapterConfig = config
+)
+```
 
-The Adapter will wrap the provided `BuilderBinder`s into a `BuilderBinderRegistry`,
-to which it will delegate building and binding.
-
-You can either do this implictly, with:
-`RecyclerAdapterBuilder.fromBuilderBinders(yourBuilderBinder1, yourBuilderBinder2, ...)`
-
-Or, you can instantiate the `BuilderBinderRegistry` yourself, and create the `Adapter` with:
-`RecyclerAdapterBuilder.fromBuilderBinderRegistry(yourBuilderBinderRegistry)`
+Internally, the Adapter will use the provided `ItemTypeConfig`s to build `ItemTypeDelegate`s, which
+are responsible for everything related to a single item type. The Adapter will wrap these
+`ItemTypeDelegate`s into an `ItemTypeRegistry`, to which it will delegate responsibly for each item type.
 
 # Single-type Adapter
 
 Sometimes you only need a simple `Adapter` for handling a single type of item. In these cases, it's even easier - the library will create an `Adapter` with a single implicit `BuilderBinder`.
 
-Use one of the static factories from `SingleTypeRecyclerAdapterBuilder`.
+Use one of the static factories from `SingleTypeRecyclerAdapterCreator`.
 
 For example:
 
 ```kotlin
 // Creates an adapter containing a single default RecyclerItemViewBuilderBinder.
 // This adapter will handle items of type `FlowerPotModel` with a `FlowerPotItemView`.
-val recyclerAdapter = SingleTypeRecyclerAdapterBuilder.fromRecyclerItemView<FlowerPotModel, FlowerPotItemView>()
+val recyclerAdapter = SingleTypeRecyclerAdapterCreator.fromRecyclerItemView<FlowerPotModel, FlowerPotItemView>()
 ```
 
 # Config
 
-You can pass an optional RecyclerAdapterConfig to every `RecyclerAdapterBuilder` and `SingleTypeRecyclerAdapterBuilder` function.
+There are 2 main types of config:
 
-This config contains parameters used for setting up the auto-generated Adapter.
+- `FeatureDelegateConfig` - Contains the config for `AdapterFeatureDelegate`s for each item type
+- `RecyclerAdapterConfig` - Contains the config for the `Adapter` itself
 
-To create a config, simply instantiate `AdapterConfig` and update the config as desired. Alternatively, you can manually implement `RecyclerAdapterConfig`.
+## FeatureDelegateConfig
 
-In `RecyclerAdapterConfig` are the configuration options:
-- `items` - a list of items to show in the Adapter. Can always be updated later with `Adapter.submitList`. Defaults to an empty list.
-- `featureDelegateCreators` - a list of functions to instantiate `AdapterFeatureDelegate`s. These are composable features which hook into your `Adapter`. Defaults to no feature delegates.
-- `positionDelegateCreator` - a function to instantiate the `AdapterPositionDelegate`, which is responsible for positioning items. Defaults to a `LinearPositionDelegate`.
-
-## AdapterFeatureDelegate
+The `FeatureDelegateConfig` provides `featureDelegateCreators` - a list of functions to instantiate `AdapterFeatureDelegate`s.
 
 An `AdapterFeatureDelegate` hooks into `Adapter` calls to provide an encapsulated and re-usable component for a certain feature.
 
 You can easily create your own delegate by implementing `AdapterFeatureDelegate`.
 
-A number of common delegates are also provided in the library, including:
+A number of common feature delegates are also provided in the library, including:
 - `OnItemClickDelegate` - adds an on item click listener to the Adapter
 - `ItemLayoutParamsDelegate` - adds layout params to your item views. This is especially important for Adapters built from a `RecyclerItemView` class, as layout params cannot be inferred from custom `View`s.
 - `SelectableItemDelegate`- a delegate that allows for up to 1 item in the Adapter to be selected at a time
 
-## AdapterPositionDelegate
+The `FeatureDelegateConfig` for each item type is passed as a parameter to `ItemTypeConfig`:
+```kotlin
+ItemTypeConfig.newInstance(
+    XmlBuilderBinder.newInstance(R.layout.view_header_item),
+    FeatureConfig<HeaderItem, View>().apply {
+        addItemLayoutParams(RecyclerView.LayoutParams(MATCH_PARENT, WRAP_CONTENT))
+    }
+)
+```
 
-The `AdapterPositionDelegate` is responsible for positioning items in the Adapter. Most of the time, you won't need to worry about this.
+## RecyclerAdapterConfig
 
-The default delegate is a `LinearPositionDelegate` (shows list items in order from first to last) using the `DefaultDiffCallback` (checks for object equality).
+This config contains parameters used for setting up the auto-generated Adapter.
 
-The other provided position delegate is the `CyclicPositionDelegate`, which makes the RecyclerView cyclic - that is, the list of items wraps-around. To allow the user to scroll infinitely in both directions, you need to first center the RecyclerView. You can use the extension provided in this library:
+In `RecyclerAdapterConfig` are the configuration options:
+- `items` - a list of items to show in the Adapter. Can always be updated later with `Adapter.submitList`. Defaults to an empty list.
+- `positionDelegateCreator` - a function to instantiate the `AdapterPositionDelegate`. Defaults to a `LinearPositionDelegate`.
+
+The `AdapterPositionDelegate` is responsible for positioning items in the Adapter. Most of the time, you won't need to worry about this. The default delegate is a `LinearPositionDelegate` (shows list items in order from first to last) using the `DefaultDiffCallback` (checks for object equality).
+
+The other provided position delegate is the `CyclicPositionDelegate`, which makes the RecyclerView cyclic - that is, the list of items wraps-around. To allow infinite scrolling in both directions, you need to center the RecyclerView with the provided extension:
 `recyclerView.scrollToCenter()`
 
-You can also easily create your own position delegate by implementing `AdapterPositionDelegate`.
+You can also easily create your own position delegate by implementing `AdapterPositionDelegate`. To use a different diff callback, you can also pass it as the parameter to `RecyclerAdapterConfig.setLinear` or `RecyclerAdapterConfig.setCyclic`.
 
-To use a different diff callback, you can also pass it as the parameter to `RecyclerAdapterConfig.setLinear` or `RecyclerAdapterConfig.setCyclic`.
+You can pass an optional RecyclerAdapterConfig to every `RecyclerAdapterCreator` and `SingleTypeRecyclerAdapterCreator` function.
+
+To create a config, simply instantiate `AdapterConfig` and update the config as desired. Alternatively, you can manually implement `RecyclerAdapterConfig`.
 
 ## Config Example
 
-There are also a number of extension functions on `RecyclerAdapterConfig`, provided to make configuration as easy as possible. Some of them are shown off in the following example.
+There are also a number of extension functions on `RecyclerAdapterConfig` and `FeatureDelegateConfig`, provided to make configuration as easy as possible.
+
+`SingleTypeAdapterConfig` implements both `RecyclerAdapterConfig` and `FeatureDelegateConfig`, as it provides config for both Adapter and the single item type.
 
 ```kotlin
-val config = AdapterConfig<FlowerPotModel, FlowerPotItemView>().apply {
+val config = SingleTypeAdapterConfig<FlowerPotModel, FlowerPotItemView>().apply {
     items = listOf(item1, item2, item3)
     // Adds an `ItemLayoutParamsDelegate`
     addItemLayoutParams(
@@ -190,8 +211,6 @@ val config = AdapterConfig<FlowerPotModel, FlowerPotItemView>().apply {
     // Uses the `CyclicPositionDelegate` with the `DefaultDiffCallback` to make items wrap-around
     setCyclic()
 }
-
-val recyclerAdapter = SingleTypeRecyclerAdapterBuilder.fromRecyclerItemView<FlowerPotModel, FlowerPotItemView>(config)
 ```
 
 # But what if I really really really need a custom adapter?
@@ -206,7 +225,7 @@ To minimise the boilerplate in these cases, extend from `DelegatedRecyclerAdapte
 
 You can of course also override the standard RecyclerView methods, like `onBindViewHolder`, to supplement or replace the provided behaviour.
 
-Within `DelegatedRecyclerAdapter` you can also override `featureDelegates` and the `positionDelegate`.
+Within `DelegatedRecyclerAdapter` you can also override the `positionDelegate`.
 
 # Updating RecyclerView Data
 

@@ -1,4 +1,4 @@
-package com.lukeneedham.flowerpotrecycler.adapter.itemtypedelegate
+package com.lukeneedham.flowerpotrecycler.adapter.itemtype
 
 import android.view.View
 import android.view.ViewGroup
@@ -113,12 +113,12 @@ class ItemTypeRegistry<BaseItemType : Any, BaseItemViewType : View>(
         items.filter { getBuilderBinderForItem(it) == null }.distinct()
 
     companion object {
-        fun <BaseItemType : Any, BaseItemViewType : View> create(
-            itemTypeBuilders: List<ItemTypeBuilder<out BaseItemType, out BaseItemViewType>>,
+        fun <BaseItemType : Any, BaseItemViewType : View> newInstance(
+            itemTypeConfigs: List<ItemTypeConfig<out BaseItemType, out BaseItemViewType>>,
             adapter: RecyclerView.Adapter<*>
         ): ItemTypeRegistry<BaseItemType, BaseItemViewType> {
-            val itemTypeDelegates = itemTypeBuilders.map {
-                it.build(adapter)
+            val itemTypeDelegates = itemTypeConfigs.map {
+                it.createItemTypeDelegate(adapter)
             }
             return ItemTypeRegistry(itemTypeDelegates)
         }

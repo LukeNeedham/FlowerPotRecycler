@@ -25,7 +25,7 @@ class XmlBuilderBinder<ItemType : Any>(
     }
 
     companion object {
-        inline fun <reified ItemType : Any> create(
+        inline fun <reified ItemType : Any> newInstance(
             @LayoutRes xmlLayoutResId: Int,
             noinline binder: Binder<ItemType, View> = createEmptyBinder()
         ): XmlBuilderBinder<ItemType> =

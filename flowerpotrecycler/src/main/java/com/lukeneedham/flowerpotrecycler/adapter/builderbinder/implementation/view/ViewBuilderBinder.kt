@@ -24,7 +24,7 @@ class ViewBuilderBinder<ItemType : Any, ItemViewType : View>(
     }
 
     companion object {
-        inline fun <reified ItemType : Any, reified ItemViewType : View> create(
+        inline fun <reified ItemType : Any, reified ItemViewType : View> newInstance(
             noinline builder: Builder<ItemViewType> = createReflectiveBuilder(),
             noinline binder: Binder<ItemType, ItemViewType> = createEmptyBinder()
         ): ViewBuilderBinder<ItemType, ItemViewType> = ViewBuilderBinder(builder, binder)

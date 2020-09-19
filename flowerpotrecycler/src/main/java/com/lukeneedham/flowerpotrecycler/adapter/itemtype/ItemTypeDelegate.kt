@@ -1,4 +1,4 @@
-package com.lukeneedham.flowerpotrecycler.adapter.itemtypedelegate
+package com.lukeneedham.flowerpotrecycler.adapter.itemtype
 
 import android.view.View
 import android.view.ViewGroup

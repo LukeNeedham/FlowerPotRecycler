@@ -5,10 +5,11 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.lukeneedham.flowerpotrecycler.RecyclerAdapterBuilder
+import com.lukeneedham.flowerpotrecycler.RecyclerAdapterCreator
 import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.implementation.view.RecyclerItemViewBuilderBinder
 import com.lukeneedham.flowerpotrecycler.adapter.config.AdapterConfig
-import com.lukeneedham.flowerpotrecycler.adapter.itemtypedelegate.ItemTypeBuilder
+import com.lukeneedham.flowerpotrecycler.adapter.delegates.feature.config.FeatureConfig
+import com.lukeneedham.flowerpotrecycler.adapter.itemtype.ItemTypeConfig
 import com.lukeneedham.flowerpotrecycler.util.extensions.addItemLayoutParams
 import com.lukeneedham.flowerpotrecycler.util.extensions.addOnItemClickListener
 import com.lukeneedham.flowerpotrecyclersample.R
@@ -27,6 +28,33 @@ class NumberAdapterFragment : Fragment(R.layout.fragment_recyclerview_layout) {
             items = listOf(1, 2, 3.0)
         }
 
+        // This BuilderBinder says: when an item of type Int is encountered,
+        // delegate its building and binding to IntItemView
+        val intDelegate = ItemTypeConfig.newInstance(
+            RecyclerItemViewBuilderBinder.newInstance(),
+            createFeatures<Int, IntItemView>()
+        )
+
+        val doubleDelegate = ItemTypeConfig.newInstance(
+            RecyclerItemViewBuilderBinder.newInstance(),
+            createFeatures<Double, DoubleItemView>()
+        )
+
+        // adapterConfig optional
+        val numberAdapter = RecyclerAdapterCreator.fromItemTypeConfigs(
+            intDelegate,
+            doubleDelegate,
+            adapterConfig = numberAdapterConfig
+        )
+
+        recyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = numberAdapter
+        }
+    }
+
+    /** A small util to allow us to generate the same feature config for multiple ItemTypes */
+    private fun <ItemType : Any, ViewType : View> createFeatures(): FeatureConfig<ItemType, ViewType> {
         val itemLayoutParams = RecyclerView.LayoutParams(
             RecyclerView.LayoutParams.MATCH_PARENT,
             RecyclerView.LayoutParams.WRAP_CONTENT
@@ -34,30 +62,9 @@ class NumberAdapterFragment : Fragment(R.layout.fragment_recyclerview_layout) {
 
         val itemClickListener = { item: Any -> showSnackbar(item.toString()) }
 
-        // This BuilderBinder says: when an item of type Int is encountered,
-        // delegate its building and binding to IntItemView
-        val intDelegate =
-            ItemTypeBuilder.from<Int, IntItemView>(RecyclerItemViewBuilderBinder.create()) {
-                addItemLayoutParams(itemLayoutParams)
-                addOnItemClickListener { item, _, _ -> itemClickListener(item) }
-            }
-
-        val doubleDelegate =
-            ItemTypeBuilder.from<Double, DoubleItemView>(RecyclerItemViewBuilderBinder.create()) {
-                addItemLayoutParams(itemLayoutParams)
-                addOnItemClickListener { item, _, _ -> itemClickListener(item) }
-            }
-
-        // Config optional
-        val numberAdapter = RecyclerAdapterBuilder.fromItemTypeBuilders(
-            intDelegate,
-            doubleDelegate,
-            config = numberAdapterConfig
-        )
-
-        recyclerView.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = numberAdapter
+        return FeatureConfig<ItemType, ViewType>().apply {
+            addItemLayoutParams(itemLayoutParams)
+            addOnItemClickListener { item, _, _ -> itemClickListener(item) }
         }
     }
 }

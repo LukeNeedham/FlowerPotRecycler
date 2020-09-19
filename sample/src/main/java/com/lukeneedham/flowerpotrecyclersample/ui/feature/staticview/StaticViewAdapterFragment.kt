@@ -5,8 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.lukeneedham.flowerpotrecycler.SingleTypeRecyclerAdapterBuilder
-import com.lukeneedham.flowerpotrecycler.adapter.config.AdapterConfig
+import com.lukeneedham.flowerpotrecycler.SingleTypeRecyclerAdapterCreator
 import com.lukeneedham.flowerpotrecycler.adapter.config.SingleTypeAdapterConfig
 import com.lukeneedham.flowerpotrecycler.util.extensions.addItemLayoutParams
 import com.lukeneedham.flowerpotrecycler.util.extensions.addOnItemClickListener
@@ -46,11 +45,11 @@ class StaticViewAdapterFragment : Fragment(R.layout.fragment_recyclerview_layout
                 showSnackbar("Static view clicked")
             }
         }
-        val staticViewAdapter = SingleTypeRecyclerAdapterBuilder.fromView(config)
+        val staticViewAdapter = SingleTypeRecyclerAdapterCreator.fromView(config)
 
         // Alternative function to specify view creation function explicitly
         val staticViewAdapterAlternative =
-            SingleTypeRecyclerAdapterBuilder.fromView<Unit, ExampleStaticView>(
+            SingleTypeRecyclerAdapterCreator.fromView<Unit, ExampleStaticView>(
                 builder = {
                     ExampleStaticView(it.context)
                 }

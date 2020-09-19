@@ -5,11 +5,12 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.lukeneedham.flowerpotrecycler.RecyclerAdapterBuilder
+import com.lukeneedham.flowerpotrecycler.RecyclerAdapterCreator
 import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.implementation.view.RecyclerItemViewBuilderBinder
 import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.implementation.view.ViewBuilderBinder
 import com.lukeneedham.flowerpotrecycler.adapter.config.AdapterConfig
-import com.lukeneedham.flowerpotrecycler.adapter.itemtypedelegate.ItemTypeBuilder
+import com.lukeneedham.flowerpotrecycler.adapter.delegates.feature.config.FeatureConfig
+import com.lukeneedham.flowerpotrecycler.adapter.itemtype.ItemTypeConfig
 import com.lukeneedham.flowerpotrecycler.util.extensions.addItemLayoutParams
 import com.lukeneedham.flowerpotrecycler.util.extensions.addOnItemClickListener
 import com.lukeneedham.flowerpotrecyclersample.R
@@ -43,47 +44,51 @@ class AnyAdapterFragment : Fragment(R.layout.fragment_recyclerview_layout) {
             RecyclerView.LayoutParams.WRAP_CONTENT
         )
 
-        // This BuilderBinder says: when an item of type FlowerPotModel is encountered,
-        // delegate its building and binding to FlowerPotItemView
-        val flowerPotDelegate = ItemTypeBuilder.from<FlowerPotModel, FlowerPotItemView>(
-            RecyclerItemViewBuilderBinder.create()
-        ) {
+        // When an item of type FlowerPotModel is encountered,
+        // delegate its building and binding to FlowerPotItemView, with the additional features
+        val flowerPotFeatures = FeatureConfig<FlowerPotModel, FlowerPotItemView>().apply {
             addItemLayoutParams(itemLayoutParams)
             addOnItemClickListener { item, _, _ ->
                 showSnackbar("Flower Pot: " + getString(item.nameResId))
             }
         }
+        val flowerPotConfig = ItemTypeConfig
+            .newInstance(RecyclerItemViewBuilderBinder.newInstance(), flowerPotFeatures)
 
-        val intDelegate = ItemTypeBuilder.from<Int, IntItemView>(
-            RecyclerItemViewBuilderBinder.create()
-        ) {
-            addItemLayoutParams(itemLayoutParams)
-            addOnItemClickListener { item, _, _ -> showSnackbar("Int: $item") }
-        }
+        val intConfig = ItemTypeConfig.newInstance(
+            RecyclerItemViewBuilderBinder.newInstance(),
+            FeatureConfig<Int, IntItemView>().apply {
+                addItemLayoutParams(itemLayoutParams)
+                addOnItemClickListener { item, _, _ -> showSnackbar("Int: $item") }
+            }
+        )
 
         // StaticA is a singleton.
         // For every StaticA in the list of items submitted to the adapter,
         // a StaticAItemView will be shown in the corresponding position
         // In a real use-case, this might be a Header view
-        val staticADelegate = ItemTypeBuilder.from<StaticA, StaticAItemView>(
-            ViewBuilderBinder.create()
-        ) {
-            addItemLayoutParams(itemLayoutParams)
-        }
+        val staticAConfig = ItemTypeConfig.newInstance(
+            ViewBuilderBinder.newInstance(),
+            FeatureConfig<StaticA, StaticAItemView>().apply {
+                addItemLayoutParams(itemLayoutParams)
+            }
+        )
 
-        val staticBDelegate = ItemTypeBuilder.from<StaticB, StaticBItemView>(
-            ViewBuilderBinder.create()
-        ) {
-            addItemLayoutParams(itemLayoutParams)
-        }
+        // Static B is similar to Static A
+        val staticBConfig = ItemTypeConfig.newInstance(
+            ViewBuilderBinder.newInstance(),
+            FeatureConfig<StaticB, StaticBItemView>().apply {
+                addItemLayoutParams(itemLayoutParams)
+            }
+        )
 
-        // Config optional
-        val recyclerAdapter = RecyclerAdapterBuilder.fromItemTypeBuilders(
-            flowerPotDelegate,
-            intDelegate,
-            staticADelegate,
-            staticBDelegate,
-            config = adapterConfig
+        // adapterConfig optional
+        val recyclerAdapter = RecyclerAdapterCreator.fromItemTypeConfigs(
+            flowerPotConfig,
+            intConfig,
+            staticAConfig,
+            staticBConfig,
+            adapterConfig = adapterConfig
         )
 
         recyclerView.apply {

@@ -24,7 +24,7 @@ class RecyclerItemViewBuilderBinder<ItemType : Any, ItemViewType>(
     }
 
     companion object {
-        inline fun <reified ItemType : Any, reified ItemViewType> create(
+        inline fun <reified ItemType : Any, reified ItemViewType> newInstance(
             noinline builder: Builder<ItemViewType> = createReflectiveBuilder()
         ): RecyclerItemViewBuilderBinder<ItemType, ItemViewType>
                 where ItemViewType : View, ItemViewType : RecyclerItemView<ItemType> =

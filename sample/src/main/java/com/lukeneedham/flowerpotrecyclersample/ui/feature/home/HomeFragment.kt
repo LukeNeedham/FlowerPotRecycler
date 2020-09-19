@@ -8,12 +8,12 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.lukeneedham.flowerpotrecycler.RecyclerAdapterBuilder
+import com.lukeneedham.flowerpotrecycler.RecyclerAdapterCreator
 import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.implementation.view.RecyclerItemViewBuilderBinder
 import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.implementation.xml.XmlBuilderBinder
 import com.lukeneedham.flowerpotrecycler.adapter.config.AdapterConfig
 import com.lukeneedham.flowerpotrecycler.adapter.delegates.feature.config.FeatureConfig
-import com.lukeneedham.flowerpotrecycler.adapter.itemtypedelegate.ItemTypeBuilder
+import com.lukeneedham.flowerpotrecycler.adapter.itemtype.ItemTypeConfig
 import com.lukeneedham.flowerpotrecycler.util.extensions.addItemLayoutParams
 import com.lukeneedham.flowerpotrecycler.util.extensions.addOnItemClickListener
 import com.lukeneedham.flowerpotrecyclersample.R
@@ -51,14 +51,16 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 }
             }
 
-        optionsRecyclerView.adapter = RecyclerAdapterBuilder.fromItemTypeBuilders(
-            ItemTypeBuilder.from<HeaderItem, View>(
-                XmlBuilderBinder.create(R.layout.view_header_item)
-            ) {
-                addItemLayoutParams(RecyclerView.LayoutParams(MATCH_PARENT, WRAP_CONTENT))
-            },
-            ItemTypeBuilder.from(RecyclerItemViewBuilderBinder.create(), choiceItemConfig),
-            config = config
+        optionsRecyclerView.adapter = RecyclerAdapterCreator.fromItemTypeConfigs(
+            ItemTypeConfig.newInstance(
+                XmlBuilderBinder.newInstance(R.layout.view_header_item),
+                FeatureConfig<HeaderItem, View>().apply {
+                    addItemLayoutParams(RecyclerView.LayoutParams(MATCH_PARENT, WRAP_CONTENT))
+                }
+            ),
+            ItemTypeConfig
+                .newInstance(RecyclerItemViewBuilderBinder.newInstance(), choiceItemConfig),
+            adapterConfig = config
         )
     }
 }
