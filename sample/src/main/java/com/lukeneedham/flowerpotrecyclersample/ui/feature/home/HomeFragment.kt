@@ -9,8 +9,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.RecyclerAdapterCreator
-import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.implementation.view.RecyclerItemViewBuilderBinder
-import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.implementation.xml.XmlBuilderBinder
+import com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.implementation.view.RecyclerItemViewBuilderBinder
+import com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.implementation.xml.XmlBuilderBinder
 import com.lukeneedham.flowerpotrecycler.adapter.config.AdapterConfig
 import com.lukeneedham.flowerpotrecycler.adapter.delegates.feature.config.FeatureConfig
 import com.lukeneedham.flowerpotrecycler.adapter.itemtype.ItemTypeConfig

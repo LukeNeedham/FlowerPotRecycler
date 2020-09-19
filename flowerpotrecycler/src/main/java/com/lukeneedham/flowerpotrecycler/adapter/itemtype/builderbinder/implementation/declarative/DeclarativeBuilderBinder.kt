@@ -1,8 +1,8 @@
-package com.lukeneedham.flowerpotrecycler.adapter.builderbinder.implementation.declarative
+package com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.implementation.declarative
 
 import android.view.View
 import android.view.ViewGroup
-import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.BuilderBinder
+import com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.BuilderBinder
 
 /**
  * An implementation of [BuilderBinder] which combines the building of the View, and the binding of the item,

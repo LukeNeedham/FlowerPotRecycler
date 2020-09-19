@@ -4,8 +4,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.lukeneedham.flowerpotrecycler.FlowerPotRecyclerException
 import com.lukeneedham.flowerpotrecycler.adapter.ViewHolder
-import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.BuilderBinder
-import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.matcher.ItemMatcher
+import com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.BuilderBinder
+import com.lukeneedham.flowerpotrecycler.adapter.itemtype.matcher.ItemMatcher
 import com.lukeneedham.flowerpotrecycler.adapter.delegates.feature.AdapterFeatureDelegate
 
 /**

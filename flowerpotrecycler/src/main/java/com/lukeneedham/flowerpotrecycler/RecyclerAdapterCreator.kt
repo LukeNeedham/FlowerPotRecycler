@@ -3,7 +3,7 @@ package com.lukeneedham.flowerpotrecycler
 import android.view.View
 import com.lukeneedham.flowerpotrecycler.adapter.ConfigurableRecyclerAdapter
 import com.lukeneedham.flowerpotrecycler.adapter.DelegatedRecyclerAdapter
-import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.BuilderBinder
+import com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.BuilderBinder
 import com.lukeneedham.flowerpotrecycler.adapter.itemtype.ItemTypeConfig
 import com.lukeneedham.flowerpotrecycler.adapter.config.RecyclerAdapterConfig
 

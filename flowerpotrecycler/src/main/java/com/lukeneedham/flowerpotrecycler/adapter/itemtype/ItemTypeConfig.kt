@@ -2,9 +2,9 @@ package com.lukeneedham.flowerpotrecycler.adapter.itemtype
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.BuilderBinder
-import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.matcher.ClassMatcher
-import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.matcher.ItemMatcher
+import com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.BuilderBinder
+import com.lukeneedham.flowerpotrecycler.adapter.itemtype.matcher.ClassMatcher
+import com.lukeneedham.flowerpotrecycler.adapter.itemtype.matcher.ItemMatcher
 import com.lukeneedham.flowerpotrecycler.adapter.delegates.feature.AdapterFeatureDelegate
 import com.lukeneedham.flowerpotrecycler.adapter.delegates.feature.config.FeatureConfig
 import com.lukeneedham.flowerpotrecycler.adapter.delegates.feature.config.FeatureDelegateConfig

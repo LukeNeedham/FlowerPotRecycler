@@ -1,4 +1,4 @@
-package com.lukeneedham.flowerpotrecycler.adapter.builderbinder.matcher
+package com.lukeneedham.flowerpotrecycler.adapter.itemtype.matcher
 
 /** Determines whether an item matches some condition */
 interface ItemMatcher<ItemType : Any> {

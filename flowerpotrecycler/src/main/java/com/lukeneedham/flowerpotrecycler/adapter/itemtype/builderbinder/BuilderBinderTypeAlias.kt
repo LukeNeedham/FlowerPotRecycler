@@ -1,4 +1,4 @@
-package com.lukeneedham.flowerpotrecycler.adapter.builderbinder
+package com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder
 
 import android.view.ViewGroup
 

@@ -7,7 +7,7 @@ import com.lukeneedham.flowerpotrecycler.adapter.DefaultDelegatedRecyclerAdapter
 import com.lukeneedham.flowerpotrecycler.adapter.DefaultDiffCallback
 import com.lukeneedham.flowerpotrecycler.adapter.DelegatedRecyclerAdapter
 import com.lukeneedham.flowerpotrecycler.adapter.ViewHolder
-import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.implementation.view.RecyclerItemViewBuilderBinder
+import com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.implementation.view.RecyclerItemViewBuilderBinder
 import com.lukeneedham.flowerpotrecycler.adapter.delegates.feature.config.FeatureConfig
 import com.lukeneedham.flowerpotrecycler.adapter.delegates.feature.implementation.SelectableItemDelegate
 import com.lukeneedham.flowerpotrecycler.adapter.delegates.position.AdapterPositionDelegate

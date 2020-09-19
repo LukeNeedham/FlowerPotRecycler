@@ -1,8 +1,8 @@
 package com.lukeneedham.flowerpotrecycler.util
 
 import android.view.View
-import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.Binder
-import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.Builder
+import com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.Binder
+import com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.Builder
 import com.lukeneedham.flowerpotrecycler.util.extensions.createBuilder
 
 object BuilderBinderUtils {

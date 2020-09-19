@@ -1,4 +1,4 @@
-package com.lukeneedham.flowerpotrecycler.adapter.builderbinder.matcher
+package com.lukeneedham.flowerpotrecycler.adapter.itemtype.matcher
 
 import com.lukeneedham.flowerpotrecycler.util.extensions.TAG
 import kotlin.reflect.KClass

@@ -1,13 +1,11 @@
-package com.lukeneedham.flowerpotrecycler.adapter.builderbinder.implementation.xml
+package com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.implementation.xml
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
-import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.Binder
-import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.BuilderBinder
-import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.matcher.ClassMatcher
-import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.matcher.ItemMatcher
+import com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.Binder
+import com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.BuilderBinder
 import com.lukeneedham.flowerpotrecycler.util.BuilderBinderUtils.createEmptyBinder
 
 @Suppress("unused")

@@ -1,4 +1,4 @@
-package com.lukeneedham.flowerpotrecycler.adapter.builderbinder.implementation.declarative
+package com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.implementation.declarative
 
 class DeclarativeBindingDsl<ItemType>(private val binder: DeclarativeBinder<ItemType>) {
 

@@ -1,12 +1,10 @@
-package com.lukeneedham.flowerpotrecycler.adapter.builderbinder.implementation.view
+package com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.implementation.view
 
 import android.view.View
 import android.view.ViewGroup
 import com.lukeneedham.flowerpotrecycler.adapter.RecyclerItemView
-import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.Builder
-import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.BuilderBinder
-import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.matcher.ClassMatcher
-import com.lukeneedham.flowerpotrecycler.adapter.builderbinder.matcher.ItemMatcher
+import com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.Builder
+import com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.BuilderBinder
 import com.lukeneedham.flowerpotrecycler.util.BuilderBinderUtils.createReflectiveBuilder
 
 /** Builds the item view with [builder] and implicitly binds using [RecyclerItemView.setItem] */
