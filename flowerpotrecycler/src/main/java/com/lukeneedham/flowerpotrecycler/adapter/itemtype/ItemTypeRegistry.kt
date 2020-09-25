@@ -16,7 +16,7 @@ import com.lukeneedham.flowerpotrecycler.adapter.ViewHolder
  * [BaseItemViewType] provides an upper bound on the view types registered.
  */
 @Suppress("MemberVisibilityCanBePrivate")
-class ItemTypeRegistry<BaseItemType : Any, BaseItemViewType : View>(
+class ItemTypeRegistry<BaseItemType, BaseItemViewType : View>(
     val itemTypeDelegates: List<ItemTypeDelegate<out BaseItemType, out BaseItemViewType>>
 ) {
 
@@ -113,7 +113,7 @@ class ItemTypeRegistry<BaseItemType : Any, BaseItemViewType : View>(
         items.filter { getBuilderBinderForItem(it) == null }.distinct()
 
     companion object {
-        fun <BaseItemType : Any, BaseItemViewType : View> newInstance(
+        fun <BaseItemType, BaseItemViewType : View> newInstance(
             itemTypeConfigs: List<ItemTypeConfig<out BaseItemType, out BaseItemViewType>>,
             adapter: RecyclerView.Adapter<*>
         ): ItemTypeRegistry<BaseItemType, BaseItemViewType> {

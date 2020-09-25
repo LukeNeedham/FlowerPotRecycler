@@ -10,7 +10,7 @@ import com.lukeneedham.flowerpotrecycler.util.BuilderBinderUtils.createEmptyBind
 
 /** builds the view with [builder] and binds with [binder] */
 @Suppress("unused")
-class ViewBuilderBinder<ItemType : Any, ItemViewType : View>(
+class ViewBuilderBinder<ItemType, ItemViewType : View>(
     private val builder: Builder<ItemViewType>,
     private val binder: Binder<ItemType, ItemViewType>
 ) : BuilderBinder<ItemType, ItemViewType> {
@@ -24,7 +24,7 @@ class ViewBuilderBinder<ItemType : Any, ItemViewType : View>(
     }
 
     companion object {
-        inline fun <reified ItemType : Any, reified ItemViewType : View> newInstance(
+        inline fun <reified ItemType, reified ItemViewType : View> newInstance(
             noinline builder: Builder<ItemViewType> = createReflectiveBuilder(),
             noinline binder: Binder<ItemType, ItemViewType> = createEmptyBinder()
         ): ViewBuilderBinder<ItemType, ItemViewType> = ViewBuilderBinder(builder, binder)

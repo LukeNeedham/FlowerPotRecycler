@@ -9,7 +9,7 @@ import com.lukeneedham.flowerpotrecycler.adapter.delegates.position.AdapterPosit
  * @param config supplies the setup for the adapter.
  * If null, the values are the defaults as defined in [DefaultDelegatedRecyclerAdapter]
  */
-class ConfigurableRecyclerAdapter<BaseItemType : Any, BaseItemViewType : View>(
+class ConfigurableRecyclerAdapter<BaseItemType, BaseItemViewType : View>(
     override val itemTypeConfigs: List<ItemTypeConfig<out BaseItemType, out BaseItemViewType>>,
     config: RecyclerAdapterConfig<BaseItemType, BaseItemViewType>?
 ) : DefaultDelegatedRecyclerAdapter<BaseItemType, BaseItemViewType>() {

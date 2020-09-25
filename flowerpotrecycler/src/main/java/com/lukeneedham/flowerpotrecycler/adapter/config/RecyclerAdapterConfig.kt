@@ -11,7 +11,7 @@ import com.lukeneedham.flowerpotrecycler.adapter.delegates.position.AdapterPosit
  * Allows for the customisation of initial [items],
  * and the [positionDelegateCreator] for creating the [AdapterPositionDelegate] used by the Adapter
  */
-interface RecyclerAdapterConfig<ItemType : Any, ItemViewType : View> {
+interface RecyclerAdapterConfig<ItemType, ItemViewType> {
     /** A list of items to show as the initial contents of the RecyclerView */
     var items: List<ItemType>
     

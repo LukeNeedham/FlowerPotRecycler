@@ -21,13 +21,13 @@ import com.lukeneedham.flowerpotrecycler.adapter.delegates.feature.AdapterFeatur
  * But the compiler doesn't know that!
  */
 @Suppress("UNCHECKED_CAST")
-class ItemTypeDelegate<ItemType : Any, ItemViewType : View>(
+class ItemTypeDelegate<ItemType, ItemViewType : View>(
     val builderBinder: BuilderBinder<ItemType, ItemViewType>,
     /**
      * Determines whether an item 'matches' this BuilderBinder,
      * and should therefore handle its building and binding.
      */
-    val itemMatcher: ItemMatcher<ItemType>,
+    val itemMatcher: ItemMatcher,
     val featureDelegates: List<AdapterFeatureDelegate<ItemType, ItemViewType>>
 ) {
 
@@ -42,7 +42,7 @@ class ItemTypeDelegate<ItemType : Any, ItemViewType : View>(
         }
     }
 
-    fun bindUntyped(viewHolder: ViewHolder<*>, position: Int, item: Any) {
+    fun bindUntyped(viewHolder: ViewHolder<*>, position: Int, item: Any?) {
         val typedHolder = requireTypedViewHolder(viewHolder)
         val typedItem = requireTypedItem(item)
         val view = typedHolder.typedItemView
@@ -60,7 +60,7 @@ class ItemTypeDelegate<ItemType : Any, ItemViewType : View>(
         }
     }
 
-    fun matchesItem(item: Any): Boolean {
+    fun matchesItem(item: Any?): Boolean {
         return itemMatcher.isMatch(item)
     }
 
@@ -69,7 +69,7 @@ class ItemTypeDelegate<ItemType : Any, ItemViewType : View>(
             ?: throw FlowerPotRecyclerException("ViewHolder $viewHolder is of the wrong type for $this")
     }
 
-    private fun requireTypedItem(item: Any): ItemType {
+    private fun requireTypedItem(item: Any?): ItemType {
         return item as? ItemType
             ?: throw FlowerPotRecyclerException("Item $item is of the wrong type for $this")
     }

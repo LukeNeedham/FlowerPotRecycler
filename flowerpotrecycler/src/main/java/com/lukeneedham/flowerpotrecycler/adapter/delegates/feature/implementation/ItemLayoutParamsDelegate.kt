@@ -7,7 +7,7 @@ import com.lukeneedham.flowerpotrecycler.adapter.ViewHolder
 import com.lukeneedham.flowerpotrecycler.adapter.delegates.feature.BaseAdapterFeatureDelegate
 
 /** Use this delegate to add layout params to your item views */
-class ItemLayoutParamsDelegate<ItemType : Any, ItemViewType : View>(
+class ItemLayoutParamsDelegate<ItemType, ItemViewType : View>(
     private val layoutParams: RecyclerView.LayoutParams
 ) : BaseAdapterFeatureDelegate<ItemType, ItemViewType>() {
 

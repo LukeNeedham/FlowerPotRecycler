@@ -8,7 +8,7 @@ import com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.BuilderB
 import com.lukeneedham.flowerpotrecycler.util.BuilderBinderUtils.createReflectiveBuilder
 
 /** Builds the item view with [builder] and implicitly binds using [RecyclerItemView.setItem] */
-class RecyclerItemViewBuilderBinder<ItemType : Any, ItemViewType>(
+class RecyclerItemViewBuilderBinder<ItemType, ItemViewType>(
     private val builder: Builder<ItemViewType>
 ) : BuilderBinder<ItemType, ItemViewType>
         where ItemViewType : View, ItemViewType : RecyclerItemView<ItemType> {
@@ -22,7 +22,7 @@ class RecyclerItemViewBuilderBinder<ItemType : Any, ItemViewType>(
     }
 
     companion object {
-        inline fun <reified ItemType : Any, reified ItemViewType> newInstance(
+        inline fun <reified ItemType, reified ItemViewType> newInstance(
             noinline builder: Builder<ItemViewType> = createReflectiveBuilder()
         ): RecyclerItemViewBuilderBinder<ItemType, ItemViewType>
                 where ItemViewType : View, ItemViewType : RecyclerItemView<ItemType> =

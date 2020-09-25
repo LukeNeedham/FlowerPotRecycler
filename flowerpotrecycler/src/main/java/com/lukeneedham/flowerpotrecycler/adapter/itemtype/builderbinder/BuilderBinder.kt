@@ -4,7 +4,7 @@ import android.view.View
 import android.view.ViewGroup
 
 /** Handles the building of the view, and the binding of the item for each item type */
-interface BuilderBinder<ItemType : Any, ItemViewType : View> {
+interface BuilderBinder<ItemType, ItemViewType : View> {
 
     /** @return the view used to display items of type [ItemType] */
     fun build(parent: ViewGroup): ItemViewType

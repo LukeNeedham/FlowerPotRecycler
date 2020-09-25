@@ -8,7 +8,7 @@ import com.lukeneedham.flowerpotrecycler.adapter.itemtype.ItemTypeConfig
 import com.lukeneedham.flowerpotrecycler.adapter.itemtype.ItemTypeRegistry
 
 /** A base RecyclerView Adapter to encourage a delegated approach */
-abstract class DelegatedRecyclerAdapter<BaseItemType : Any, BaseItemViewType : View> :
+abstract class DelegatedRecyclerAdapter<BaseItemType, BaseItemViewType : View> :
     RecyclerView.Adapter<ViewHolder<BaseItemViewType>>() {
 
     abstract val positionDelegate: AdapterPositionDelegate<BaseItemType>

@@ -13,7 +13,7 @@ import com.lukeneedham.flowerpotrecycler.adapter.delegates.position.implementati
  * @param diffCallback an optional [DiffUtil.ItemCallback], used to calculate the diff when items change.
  * Defaults to [DefaultDiffCallback]
  */
-fun <ItemType : Any> RecyclerAdapterConfig<ItemType, *>.setCyclic(
+fun <ItemType> RecyclerAdapterConfig<ItemType, *>.setCyclic(
     diffCallback: DiffUtil.ItemCallback<ItemType> = DefaultDiffCallback()
 ) {
     positionDelegateCreator = { CyclicPositionDelegate(it, diffCallback) }
@@ -24,7 +24,7 @@ fun <ItemType : Any> RecyclerAdapterConfig<ItemType, *>.setCyclic(
  * @param diffCallback an optional [DiffUtil.ItemCallback], used to calculate the diff when items change.
  * Defaults to [DefaultDiffCallback]
  */
-fun <ItemType : Any> RecyclerAdapterConfig<ItemType, *>.setLinear(
+fun <ItemType> RecyclerAdapterConfig<ItemType, *>.setLinear(
     diffCallback: DiffUtil.ItemCallback<ItemType> = DefaultDiffCallback()
 ) {
     positionDelegateCreator = { LinearPositionDelegate(it, diffCallback) }

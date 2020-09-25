@@ -11,7 +11,7 @@ import com.lukeneedham.flowerpotrecycler.adapter.delegates.position.AdapterPosit
  * By default, it uses no feature delegates and no items,
  * with the position delegate set to the default defined by [DefaultDelegatedRecyclerAdapter]
  */
-class AdapterConfig<ItemType : Any, ItemViewType : View> :
+class AdapterConfig<ItemType, ItemViewType : View> :
     RecyclerAdapterConfig<ItemType, ItemViewType> {
     override var items: List<ItemType> = emptyList()
     override var positionDelegateCreator:

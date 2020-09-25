@@ -18,7 +18,7 @@ object RecyclerAdapterCreator {
      * which each handle creating the view and binding items for a single item type
      * @param adapterConfig Configuration for the adapter
      */
-    fun <BaseItemType : Any, BaseItemViewType : View> fromItemTypeConfigList(
+    fun <BaseItemType, BaseItemViewType : View> fromItemTypeConfigList(
         itemTypeConfigs: List<ItemTypeConfig<out BaseItemType, out BaseItemViewType>>,
         adapterConfig: RecyclerAdapterConfig<BaseItemType, BaseItemViewType>? = null
     ): DelegatedRecyclerAdapter<BaseItemType, BaseItemViewType> =
@@ -31,7 +31,7 @@ object RecyclerAdapterCreator {
      * which each handle creating the view and binding items for a single item type
      * @param adapterConfig Configuration for the adapter
      */
-    fun <BaseItemType : Any, BaseItemViewType : View> fromItemTypeConfigs(
+    fun <BaseItemType, BaseItemViewType : View> fromItemTypeConfigs(
         vararg itemTypeConfigs: ItemTypeConfig<out BaseItemType, out BaseItemViewType>,
         adapterConfig: RecyclerAdapterConfig<BaseItemType, BaseItemViewType>? = null
     ): DelegatedRecyclerAdapter<BaseItemType, BaseItemViewType> =

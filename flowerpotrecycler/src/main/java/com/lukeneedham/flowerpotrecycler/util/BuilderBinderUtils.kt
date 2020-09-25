@@ -10,7 +10,7 @@ object BuilderBinderUtils {
         return ViewType::class.createBuilder()
     }
 
-    fun <ItemType : Any, ViewType : View> createEmptyBinder(): Binder<ItemType, ViewType> {
+    fun <ItemType, ViewType : View> createEmptyBinder(): Binder<ItemType, ViewType> {
         return { _, _, _ -> }
     }
 }

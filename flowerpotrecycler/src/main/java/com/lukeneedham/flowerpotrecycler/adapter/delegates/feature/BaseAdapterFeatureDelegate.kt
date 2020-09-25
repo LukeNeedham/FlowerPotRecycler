@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import com.lukeneedham.flowerpotrecycler.adapter.ViewHolder
 
 /** Implements the methods of [AdapterFeatureDelegate] with NO-OP */
-abstract class BaseAdapterFeatureDelegate<ItemType : Any, ItemViewType : View> :
+abstract class BaseAdapterFeatureDelegate<ItemType, ItemViewType : View> :
     AdapterFeatureDelegate<ItemType, ItemViewType> {
 
     override fun onViewHolderCreated(

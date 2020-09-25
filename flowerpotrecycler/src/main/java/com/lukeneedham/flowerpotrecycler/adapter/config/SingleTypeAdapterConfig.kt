@@ -6,7 +6,7 @@ import com.lukeneedham.flowerpotrecycler.adapter.delegates.feature.config.Featur
 import com.lukeneedham.flowerpotrecycler.adapter.delegates.feature.config.FeatureDelegateConfig
 import com.lukeneedham.flowerpotrecycler.adapter.delegates.position.AdapterPositionDelegate
 
-class SingleTypeAdapterConfig<ItemType : Any, ItemViewType : View> :
+class SingleTypeAdapterConfig<ItemType, ItemViewType : View> :
     RecyclerAdapterConfig<ItemType, ItemViewType>,
     FeatureDelegateConfig<ItemType, ItemViewType> {
 

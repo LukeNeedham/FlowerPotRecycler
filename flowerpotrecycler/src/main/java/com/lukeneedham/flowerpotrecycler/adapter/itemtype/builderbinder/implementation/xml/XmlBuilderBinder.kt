@@ -9,7 +9,7 @@ import com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.BuilderB
 import com.lukeneedham.flowerpotrecycler.util.BuilderBinderUtils.createEmptyBinder
 
 @Suppress("unused")
-class XmlBuilderBinder<ItemType : Any>(
+class XmlBuilderBinder<ItemType>(
     @LayoutRes val xmlLayoutResId: Int,
     private val binder: (itemView: View, position: Int, item: ItemType) -> Unit
 ) : BuilderBinder<ItemType, View> {
@@ -23,7 +23,7 @@ class XmlBuilderBinder<ItemType : Any>(
     }
 
     companion object {
-        inline fun <reified ItemType : Any> newInstance(
+        inline fun <reified ItemType> newInstance(
             @LayoutRes xmlLayoutResId: Int,
             noinline binder: Binder<ItemType, View> = createEmptyBinder()
         ): XmlBuilderBinder<ItemType> =

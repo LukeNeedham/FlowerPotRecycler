@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.adapter.ViewHolder
 
 /** A delegate for extended functionality on the adapter */
-interface AdapterFeatureDelegate<ItemType : Any, ItemViewType : View> {
+interface AdapterFeatureDelegate<ItemType, ItemViewType : View> {
 
     /**
      * A hook for after the ViewHolder has been created in [RecyclerView.Adapter.onCreateViewHolder].

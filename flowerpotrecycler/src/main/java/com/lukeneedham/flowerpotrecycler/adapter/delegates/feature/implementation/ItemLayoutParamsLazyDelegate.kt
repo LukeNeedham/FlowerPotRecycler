@@ -11,7 +11,7 @@ import com.lukeneedham.flowerpotrecycler.adapter.delegates.feature.BaseAdapterFe
  * to allow layout params to be calculated lazily.
  * Useful to delay measuring until the initial layout passes are complete.
  */
-class ItemLayoutParamsLazyDelegate<ItemType : Any, ItemViewType : View>(
+class ItemLayoutParamsLazyDelegate<ItemType, ItemViewType : View>(
     private val layoutParamsCreator: () -> RecyclerView.LayoutParams
 ) : BaseAdapterFeatureDelegate<ItemType, ItemViewType>() {
 

@@ -15,7 +15,7 @@ import com.lukeneedham.flowerpotrecycler.adapter.delegates.feature.BaseAdapterFe
  * so if using the default [ItemViewType] needs to override [View.setSelected]
  */
 @Suppress("unused", "MemberVisibilityCanBePrivate")
-class SelectableItemDelegate<ItemType : Any, ItemViewType : View>(
+class SelectableItemDelegate<ItemType, ItemViewType : View>(
     private val adapter: DelegatedRecyclerAdapter<ItemType, ItemViewType>,
     private val onSelectedPositionChangeListener: (oldPosition: Int, newPosition: Int) -> Unit = { _, _ -> },
     /**
@@ -81,7 +81,7 @@ class SelectableItemDelegate<ItemType : Any, ItemViewType : View>(
     }
 
     companion object {
-        fun <ItemType : Any, ItemViewType : View> defaultOnViewSelected(
+        fun <ItemType, ItemViewType : View> defaultOnViewSelected(
             itemView: ItemViewType,
             item: ItemType,
             isSelected: Boolean

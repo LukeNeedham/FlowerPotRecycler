@@ -11,6 +11,7 @@ import com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.implemen
 import com.lukeneedham.flowerpotrecycler.adapter.config.AdapterConfig
 import com.lukeneedham.flowerpotrecycler.adapter.delegates.feature.config.FeatureConfig
 import com.lukeneedham.flowerpotrecycler.adapter.itemtype.ItemTypeConfig
+import com.lukeneedham.flowerpotrecycler.util.ItemTypeConfigCreator
 import com.lukeneedham.flowerpotrecycler.util.extensions.addItemLayoutParams
 import com.lukeneedham.flowerpotrecycler.util.extensions.addOnItemClickListener
 import com.lukeneedham.flowerpotrecyclersample.R
@@ -55,32 +56,23 @@ class AnyAdapterFragment : Fragment(R.layout.fragment_recyclerview_layout) {
         val flowerPotConfig = ItemTypeConfig
             .newInstance(RecyclerItemViewBuilderBinder.newInstance(), flowerPotFeatures)
 
-        val intConfig = ItemTypeConfig.newInstance(
-            RecyclerItemViewBuilderBinder.newInstance(),
-            FeatureConfig<Int, IntItemView>().apply {
-                addItemLayoutParams(itemLayoutParams)
-                addOnItemClickListener { item, _, _ -> showSnackbar("Int: $item") }
-            }
-        )
+        val intConfig = ItemTypeConfigCreator.fromRecyclerItemView<Int, IntItemView> {
+            addItemLayoutParams(itemLayoutParams)
+            addOnItemClickListener { item, _, _ -> showSnackbar("Int: $item") }
+        }
 
         // StaticA is a singleton.
         // For every StaticA in the list of items submitted to the adapter,
         // a StaticAItemView will be shown in the corresponding position
         // In a real use-case, this might be a Header view
-        val staticAConfig = ItemTypeConfig.newInstance(
-            ViewBuilderBinder.newInstance(),
-            FeatureConfig<StaticA, StaticAItemView>().apply {
-                addItemLayoutParams(itemLayoutParams)
-            }
-        )
+        val staticAConfig = ItemTypeConfigCreator.fromStaticView<StaticA, StaticAItemView> {
+            addItemLayoutParams(itemLayoutParams)
+        }
 
         // Static B is similar to Static A
-        val staticBConfig = ItemTypeConfig.newInstance(
-            ViewBuilderBinder.newInstance(),
-            FeatureConfig<StaticB, StaticBItemView>().apply {
-                addItemLayoutParams(itemLayoutParams)
-            }
-        )
+        val staticBConfig = ItemTypeConfigCreator.fromStaticView<StaticB, StaticBItemView> {
+            addItemLayoutParams(itemLayoutParams)
+        }
 
         // adapterConfig optional
         val recyclerAdapter = RecyclerAdapterCreator.fromItemTypeConfigs(

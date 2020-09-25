@@ -8,25 +8,25 @@ import com.lukeneedham.flowerpotrecycler.adapter.delegates.feature.implementatio
 import com.lukeneedham.flowerpotrecycler.adapter.delegates.feature.implementation.ItemLayoutParamsLazyDelegate
 import com.lukeneedham.flowerpotrecycler.adapter.delegates.feature.implementation.OnItemClickDelegate
 
-fun <ItemType : Any, ItemViewType : View> FeatureDelegateConfig<ItemType, ItemViewType>.addDelegate(
+fun <ItemType, ItemViewType : View> FeatureDelegateConfig<ItemType, ItemViewType>.addDelegate(
     delegate: AdapterFeatureDelegate<ItemType, ItemViewType>
 ) {
     delegateCreators.add { delegate }
 }
 
-fun <ItemType : Any, ItemViewType : View> FeatureDelegateConfig<ItemType, ItemViewType>.addDelegate(
+fun <ItemType, ItemViewType : View> FeatureDelegateConfig<ItemType, ItemViewType>.addDelegate(
     delegateCreator: (adapter: RecyclerView.Adapter<*>) -> AdapterFeatureDelegate<ItemType, ItemViewType>
 ) {
     delegateCreators.add(delegateCreator)
 }
 
-fun <ItemType : Any, ItemViewType : View> FeatureDelegateConfig<ItemType, ItemViewType>.addOnItemClickListener(
+fun <ItemType, ItemViewType : View> FeatureDelegateConfig<ItemType, ItemViewType>.addOnItemClickListener(
     listener: (item: ItemType, position: Int, itemView: ItemViewType) -> Unit
 ) {
     addDelegate(OnItemClickDelegate(listener))
 }
 
-fun <ItemType : Any, ItemViewType : View> FeatureDelegateConfig<ItemType, ItemViewType>.addItemLayoutParams(
+fun <ItemType, ItemViewType : View> FeatureDelegateConfig<ItemType, ItemViewType>.addItemLayoutParams(
     layoutParams: RecyclerView.LayoutParams
 ) {
     addDelegate(ItemLayoutParamsDelegate(layoutParams))
@@ -36,13 +36,13 @@ fun <ItemType : Any, ItemViewType : View> FeatureDelegateConfig<ItemType, ItemVi
  * [layoutParamsCreator] will be called exactly once, to create the layoutParams lazily,
  * when the first view is created.
  */
-fun <ItemType : Any, ItemViewType : View> FeatureDelegateConfig<ItemType, ItemViewType>.addItemLayoutParamsLazy(
+fun <ItemType, ItemViewType : View> FeatureDelegateConfig<ItemType, ItemViewType>.addItemLayoutParamsLazy(
     layoutParamsCreator: () -> RecyclerView.LayoutParams
 ) {
     addDelegate(ItemLayoutParamsLazyDelegate(layoutParamsCreator))
 }
 
-fun <ItemType : Any, ItemViewType : View> FeatureDelegateConfig<ItemType, ItemViewType>.getFeatureDelegates(
+fun <ItemType, ItemViewType : View> FeatureDelegateConfig<ItemType, ItemViewType>.getFeatureDelegates(
     adapter: RecyclerView.Adapter<*>
 ): List<AdapterFeatureDelegate<ItemType, ItemViewType>> =
     delegateCreators.map { it(adapter) }

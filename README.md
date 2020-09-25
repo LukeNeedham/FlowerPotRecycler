@@ -35,16 +35,20 @@ all the different ways this library can help you.
 
 This library introduces 2 main ideas:
 
-- `BuilderBinder`: A single BuilderBinder is responsible for a single item type, and handles its:
+- `ItemTypeDelegate`: A single ItemTypeDelegate is responsible for a single item type, and handles its:
     - Building - Creating the view. Called during `onCreateViewHolder`.
     - Binding - Binding an item to the view. Called during `onBindViewHolder`.
-    We can use mix-and-match these `BuilderBinder`s to create complex `Adapter`s in a semantic, type-safe, and composable way.
+    - Matching - Determines which `ItemTypeDelegate` to use for each item.
+    - Features - Extra features to use for this item type - things like item click listeners.
+    We can use mix-and-match these `ItemTypeDelegate`s to create complex `Adapter`s in a semantic, type-safe, and composable way.
 
 - `RecyclerItemView`: An interface to be implemented in a custom or compound `View`,
 to mark it as the item view to use for a certain item type in a `RecyclerView`.
 Each `RecyclerItemView` must implement `setItem`, which is responsible for binding the item provided.
 
-# BuilderBinder
+# ItemTypeDelegate
+
+Each `ItemTypeDelegate` is created from an `ItemTypeConfig`, which you need to create. The `ItemTypeConfig` contains a `BuilderBinder` which manages the building and binding of the item view.
 
 All `BuilderBinder`s extend from the `BuilderBinder` class - meaning that you can easily write your own custom implementation!
 
@@ -115,6 +119,14 @@ recyclerView.adapter = RecyclerAdapterCreator.fromItemTypeConfigs(
 )
 ```
 
+You can also use the alternative syntax, which saves on boilerplate by using common defaults:
+```kotlin
+val itemTypeConfig = ItemTypeConfigCreator.fromRecyclerItemView<ChoiceItem, ChoiceItemView> {
+    // DSL for adding features
+    addOnItemClickListener { item, _, _ -> onItemClick(item) }
+}
+```
+
 Internally, the Adapter will use the provided `ItemTypeConfig`s to build `ItemTypeDelegate`s, which
 are responsible for everything related to a single item type. The Adapter will wrap these
 `ItemTypeDelegate`s into an `ItemTypeRegistry`, to which it will delegate responsibly for each item type.
@@ -135,8 +147,9 @@ val recyclerAdapter = SingleTypeRecyclerAdapterCreator.fromRecyclerItemView<Flow
 
 # Config
 
-There are 2 main types of config:
+There are 3 main types of config:
 
+- `ItemTypeConfig` - Contains all the config for a single item type, used to build an `ItemTypeDelegate`
 - `FeatureDelegateConfig` - Contains the config for `AdapterFeatureDelegate`s for each item type
 - `RecyclerAdapterConfig` - Contains the config for the `Adapter` itself
 

@@ -9,11 +9,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.RecyclerAdapterCreator
-import com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.implementation.view.RecyclerItemViewBuilderBinder
-import com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.implementation.xml.XmlBuilderBinder
 import com.lukeneedham.flowerpotrecycler.adapter.config.AdapterConfig
 import com.lukeneedham.flowerpotrecycler.adapter.delegates.feature.config.FeatureConfig
 import com.lukeneedham.flowerpotrecycler.adapter.itemtype.ItemTypeConfig
+import com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.implementation.view.RecyclerItemViewBuilderBinder
+import com.lukeneedham.flowerpotrecycler.util.ItemTypeConfigCreator
 import com.lukeneedham.flowerpotrecycler.util.extensions.addItemLayoutParams
 import com.lukeneedham.flowerpotrecycler.util.extensions.addOnItemClickListener
 import com.lukeneedham.flowerpotrecyclersample.R
@@ -52,12 +52,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             }
 
         optionsRecyclerView.adapter = RecyclerAdapterCreator.fromItemTypeConfigs(
-            ItemTypeConfig.newInstance(
-                XmlBuilderBinder.newInstance(R.layout.view_header_item),
-                FeatureConfig<HeaderItem, View>().apply {
-                    addItemLayoutParams(RecyclerView.LayoutParams(MATCH_PARENT, WRAP_CONTENT))
-                }
-            ),
+            ItemTypeConfigCreator.fromStaticXml<HeaderItem>(R.layout.view_header_item) {
+                addItemLayoutParams(RecyclerView.LayoutParams(MATCH_PARENT, WRAP_CONTENT))
+            },
             ItemTypeConfig
                 .newInstance(RecyclerItemViewBuilderBinder.newInstance(), choiceItemConfig),
             adapterConfig = config
