@@ -32,7 +32,7 @@ data class ItemTypeConfig<ItemType, ItemViewType : View>(
         inline fun <reified ItemType : Any, ItemViewType : View> newInstance(
             builderBinder: BuilderBinder<ItemType, ItemViewType>,
             featureConfig: FeatureDelegateConfig<ItemType, ItemViewType>? = null,
-            itemMatcher: ItemMatcher = ClassMatcher(ItemType::class)
+            itemMatcher: ItemMatcher = ClassMatcher.newInstance<ItemType>()
         ): ItemTypeConfig<ItemType, ItemViewType> {
             val featureConfigOrEmpty = featureConfig ?: FeatureConfig()
             return ItemTypeConfig(builderBinder, featureConfigOrEmpty, itemMatcher)

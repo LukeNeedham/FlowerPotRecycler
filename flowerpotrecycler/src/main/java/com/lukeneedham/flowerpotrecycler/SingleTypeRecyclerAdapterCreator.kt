@@ -17,7 +17,7 @@ import com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.implemen
 import com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.implementation.view.RecyclerItemViewBuilderBinder
 import com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.implementation.view.ViewBuilderBinder
 import com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.implementation.xml.XmlBuilderBinder
-import com.lukeneedham.flowerpotrecycler.adapter.itemtype.matcher.NullableClassMatcher
+import com.lukeneedham.flowerpotrecycler.adapter.itemtype.matcher.AllMatcher
 import com.lukeneedham.flowerpotrecycler.util.BuilderBinderUtils.createEmptyBinder
 import com.lukeneedham.flowerpotrecycler.util.BuilderBinderUtils.createReflectiveBuilder
 
@@ -107,7 +107,7 @@ object SingleTypeRecyclerAdapterCreator {
         builderBinder: BuilderBinder<ItemType, ItemViewType>,
         config: SingleTypeAdapterConfig<ItemType, ItemViewType>? = null
     ): DelegatedRecyclerAdapter<ItemType, ItemViewType> {
-        val matcher = NullableClassMatcher(ItemType::class)
+        val matcher = AllMatcher()
         val featureConfig = config ?: FeatureConfig<ItemType, ItemViewType>()
         val builderBinderSetup = ItemTypeConfig(builderBinder, featureConfig, matcher)
         return ConfigurableRecyclerAdapter(listOf(builderBinderSetup), config)

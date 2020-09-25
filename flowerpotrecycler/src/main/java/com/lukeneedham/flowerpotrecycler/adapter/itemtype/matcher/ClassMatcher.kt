@@ -12,4 +12,8 @@ data class ClassMatcher<ItemType : Any>(val itemClass: KClass<ItemType>) : ItemM
     override fun toString(): String {
         return "$TAG for ${itemClass.qualifiedName}"
     }
+
+    companion object {
+        inline fun <reified ItemType : Any> newInstance() = ClassMatcher(ItemType::class)
+    }
 }

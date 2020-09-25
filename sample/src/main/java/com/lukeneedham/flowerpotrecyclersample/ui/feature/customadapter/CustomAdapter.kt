@@ -28,12 +28,14 @@ import com.lukeneedham.flowerpotrecyclersample.ui.feature.FlowerPotItemView
 class CustomAdapter(
     onItemClick: (FlowerPotModel) -> Unit
 ) : DelegatedRecyclerAdapter<FlowerPotModel, FlowerPotItemView>() {
-    private val selectableItemDelegate =
-        SelectableItemDelegate(this) { itemView, item, isSelected ->
+    private val selectableItemDelegate = SelectableItemDelegate(
+        this,
+        { itemView, item, isSelected ->
             // Here we specify how to handle each item view select state update.
             // This is redundant, as the default is just to call [View.setSelected] anyway.
             itemView.isSelected = isSelected
         }
+    )
 
     override val itemTypeConfigs: List<ItemTypeConfig<FlowerPotModel, FlowerPotItemView>> =
         listOf(

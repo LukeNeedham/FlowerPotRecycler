@@ -12,4 +12,8 @@ data class NullableClassMatcher(val itemClass: KClass<*>) : ItemMatcher {
     override fun toString(): String {
         return "$TAG for ${itemClass.qualifiedName}"
     }
+
+    companion object {
+        inline fun <reified ItemType> newInstance() = NullableClassMatcher(ItemType::class)
+    }
 }

@@ -10,22 +10,27 @@ import com.lukeneedham.flowerpotrecycler.adapter.delegates.feature.BaseAdapterFe
  * A delegate that allows for up to 1 item to be selected at a time. Initially, no item is selected.
  * To return to the no item selected state, use [resetSelection]
  *
- * To show the selected state, [onViewSelected] will be called.
+ * To show the selected state, [viewUpdater] will be called.
  * It defaults to calling [View.setSelected],
  * so if using the default [ItemViewType] needs to override [View.setSelected]
  */
 @Suppress("unused", "MemberVisibilityCanBePrivate")
 class SelectableItemDelegate<ItemType, ItemViewType : View>(
     private val adapter: DelegatedRecyclerAdapter<ItemType, ItemViewType>,
-    private val onSelectedPositionChangeListener: (oldPosition: Int, newPosition: Int) -> Unit = { _, _ -> },
+
     /**
      * The callback for each item view when its selected state changes.
      * The default is to simply call [View.setSelected].
      * Don't forget to reset the UI to the unselected state when an item is unselected.
      */
-    private val onViewSelected:
-        (itemView: ItemViewType, item: ItemType, isSelected: Boolean) -> Unit =
-        ::defaultOnViewSelected
+    private val viewUpdater: (itemView: ItemViewType, item: ItemType, isSelected: Boolean) -> Unit =
+        ::defaultViewSelector,
+
+    /**
+     * Call for when the selected position changes.
+     * Set [viewUpdater] to customise how to update the item views for this change.
+     */
+    private val onSelectionChangeListener: (oldPosition: Int, newPosition: Int) -> Unit = { _, _ -> }
 ) : BaseAdapterFeatureDelegate<ItemType, ItemViewType>() {
 
     private var selectedItemPosition: Int = RecyclerView.NO_POSITION
@@ -38,7 +43,7 @@ class SelectableItemDelegate<ItemType, ItemViewType : View>(
             if (value != RecyclerView.NO_POSITION) {
                 adapter.notifyItemChanged(value)
             }
-            onSelectedPositionChangeListener(oldPosition, value)
+            onSelectionChangeListener(oldPosition, value)
         }
 
     override fun onViewHolderBound(
@@ -51,7 +56,7 @@ class SelectableItemDelegate<ItemType, ItemViewType : View>(
         // This allows for handling of duplicate items at different positions
         val selectedItem = getSelectedItem()
         val isSelected = selectedItem == item
-        onViewSelected(itemView, item, isSelected)
+        viewUpdater(itemView, item, isSelected)
     }
 
     override fun onItemClick(item: ItemType, position: Int, itemView: ItemViewType) {
@@ -81,7 +86,7 @@ class SelectableItemDelegate<ItemType, ItemViewType : View>(
     }
 
     companion object {
-        fun <ItemType, ItemViewType : View> defaultOnViewSelected(
+        fun <ItemType, ItemViewType : View> defaultViewSelector(
             itemView: ItemViewType,
             item: ItemType,
             isSelected: Boolean
