@@ -3,10 +3,10 @@ package com.lukeneedham.flowerpotrecycler.adapter.itemtype.matcher
 import com.lukeneedham.flowerpotrecycler.util.extensions.TAG
 import kotlin.reflect.KClass
 
-/** An [ItemMatcher] which matches items based on their class. Does not match null. */
+/** An [ItemMatcher] which matches items based on their class. */
 data class ClassMatcher<ItemType : Any>(val itemClass: KClass<ItemType>) : ItemMatcher {
-    override fun isMatch(item: Any?): Boolean {
-        return if (item == null) false else itemClass == item::class
+    override fun isMatch(item: Any): Boolean {
+        return itemClass == item::class
     }
 
     override fun toString(): String {

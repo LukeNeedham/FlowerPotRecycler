@@ -19,7 +19,7 @@ object RecyclerAdapterCreator {
      * which each handle creating the view and binding items for a single item type
      * @param adapterConfig Configuration for the adapter
      */
-    fun <BaseItemType, BaseItemViewType : View> fromItemTypeConfigs(
+    fun <BaseItemType : Any, BaseItemViewType : View> fromItemTypeConfigs(
         itemTypeConfigs: List<ItemTypeConfig<out BaseItemType, out BaseItemViewType>>,
         adapterConfig: RecyclerAdapterConfig<BaseItemType, BaseItemViewType>? = null
     ): DelegatedRecyclerAdapter<BaseItemType, BaseItemViewType> =

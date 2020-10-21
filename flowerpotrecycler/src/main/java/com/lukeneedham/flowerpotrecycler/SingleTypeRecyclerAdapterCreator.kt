@@ -33,7 +33,7 @@ object SingleTypeRecyclerAdapterCreator {
      * @param config Optional configuration for the adapter
      * @param builder The callback for building item Views
      */
-    inline fun <reified ItemType> fromDeclarativeDsl(
+    inline fun <reified ItemType : Any> fromDeclarativeDsl(
         config: SingleTypeAdapterConfig<ItemType, View>? = null,
         noinline builder: DeclarativeBindingDsl<ItemType>.(ViewGroup) -> View
     ): DelegatedRecyclerAdapter<ItemType, View> {
@@ -48,7 +48,7 @@ object SingleTypeRecyclerAdapterCreator {
      * @param config Optional configuration for the adapter
      * @param binder The callback for binding each item to its View
      */
-    inline fun <reified ItemType> fromXml(
+    inline fun <reified ItemType : Any> fromXml(
         @LayoutRes layoutResId: Int,
         config: SingleTypeAdapterConfig<ItemType, View>? = null,
         noinline binder: Binder<ItemType, View> = createEmptyBinder()
@@ -66,7 +66,7 @@ object SingleTypeRecyclerAdapterCreator {
      * @param config Configuration for the adapter
      * @param builder The callback to instantiate your [ItemViewType] class
      */
-    inline fun <reified ItemType, reified ItemViewType> fromRecyclerItemView(
+    inline fun <reified ItemType : Any, reified ItemViewType> fromRecyclerItemView(
         config: SingleTypeAdapterConfig<ItemType, ItemViewType>? = null,
         noinline builder: Builder<ItemViewType> = createReflectiveBuilder()
     ): DelegatedRecyclerAdapter<ItemType, ItemViewType>
@@ -85,7 +85,7 @@ object SingleTypeRecyclerAdapterCreator {
      * @param builder The callback to instantiate your [ItemViewType] class
      * @param binder The callback for binding each item to its View
      */
-    inline fun <reified ItemType, reified ItemViewType : View> fromView(
+    inline fun <reified ItemType : Any, reified ItemViewType : View> fromView(
         config: SingleTypeAdapterConfig<ItemType, ItemViewType>? = null,
         noinline builder: Builder<ItemViewType> = createReflectiveBuilder(),
         noinline binder: Binder<ItemType, ItemViewType> = createEmptyBinder()
@@ -102,7 +102,7 @@ object SingleTypeRecyclerAdapterCreator {
      * and to bind items of type [ItemType] to them.
      * @param config Configuration for the adapter
      */
-    inline fun <reified ItemType, ItemViewType : View> fromBuilderBinder(
+    inline fun <reified ItemType : Any, ItemViewType : View> fromBuilderBinder(
         builderBinder: BuilderBinder<ItemType, ItemViewType>,
         config: SingleTypeAdapterConfig<ItemType, ItemViewType>? = null
     ): DelegatedRecyclerAdapter<ItemType, ItemViewType> {

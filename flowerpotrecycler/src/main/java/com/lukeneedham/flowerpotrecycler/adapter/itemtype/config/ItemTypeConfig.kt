@@ -15,7 +15,7 @@ import com.lukeneedham.flowerpotrecycler.adapter.itemtype.matcher.ItemMatcher
  * This allows the [ItemTypeDelegate] to be created only when a [RecyclerView.Adapter] is provided,
  * which allows [AdapterFeatureDelegate]s to reference the Adapter.
  */
-data class ItemTypeConfig<ItemType, ItemViewType : View>(
+data class ItemTypeConfig<ItemType : Any, ItemViewType : View>(
     val builderBinder: BuilderBinder<ItemType, ItemViewType>,
     val featureDelegateConfig: FeatureDelegateConfig<ItemType, ItemViewType>,
     val itemMatcher: ItemMatcher
