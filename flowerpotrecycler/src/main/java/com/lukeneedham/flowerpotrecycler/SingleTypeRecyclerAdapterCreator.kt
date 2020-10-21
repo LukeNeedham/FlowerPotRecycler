@@ -3,12 +3,10 @@ package com.lukeneedham.flowerpotrecycler
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
-import com.lukeneedham.flowerpotrecycler.adapter.ConfigurableRecyclerAdapter
 import com.lukeneedham.flowerpotrecycler.adapter.DelegatedRecyclerAdapter
 import com.lukeneedham.flowerpotrecycler.adapter.RecyclerItemView
 import com.lukeneedham.flowerpotrecycler.adapter.config.SingleTypeAdapterConfig
 import com.lukeneedham.flowerpotrecycler.adapter.delegates.feature.config.FeatureConfig
-import com.lukeneedham.flowerpotrecycler.adapter.itemtype.ItemTypeConfig
 import com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.Binder
 import com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.Builder
 import com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.BuilderBinder
@@ -17,6 +15,7 @@ import com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.implemen
 import com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.implementation.view.RecyclerItemViewBuilderBinder
 import com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.implementation.view.ViewBuilderBinder
 import com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.implementation.xml.XmlBuilderBinder
+import com.lukeneedham.flowerpotrecycler.adapter.itemtype.config.ItemTypeConfig
 import com.lukeneedham.flowerpotrecycler.adapter.itemtype.matcher.AllMatcher
 import com.lukeneedham.flowerpotrecycler.util.BuilderBinderUtils.createEmptyBinder
 import com.lukeneedham.flowerpotrecycler.util.BuilderBinderUtils.createReflectiveBuilder
@@ -109,7 +108,11 @@ object SingleTypeRecyclerAdapterCreator {
     ): DelegatedRecyclerAdapter<ItemType, ItemViewType> {
         val matcher = AllMatcher()
         val featureConfig = config ?: FeatureConfig<ItemType, ItemViewType>()
-        val builderBinderSetup = ItemTypeConfig(builderBinder, featureConfig, matcher)
-        return ConfigurableRecyclerAdapter(listOf(builderBinderSetup), config)
+        val builderBinderSetup = ItemTypeConfig(
+            builderBinder,
+            featureConfig,
+            matcher
+        )
+        return RecyclerAdapterCreator.fromItemTypeConfigs(listOf(builderBinderSetup), config)
     }
 }

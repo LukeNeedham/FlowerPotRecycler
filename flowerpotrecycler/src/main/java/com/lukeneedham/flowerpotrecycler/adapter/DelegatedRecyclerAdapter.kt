@@ -4,7 +4,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.adapter.delegates.position.AdapterPositionDelegate
-import com.lukeneedham.flowerpotrecycler.adapter.itemtype.ItemTypeConfig
+import com.lukeneedham.flowerpotrecycler.adapter.itemtype.config.ItemTypeConfigRegistry
 import com.lukeneedham.flowerpotrecycler.adapter.itemtype.ItemTypeRegistry
 
 /** A base RecyclerView Adapter to encourage a delegated approach */
@@ -13,10 +13,10 @@ abstract class DelegatedRecyclerAdapter<BaseItemType, BaseItemViewType : View> :
 
     abstract val positionDelegate: AdapterPositionDelegate<BaseItemType>
 
-    abstract val itemTypeConfigs: List<ItemTypeConfig<out BaseItemType, out BaseItemViewType>>
+    abstract val itemTypeConfigRegistry: ItemTypeConfigRegistry<BaseItemType, BaseItemViewType>
 
     private val itemTypeRegistry: ItemTypeRegistry<BaseItemType, BaseItemViewType> by lazy {
-        ItemTypeRegistry.newInstance(itemTypeConfigs, this)
+        ItemTypeRegistry.newInstance(itemTypeConfigRegistry, this)
     }
 
     override fun onCreateViewHolder(

@@ -7,10 +7,11 @@ import com.lukeneedham.flowerpotrecycler.adapter.DefaultDelegatedRecyclerAdapter
 import com.lukeneedham.flowerpotrecycler.adapter.DefaultDiffCallback
 import com.lukeneedham.flowerpotrecycler.adapter.DelegatedRecyclerAdapter
 import com.lukeneedham.flowerpotrecycler.adapter.ViewHolder
-import com.lukeneedham.flowerpotrecycler.adapter.delegates.feature.implementation.SelectableItemDelegate
+import com.lukeneedham.flowerpotrecycler.adapter.delegates.feature.implementation.MultipleSelectableItemDelegate
 import com.lukeneedham.flowerpotrecycler.adapter.delegates.position.AdapterPositionDelegate
 import com.lukeneedham.flowerpotrecycler.adapter.delegates.position.implementation.LinearPositionDelegate
-import com.lukeneedham.flowerpotrecycler.adapter.itemtype.ItemTypeConfig
+import com.lukeneedham.flowerpotrecycler.adapter.itemtype.config.ItemTypeConfigListRegistry
+import com.lukeneedham.flowerpotrecycler.adapter.itemtype.config.ItemTypeConfigRegistry
 import com.lukeneedham.flowerpotrecycler.util.ItemTypeConfigCreator
 import com.lukeneedham.flowerpotrecycler.util.extensions.addDelegate
 import com.lukeneedham.flowerpotrecycler.util.extensions.addItemLayoutParams
@@ -28,7 +29,7 @@ import com.lukeneedham.flowerpotrecyclersample.ui.feature.FlowerPotItemView
 class CustomAdapter(
     onItemClick: (FlowerPotModel) -> Unit
 ) : DelegatedRecyclerAdapter<FlowerPotModel, FlowerPotItemView>() {
-    private val selectableItemDelegate = SelectableItemDelegate(
+    private val selectableItemDelegate = MultipleSelectableItemDelegate(
         this,
         { itemView, item, isSelected ->
             // Here we specify how to handle each item view select state update.
@@ -37,13 +38,15 @@ class CustomAdapter(
         }
     )
 
-    override val itemTypeConfigs: List<ItemTypeConfig<FlowerPotModel, FlowerPotItemView>> =
-        listOf(
-            ItemTypeConfigCreator.fromRecyclerItemView {
-                addItemLayoutParams(RecyclerView.LayoutParams(MATCH_PARENT, WRAP_CONTENT))
-                addOnItemClickListener { item, _, _ -> onItemClick(item) }
-                addDelegate(selectableItemDelegate)
-            }
+    override val itemTypeConfigRegistry: ItemTypeConfigRegistry<FlowerPotModel, FlowerPotItemView> =
+        ItemTypeConfigListRegistry(
+            listOf(
+                ItemTypeConfigCreator.fromRecyclerItemView {
+                    addItemLayoutParams(RecyclerView.LayoutParams(MATCH_PARENT, WRAP_CONTENT))
+                    addOnItemClickListener { item, _, _ -> onItemClick(item) }
+                    addDelegate(selectableItemDelegate)
+                }
+            )
         )
 
     override val positionDelegate: AdapterPositionDelegate<FlowerPotModel> =

@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.FlowerPotRecyclerException
 import com.lukeneedham.flowerpotrecycler.adapter.ViewHolder
+import com.lukeneedham.flowerpotrecycler.adapter.itemtype.config.ItemTypeConfigRegistry
 
 /**
  * A registry of [ItemTypeDelegate]s, which each handle a single item type.
@@ -114,11 +115,11 @@ class ItemTypeRegistry<BaseItemType, BaseItemViewType : View>(
 
     companion object {
         fun <BaseItemType, BaseItemViewType : View> newInstance(
-            itemTypeConfigs: List<ItemTypeConfig<out BaseItemType, out BaseItemViewType>>,
+            itemTypeConfigRegistry: ItemTypeConfigRegistry<out BaseItemType, out BaseItemViewType>,
             adapter: RecyclerView.Adapter<*>
         ): ItemTypeRegistry<BaseItemType, BaseItemViewType> {
-            val itemTypeDelegates = itemTypeConfigs.map {
-                it.createItemTypeDelegate(adapter)
+            val itemTypeDelegates = itemTypeConfigRegistry.getItemTypeConfigs().map {
+                it.createDelegate(adapter)
             }
             return ItemTypeRegistry(itemTypeDelegates)
         }

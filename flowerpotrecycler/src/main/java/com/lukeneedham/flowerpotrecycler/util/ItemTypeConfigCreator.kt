@@ -5,16 +5,37 @@ import androidx.annotation.LayoutRes
 import com.lukeneedham.flowerpotrecycler.adapter.RecyclerItemView
 import com.lukeneedham.flowerpotrecycler.adapter.delegates.feature.config.FeatureConfig
 import com.lukeneedham.flowerpotrecycler.adapter.delegates.feature.config.FeatureDelegateConfig
-import com.lukeneedham.flowerpotrecycler.adapter.itemtype.ItemTypeConfig
+import com.lukeneedham.flowerpotrecycler.adapter.itemtype.config.ItemTypeConfig
+import com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.BuilderBinder
 import com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.implementation.view.RecyclerItemViewBuilderBinder
 import com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.implementation.view.ViewBuilderBinder
 import com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.implementation.xml.XmlBuilderBinder
+import com.lukeneedham.flowerpotrecycler.adapter.itemtype.matcher.ClassMatcher
+import com.lukeneedham.flowerpotrecycler.adapter.itemtype.matcher.ItemMatcher
 
 /**
  * A collection of utils for creating [ItemTypeConfig]s with default configuration.
  * For full flexibility, instantiate the [ItemTypeConfig] manually.
  */
 object ItemTypeConfigCreator {
+
+    /**
+     * Create an [ItemTypeConfig] from [builderBinder],
+     * with defaults for an empty [FeatureDelegateConfig]
+     * and standard [ItemMatcher]
+     */
+    inline fun <reified ItemType : Any, ItemViewType : View> fromBuilderBinder(
+        builderBinder: BuilderBinder<ItemType, ItemViewType>,
+        featureConfig: FeatureDelegateConfig<ItemType, ItemViewType>? = null,
+        itemMatcher: ItemMatcher = ClassMatcher.newInstance<ItemType>()
+    ): ItemTypeConfig<ItemType, ItemViewType> {
+        val featureConfigOrEmpty = featureConfig ?: FeatureConfig()
+        return ItemTypeConfig(
+            builderBinder,
+            featureConfigOrEmpty,
+            itemMatcher
+        )
+    }
 
     /**
      * @param configDsl a DSL for setting up the [FeatureDelegateConfig] to use
@@ -26,7 +47,7 @@ object ItemTypeConfigCreator {
             where ItemViewType : View, ItemViewType : RecyclerItemView<ItemType> {
         val config = FeatureConfig<ItemType, ItemViewType>()
         config.configDsl()
-        return ItemTypeConfig.newInstance(RecyclerItemViewBuilderBinder.newInstance(), config)
+        return fromBuilderBinder(RecyclerItemViewBuilderBinder.newInstance(), config)
     }
 
     /**
@@ -38,7 +59,7 @@ object ItemTypeConfigCreator {
     ): ItemTypeConfig<ItemType, ItemViewType> {
         val config = FeatureConfig<ItemType, ItemViewType>()
         config.configDsl()
-        return ItemTypeConfig.newInstance(ViewBuilderBinder.newInstance(), config)
+        return fromBuilderBinder(ViewBuilderBinder.newInstance(), config)
     }
 
     /**
@@ -52,6 +73,6 @@ object ItemTypeConfigCreator {
     ): ItemTypeConfig<ItemType, View> {
         val config = FeatureConfig<ItemType, View>()
         config.configDsl()
-        return ItemTypeConfig.newInstance(XmlBuilderBinder.newInstance(xmlLayoutResId), config)
+        return fromBuilderBinder(XmlBuilderBinder.newInstance(xmlLayoutResId), config)
     }
 }

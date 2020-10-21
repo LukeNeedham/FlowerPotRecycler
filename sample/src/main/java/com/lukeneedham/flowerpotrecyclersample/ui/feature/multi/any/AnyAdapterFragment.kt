@@ -6,11 +6,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.RecyclerAdapterCreator
-import com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.implementation.view.RecyclerItemViewBuilderBinder
-import com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.implementation.view.ViewBuilderBinder
 import com.lukeneedham.flowerpotrecycler.adapter.config.AdapterConfig
 import com.lukeneedham.flowerpotrecycler.adapter.delegates.feature.config.FeatureConfig
-import com.lukeneedham.flowerpotrecycler.adapter.itemtype.ItemTypeConfig
+import com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.implementation.view.RecyclerItemViewBuilderBinder
 import com.lukeneedham.flowerpotrecycler.util.ItemTypeConfigCreator
 import com.lukeneedham.flowerpotrecycler.util.extensions.addItemLayoutParams
 import com.lukeneedham.flowerpotrecycler.util.extensions.addOnItemClickListener
@@ -53,8 +51,8 @@ class AnyAdapterFragment : Fragment(R.layout.fragment_recyclerview_layout) {
                 showSnackbar("Flower Pot: " + getString(item.nameResId))
             }
         }
-        val flowerPotConfig = ItemTypeConfig
-            .newInstance(RecyclerItemViewBuilderBinder.newInstance(), flowerPotFeatures)
+        val flowerPotConfig = ItemTypeConfigCreator
+            .fromBuilderBinder(RecyclerItemViewBuilderBinder.newInstance(), flowerPotFeatures)
 
         val intConfig = ItemTypeConfigCreator.fromRecyclerItemView<Int, IntItemView> {
             addItemLayoutParams(itemLayoutParams)
@@ -76,11 +74,8 @@ class AnyAdapterFragment : Fragment(R.layout.fragment_recyclerview_layout) {
 
         // adapterConfig optional
         val recyclerAdapter = RecyclerAdapterCreator.fromItemTypeConfigs(
-            flowerPotConfig,
-            intConfig,
-            staticAConfig,
-            staticBConfig,
-            adapterConfig = adapterConfig
+            listOf(flowerPotConfig, intConfig, staticAConfig, staticBConfig),
+            adapterConfig
         )
 
         recyclerView.apply {

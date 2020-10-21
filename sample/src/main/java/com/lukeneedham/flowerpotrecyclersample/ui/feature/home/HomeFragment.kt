@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.lukeneedham.flowerpotrecycler.RecyclerAdapterCreator
 import com.lukeneedham.flowerpotrecycler.adapter.config.AdapterConfig
 import com.lukeneedham.flowerpotrecycler.adapter.delegates.feature.config.FeatureConfig
-import com.lukeneedham.flowerpotrecycler.adapter.itemtype.ItemTypeConfig
 import com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.implementation.view.RecyclerItemViewBuilderBinder
 import com.lukeneedham.flowerpotrecycler.util.ItemTypeConfigCreator
 import com.lukeneedham.flowerpotrecycler.util.extensions.addItemLayoutParams
@@ -52,12 +51,16 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             }
 
         optionsRecyclerView.adapter = RecyclerAdapterCreator.fromItemTypeConfigs(
-            ItemTypeConfigCreator.fromStaticXml<HeaderItem>(R.layout.view_header_item) {
-                addItemLayoutParams(RecyclerView.LayoutParams(MATCH_PARENT, WRAP_CONTENT))
-            },
-            ItemTypeConfig
-                .newInstance(RecyclerItemViewBuilderBinder.newInstance(), choiceItemConfig),
-            adapterConfig = config
+            listOf(
+                ItemTypeConfigCreator.fromStaticXml<HeaderItem>(R.layout.view_header_item) {
+                    addItemLayoutParams(RecyclerView.LayoutParams(MATCH_PARENT, WRAP_CONTENT))
+                },
+                ItemTypeConfigCreator.fromBuilderBinder(
+                    RecyclerItemViewBuilderBinder.newInstance(),
+                    choiceItemConfig
+                )
+            ),
+            config
         )
     }
 }

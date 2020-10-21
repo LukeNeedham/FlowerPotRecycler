@@ -3,9 +3,10 @@ package com.lukeneedham.flowerpotrecycler
 import android.view.View
 import com.lukeneedham.flowerpotrecycler.adapter.ConfigurableRecyclerAdapter
 import com.lukeneedham.flowerpotrecycler.adapter.DelegatedRecyclerAdapter
-import com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.BuilderBinder
-import com.lukeneedham.flowerpotrecycler.adapter.itemtype.ItemTypeConfig
 import com.lukeneedham.flowerpotrecycler.adapter.config.RecyclerAdapterConfig
+import com.lukeneedham.flowerpotrecycler.adapter.itemtype.builderbinder.BuilderBinder
+import com.lukeneedham.flowerpotrecycler.adapter.itemtype.config.ItemTypeConfig
+import com.lukeneedham.flowerpotrecycler.adapter.itemtype.config.ItemTypeConfigListRegistry
 
 /** Creates multi-type adapters */
 @Suppress("unused", "MemberVisibilityCanBePrivate")
@@ -18,22 +19,12 @@ object RecyclerAdapterCreator {
      * which each handle creating the view and binding items for a single item type
      * @param adapterConfig Configuration for the adapter
      */
-    fun <BaseItemType, BaseItemViewType : View> fromItemTypeConfigList(
+    fun <BaseItemType, BaseItemViewType : View> fromItemTypeConfigs(
         itemTypeConfigs: List<ItemTypeConfig<out BaseItemType, out BaseItemViewType>>,
         adapterConfig: RecyclerAdapterConfig<BaseItemType, BaseItemViewType>? = null
     ): DelegatedRecyclerAdapter<BaseItemType, BaseItemViewType> =
-        ConfigurableRecyclerAdapter(itemTypeConfigs, adapterConfig)
-
-    /**
-     * Create a [DelegatedRecyclerAdapter] which can handle multiple item types.
-     *
-     * @param itemTypeConfigs a list of [BuilderBinder]s,
-     * which each handle creating the view and binding items for a single item type
-     * @param adapterConfig Configuration for the adapter
-     */
-    fun <BaseItemType, BaseItemViewType : View> fromItemTypeConfigs(
-        vararg itemTypeConfigs: ItemTypeConfig<out BaseItemType, out BaseItemViewType>,
-        adapterConfig: RecyclerAdapterConfig<BaseItemType, BaseItemViewType>? = null
-    ): DelegatedRecyclerAdapter<BaseItemType, BaseItemViewType> =
-        fromItemTypeConfigList(itemTypeConfigs.toList(), adapterConfig)
+        ConfigurableRecyclerAdapter(
+            ItemTypeConfigListRegistry(itemTypeConfigs),
+            adapterConfig
+        )
 }
